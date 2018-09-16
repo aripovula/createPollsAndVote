@@ -1,1 +1,236 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Assistant');
+/* @import "~ng-pick-datetime/assets/style/picker.min.css"; */
+
+body, html {
+  font-family: 'Assistant';
+}
+
+  #container{
+    width: 100%;
+    overflow:hidden;
+    /* text-align: center; */
+  }
+
+  #container > div{
+    height:100vh;
+    float:left;
+  }
+
+  #left {
+    width:50%;
+  }
+
+  #right {
+    width: 49.5%;
+    border-left: 2px solid rgb(30, 218, 208);
+  }
+
+  .centered {
+    position: absolute;
+  width: 500px;
+  height: 200px;
+  z-index: 15;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -250px;
+  /* background-color: gray; */
+  }
+
+  input.ng-untouched, input.ng-valid {
+    border: none;
+    border: 1px solid lightseagreen;
+    margin:4px;
+    font-size: 16px;
+    background-color: white;
+  }  
+
+  input.ng-invalid.ng-touched{
+    border: none;
+    border: 1px solid rgb(230, 36, 130);
+    margin:4px;
+    font-size: 16px;
+    background-color: white;
+  }
+  
+  .boxed {
+    width: 92%;
+    border: green solid 2px;
+    padding: 15px;
+    margin: 5px;
+    margin-left: 2%;
+    color: green;
+    text-align: left;
+    border-radius: 2px;
+  }
+  
+  .boxedExact {
+    width: 95%;
+    border: green solid 2px;
+    padding: 5px;
+    margin-left: 2%;
+    color: green;
+    font-size: 15px;
+    text-align: left;
+    border-radius: 2px;
+  }  
+
+  .bold{
+    font-weight: bold;
+  }
+
+  .incenter{
+    align-items: center;
+    text-align: center;
+  }
+
+  .horIndent{
+    display:inline-block; 
+    width: 20px;
+  }
+  
+  .verIndent{
+    display:block; 
+    height: 10px;
+  }
+  
+  .verIndentFive{
+    display:block; 
+    height: 5px;
+  }
+  
+  .form-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .form-group .wrap {
+    min-width: 8em;
+    margin: 4px; /* to add gap between rows */
+  }
+
+  .form-element label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    padding: 5px;
+}
+ 
+  .scrollDiv{
+    overflow: auto;
+    max-height: 100vh;
+  }
+
+  .fixedElement {
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:100;
+  }
+  
+  .margintop {
+    margin-top: 35px;
+  }
+  
+  .post-container {
+    width: 96%;
+    border: green solid 2px;
+    padding: 5px;
+    margin: 5px;
+    margin-left: 2%;
+    overflow: auto
+}
+.post-thumb {
+    float: left
+}
+.post-thumb img {
+    display: block
+}
+.post-content {
+    margin-left: 90px;
+    text-align: left;
+}
+.post-title {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: left;
+}
+
+.highlight {
+    background-color: bisque;
+}
+
+
+.imageUpload{
+    background-color: #eee;
+    border-radius: 2px;
+    margin:2px;
+    width: 560px;
+    font-size: 14px;
+}
+
+.imageUpload .img-ul-upload {
+    background-color: rgb(64, 203, 238) !important;
+    margin-right: 20px;
+}
+
+.imageUpload .img-ul-clear {
+    background-color: rgb(230, 36, 130) !important;
+}
+
+.imageUpload .img-ul-drag-box-msg {
+    color: purple !important;
+}
+
+.imageUpload .img-ul-container {
+    background-color: #fff !important;
+}
+
+/* BUTTONS */
+
+.btn {
+	border-radius: 0px;
+}
+
+.button {
+    color: white;
+    padding: 6px 14px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button1 {
+    background-color: rgb(48, 190, 238); 
+    color: white;
+}
+
+.button1:hover {
+    box-shadow:0 8px 10px 0 rgba(0,0,0,0.2),0 8px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button1:disabled {
+  background-color: rgb(220, 225, 228); 
+  color: white;
+}
+
+    
+.button2 {
+  background-color: rgb(48, 190, 238); 
+  color: white;
+}
+
+.button2:hover {
+    box-shadow:0 8px 10px 0 rgba(0,0,0,0.2),0 8px 20px 0 rgba(0,0,0,0.19);
+}
+
+.buttonwide {
+  padding: 10px;
+}
+
