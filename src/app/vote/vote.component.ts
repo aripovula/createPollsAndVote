@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VoteComponent implements OnInit {
 
-  constructor() { }
+  constructor() { console.log('in vote'); }
 
   ngOnInit() {
   }

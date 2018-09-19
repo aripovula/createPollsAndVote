@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AppComponent } from './app.component';
 import { VoteComponent } from './vote/vote.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { PollsListComponent } from './polls-list/polls-list.component';
 
 
 const appRoutes: Routes = [
-  { path: 'vote', component: VoteComponent}, /// , canActivate: [AuthGuard]  },
+  { path: 'home', component: PollsListComponent}, /// , canActivate: [AuthGuard]  },
+  { path: 'vote1', component: VoteComponent}, /// , canActivate: [AuthGuard]  },
+  { path: 'vote2', component: VoteComponent}, /// , canActivate: [AuthGuard]  },
     // { path: 'signout', component: SigninComponent},
     { path: 'not-found', component: NotFoundComponent},
     { path: '**', redirectTo: '/not-found' }
