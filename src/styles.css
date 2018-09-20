@@ -329,13 +329,21 @@ input.ng-invalid.ng-touched{
   background-color: white;
 } */
 
-input[type=text], input[type=number], input[type=date], input[type=password], input.ng-untouched, input.ng-valid{
+input[type=text], input[type=number], 
+input[type=date], input[type=password],
+input[type=text].ng-untouched, input[type=number].ng-untouched, 
+input[type=date].ng-untouched, input[type=password].ng-untouched {
   width:250px;
   border-radius: 3px;
   background: #fff;
   border: 1px solid #ccc;
   outline:none;
   padding: 6px;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 3px solid #42A948; /* green */
+  width:248px;
 }
 
 input:focus, input.ng-untouched:focus, input.ng-valid:focus{
@@ -347,3 +355,5 @@ input.ng-invalid.ng-touched{
   border:1px solid #ef5656;
   box-shadow: 0px 0px 3px 1px #c8def0;
 }
+
+.warning {color: red; font-size: 14px; margin-bottom: 10px;}

@@ -1,0 +1,102 @@
+<div>
+  <br/>
+  <span style="margin-left: 110px; font-size: 18px;">New poll:</span>
+
+  <form (ngSubmit)="onSubmit()" #pollForm="ngForm">
+    <div class="form-element">
+      <label for="name">poll name</label>
+      <input type="text" id="name" autocomplete="off" size="40" required [(ngModel)]="model.name" name="name" #name="ngModel">
+      <div [hidden]="name.valid || name.pristine" class="warning">
+        <label></label>
+        Name is required
+      </div>
+    </div>
+
+    <div class="form-element">
+      <label for="comments">comments</label>
+      <input type="text" id="comment" autocomplete="off" size="40" placeholder=" ( OPTIONAL )" [(ngModel)]="model.comment" name="comment"
+        #comment="ngModel">
+    </div>
+
+    <div class="form-element">
+      <label># of questions:</label>
+      <input type="number" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty" name="questionsQnty"
+        #questionsQnty="ngModel">
+      <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
+        <label></label>
+        Number of questions is required
+      </div>
+    </div>
+
+    <div class="form-element">
+      <label>expires on:</label>
+      <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" id="expiresOn" required [(ngModel)]="model.expiresOn"
+        name="expiresOn" #expiresOn="ngModel">
+      <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+
+      &nbsp; &nbsp;
+
+      <span [hidden]="!model.expiresMidnight">
+        at midnight ( 00:00 )
+        <span class="horIndent"></span>
+        <a class="noDecor" style="cursor: pointer;" (click)="expiresMidnightF()">change expiration time</a>
+      </span>
+
+      <span [hidden]="model.expiresMidnight">
+        <span>@: &nbsp;</span>
+        <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="expiresAt" [(ngModel)]="model.expiresAt"
+          name="expiresAt" #expiresAt="ngModel">
+        <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
+        <span class="horIndent"></span> &nbsp; &nbsp;
+        <a class="noDecor" style="cursor: pointer;" (click)="expiresMidnightT()"> set to expire at midnight</a>
+      </span>
+
+      <div [hidden]="expiresOn.valid || expiresOn.pristine" class="warning">
+        <label></label>
+        Date is required
+      </div>
+    </div>
+
+    <br/>
+    <div style="margin-left: 110px;">
+      <label>
+        <input type="radio" id="publicAccess" name="publicAccess" value="public" [(ngModel)]="model.publicAccess" #publicAccess="ngModel"> anyone can vote and see results
+      </label>
+    </div>
+    <div style="margin-left: 110px;">
+      <label>
+        <input type="radio" id="publicAccess" name="publicAccess" value="private" [(ngModel)]="model.publicAccess"> only selected can vote and see results
+      </label>
+    </div>
+
+    <br/>
+    <div style="margin-left: 110px;">
+      <label>
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="anonymous"
+        [(ngModel)]="model.nameDiscloseOption"
+        #nameDiscloseOption="ngModel"> voter's name is anonymous - not shown
+      </label>
+    </div>
+    <div style="margin-left: 110px;">
+      <label>
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="discreet" 
+        [(ngModel)]="model.nameDiscloseOption"
+        #nameDiscloseOption="ngModel"> voter's name is discreet - shown
+      </label>
+    </div>
+    <div style="margin-left: 110px;">
+      <label>
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="optional"
+        [(ngModel)]="model.nameDiscloseOption"
+        #nameDiscloseOption="ngModel"> voter chooses whether his / her name should be disclosed
+      </label>
+    </div>
+
+    <br/>
+    <div class="form-element">
+      <label></label>
+      <button type="submit" class="button button1" [disabled]="!pollForm.form.valid">Next ></button>
+    </div>
+
+  </form>
+</div>

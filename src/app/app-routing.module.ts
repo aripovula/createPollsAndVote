@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { VoteComponent } from './vote-module/vote/vote.component';
 import { NotFoundComponent } from './app-module-folders/not-found/not-found.component';
 import { PollsListComponent } from './app-module-folders/polls-list/polls-list.component';
-import { NewPollComponent } from './newpoll-module/new-poll/new-poll.component';
+import { NewPollComponent } from './new_poll-module/new-poll/new-poll.component';
 
 
 const appRoutes: Routes = [
