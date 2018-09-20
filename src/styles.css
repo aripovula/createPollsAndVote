@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Assistant');
-/* @import "~ng-pick-datetime/assets/style/picker.min.css"; */
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 
 body, html {
   font-family: 'Assistant';
@@ -35,22 +35,6 @@ body, html {
   left: 50%;
   margin: -100px 0 0 -250px;
   /* background-color: gray; */
-  }
-
-  input.ng-untouched, input.ng-valid {
-    border: none;
-    border: 1px solid lightseagreen;
-    margin:4px;
-    font-size: 16px;
-    background-color: white;
-  }  
-
-  input.ng-invalid.ng-touched{
-    border: none;
-    border: 1px solid rgb(230, 36, 130);
-    margin:4px;
-    font-size: 16px;
-    background-color: white;
   }
   
   .boxed {
@@ -234,3 +218,132 @@ body, html {
   padding: 10px;
 }
 
+.header {
+  background:#364051;
+  height: 35px;
+  line-height: 35px;
+  align-items: center;
+  
+}
+
+.header__content {
+  height: 35px;
+  line-height: 35px;
+  align-items: center;
+  display: flex;
+}
+
+.header__title {
+  text-decoration: none;
+  margin-left: 20px;
+  color: white;
+}
+
+.active-link{
+    color: lightgreen;
+}
+
+a.addn{
+	color: white;
+	font-size: 14px;
+}
+
+a.addn:link {
+    text-decoration: none;
+}
+
+a.addn:visited {
+    text-decoration: none;
+}
+
+a.addn:hover {
+  color: deepskyblue;
+	transition-duration: 0.2s;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+a.addn:active {
+    text-decoration: none;
+}
+
+.addnlightbg, a.addnlightbg{
+	color: black;
+	font-size: 16px;
+}
+
+a.addnlightbg:link {
+    text-decoration: none;
+}
+
+a.addnlightbg:visited {
+    text-decoration: none;
+}
+
+.addnlightbg:hover, a.addnlightbg:hover {
+  color: deepskyblue;
+	transition-duration: 0.2s;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+a.addnlightbg:active {
+    text-decoration: none;
+}
+
+.noDecor {
+  text-decoration: none;
+  color: lightslategray;
+  font-size: 14px;
+  cursor: pointer;
+}
+.noDecor:hover{
+  text-decoration: none;
+  color:  rgb(48, 190, 238)!important; 
+  cursor: pointer;
+}
+.noDecor2 {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.noDecor2:hover{
+  text-decoration: none;
+  color:  rgb(48, 190, 238)!important; 
+  cursor: pointer;
+}
+
+/* input.ng-untouched, input.ng-valid {
+  border: none;
+  border: 1px solid lightseagreen;
+  margin:4px;
+  font-size: 16px;
+  background-color: white;
+}  
+
+input.ng-invalid.ng-touched{
+  border: none;
+  border: 1px solid rgb(230, 36, 130);
+  margin:4px;
+  font-size: 16px;
+  background-color: white;
+} */
+
+input[type=text], input[type=number], input[type=date], input[type=password], input.ng-untouched, input.ng-valid{
+  width:250px;
+  border-radius: 3px;
+  background: #fff;
+  border: 1px solid #ccc;
+  outline:none;
+  padding: 6px;
+}
+
+input:focus, input.ng-untouched:focus, input.ng-valid:focus{
+  border:1px solid #56b4ef;
+  box-shadow: 0px 0px 3px 1px #c8def0;
+}
+
+input.ng-invalid.ng-touched{
+  border:1px solid #ef5656;
+  box-shadow: 0px 0px 3px 1px #c8def0;
+}

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+
+import { NewPoll } from './../newpoll-model';
 
 @Component({
   selector: 'app-new-poll',
@@ -12,4 +15,7 @@ export class NewPollComponent implements OnInit {
   ngOnInit() {
   }
 
+  onSubmit = () => {
+    const newPoll = new NewPoll(1, '', 1);
+  }
 }

@@ -1,0 +1,50 @@
+<div>
+  <h3 style="margin-left: 110px;">New poll:</h3>
+
+  <form>
+    <div class="form-element">
+      <label for="name">poll name</label>
+      <input type="text" id="name" autocomplete="off" size="40" required>
+    </div>
+
+    <div class="form-element">
+      <label for="alterEgo">comments</label>
+      <input type="text" id="alterEgo" autocomplete="off" size="40">
+    </div>
+
+    <div class="form-element">
+      <label># of questions:</label>
+      <input type="number" name="quantity" min="1">
+    </div>
+
+    <div class="form-element">
+      <label>expires on:</label>
+      <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40">
+      <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+
+      <span class="horIndent"></span>
+      <span>@: &nbsp;</span>
+        <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40">
+        <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
+      </div>
+
+      <br/>
+      <div style="margin-left: 110px;">
+        <label>
+          <input type="radio" name="access" [value]="public"> anyone can vote and see results
+      </label>
+      </div>
+      <div style="margin-left: 110px;">
+        <label>
+          <input type="radio" name="access" [value]="private"> only selected can vote and see results
+      </label>
+      </div>
+
+      <br/>
+    <div class="form-element">
+      <label></label>
+      <button type="submit" class="button button1">Next ></button>
+    </div>
+
+  </form>
+</div>
