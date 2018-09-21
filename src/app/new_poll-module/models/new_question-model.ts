@@ -1,10 +1,11 @@
+import { NewOption } from './new_option-model';
+
 export class NewQuestion {
     constructor(
         public id: number,
-        public name: string,
-        public comment: string,
+        public multipleChoice: string,
+        public q_text: string,
         public questionsQnty: number,
-        public expiresOn: string,
-        public publicAccess: boolean
+        public q_options: Array<NewOption>
     ) {}
 }

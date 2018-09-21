@@ -1,3 +1,90 @@
-<p>
-  new-question works!
-</p>
+<div>
+  <br/>
+  <span style="margin-left: 110px; font-size: 18px;">New question - question # __:</span>
+
+  <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
+
+    <br/>
+    <div style="margin-left: 110px;">
+      <label>
+        <input type="radio" id="multipleChoice" name="multipleChoice" value="false" [(ngModel)]="model.multipleChoice" #multipleChoice="ngModel"> single choice question
+      </label>
+    </div>
+    <div style="margin-left: 110px;">
+      <label>
+        <input type="radio" id="multipleChoice" name="multipleChoice" value="true" [(ngModel)]="model.multipleChoice"> multiple choice question
+      </label>
+    </div>
+    
+    <br/>
+    <div class="form-element">
+      <label for="q_text">Question text</label>
+      <input type="text" id="q_text" autocomplete="off" size="40" required [(ngModel)]="model.q_text" name="q_text" #q_text="ngModel">
+      <div [hidden]="q_text.valid || q_text.pristine" class="warning">
+        <label></label>
+        Question text is required
+      </div>
+    </div>
+
+    <div class="form-element">
+      <label># of options:</label>
+      <input type="number" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty" name="questionsQnty"
+        (ngModelChange)="onQntyChange($event)" #questionsQnty="ngModel">
+      <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
+        <label></label>
+        Number of options is required
+      </div>
+    </div>
+    
+    <div *ngFor="let option of model.q_options; let ind=index;">
+        <hr/>
+      <div style="margin-left: 110px;">
+        <p>Option {{ind + 1}}:</p>
+      </div>
+      <div class="form-element">
+        <label>question type:</label>
+        <select id="describe" [(ngModel)]="modelOpt.type" name="type">
+          <option value="text">text </option>
+          <option value="imagelocal">image - local file</option>
+          <option value="imageurl">image URL</option>
+          <option value="video">video URL or other URL</option>
+          <option value="date">specific date</option>
+          <option value="dates">date range</option>
+          <option value="time">specific time</option>
+          <option value="times">time range</option>
+
+        </select>
+
+        <div [ngSwitch]="modelOpt?.type">
+
+            <div class="form-element">
+                <label for="q_text">Option text</label>
+                <input type="text" id="q_text" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind]" name="q_text" #q_text="ngModel">
+                <div [hidden]="q_text.valid || q_text.pristine" class="warning">
+                  <label></label>
+                  Question text is required
+                </div>
+              </div>
+              
+          <div *ngSwitchCase="'time'">
+            <div class="form-element">
+              <label>Time - at </label>
+              <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="expiresAt" [(ngModel)]="model.expiresAt"
+                name="expiresAt" #expiresAt="ngModel">
+              <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <br/>
+    <div class="form-element">
+      <label></label>
+      <button type="submit" class="button button1" [disabled]="!questionForm.form.valid">Next ></button>
+    </div>
+
+  </form>
+</div>
