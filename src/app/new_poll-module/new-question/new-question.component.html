@@ -68,7 +68,8 @@
               <div *ngSwitchCase="'text'">
                 <div class="form-element">
                   <label for="q_options">Option text</label>
-                  <input type="text" id="q_options" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].text" name="q_options"
+                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" 
+                    required [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
                     #q_options="ngModel">
                   <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
                     <label></label>
@@ -116,14 +117,14 @@
         <span *ngIf="model.multipleChoice=='true'">
           <label>
             <span class="horIndent"></span>
-            <input type="checkbox" id="isSelected+{{ind}}" name="isSelected" value="true" 
+            <input type="checkbox" id="isSelected{{ind}}" name="isSelected{{ind}}" value="true" 
             [(ngModel)]="model.q_options.isSelected" #isSelected="ngModel"> &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
           </label>
         </span>
         <span *ngIf="model.multipleChoice=='false'">
           <label>
             <span class="horIndent"></span>
-            <input type="radio" id="isSelected+{{ind}}" name="isSelected" value="true" 
+            <input type="radio" id="isSelected{{ind}}" name="isSelected{{ind}}" value="true" 
             [(ngModel)]="model.q_options.isSelected" #isSelected="ngModel"> &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
           </label>
         </span>

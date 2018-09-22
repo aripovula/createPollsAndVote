@@ -25,10 +25,14 @@ export class NewQuestionComponent implements OnInit {
     }
     console.log('this.model.q_options = ', this.model.q_options);
     console.log('qnty = ', this.model.questionsQnty);
+    this.model.questionsQnty = this.model.q_options.length;
+    (<HTMLInputElement>document.getElementById('questionsQnty')).value = '' + this.model.questionsQnty;
   }
 
   addOption() {
     this.model.q_options.push(new NewOption('text', '', 'false'));
+    this.model.questionsQnty = this.model.q_options.length;
+    (<HTMLInputElement>document.getElementById('questionsQnty')).value = '' + this.model.questionsQnty;
   }
 
   onSubmit() {
