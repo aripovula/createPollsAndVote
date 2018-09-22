@@ -10,19 +10,27 @@ import { Router } from '@angular/router';
 })
 export class NewQuestionComponent implements OnInit {
 
-  modelOpt = new NewOption('time', '04:00 a.m.');
-
   // id, multipleChoice, q_text, questionsQnty, q_options
-  model = new NewQuestion(1, 'false', null, null, [this.modelOpt, this.modelOpt]);
+  model = new NewQuestion(1, 'false', null, 2, [ new NewOption('text', '', 'false'), new NewOption('text', '', 'false')]);
 
   constructor(private router: Router) {
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onQntyChange() {
+    this.model.q_options = [];
+    for (let step = 0; step < this.model.questionsQnty; step++) {
+      this.model.q_options.push(new NewOption('text', '', 'false'));
+    }
+    console.log('this.model.q_options = ', this.model.q_options);
     console.log('qnty = ', this.model.questionsQnty);
   }
+
+  addOption() {
+    this.model.q_options.push(new NewOption('text', '', 'false'));
+  }
+
   onSubmit() {
     console.log('in onSubmit');
     console.log(this.model);

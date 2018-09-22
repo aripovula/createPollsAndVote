@@ -13,17 +13,18 @@ body, html {
   }
 
   #container > div{
-    height:100vh;
+    height:100%;
     float:left;
   }
 
   #left {
     width:50%;
+    border-right: 1px solid #ccc;
   }
 
   #right {
     width: 49.5%;
-    border-left: 2px solid rgb(30, 218, 208);
+    border-left: 2px solid transparent;
   }
 
   .centered {
