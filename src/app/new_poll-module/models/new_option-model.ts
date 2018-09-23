@@ -3,6 +3,6 @@ export class NewOption {
         public id: number,
         public type: string,
         public text: string,
-        public isSelected: string
+        public isSelected: boolean
     ) {}
 }

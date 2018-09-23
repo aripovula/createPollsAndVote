@@ -12,8 +12,9 @@ import { NewPoll } from './../models/new_poll-model';
 export class NewPollComponent implements OnInit {
 
   dateF = moment().toString();
-  // id, name, questionsQnty, expiresOn, expiresAt, expiresMidnight, publicAccess, comment
-  model = new NewPoll(1, null, null, this.dateF, true, 'public', 'anonymous');
+  // id, name, questionsQnty, expiresOn, expiresMidnight, publicAccess, nameDiscloseOption, createdBy,
+  // createdTimeStamp, expiresAt, comment
+  model = new NewPoll(1, null, null, null, true, 'public', 'anonymous', null, this.dateF);
 
   constructor(private router: Router) { }
 

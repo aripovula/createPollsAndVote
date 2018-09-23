@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NewQuestionComponent implements OnInit {
 
-  model = new NewQuestion(1, 'false', null, 2, [new NewOption(0, 'text', '', 'false'), new NewOption(1, 'text', '', 'false')]);
+  model = new NewQuestion(1, 'false', null, 2, [new NewOption(0, 'text', '', false), new NewOption(1, 'text', '', false)]);
 
   constructor(private router: Router) {}
 
@@ -20,9 +20,33 @@ export class NewQuestionComponent implements OnInit {
     this.model.q_options = [];
     for (let step = 0; step < this.model.questionsQnty; step++) {
       const oid = this.assignID();
-      this.model.q_options.push(new NewOption(oid, 'text', '', 'false'));
+      this.model.q_options.push(new NewOption(oid, 'text', '', false));
     }
     this.updateQnty();
+  }
+
+  onSelectedChange(e) {
+    let toTrue = -1;
+    const parsed_e = parseInt(e, 10);
+    // console.log('isSelected = ', e.update.value);
+    console.log('isSelected = ', e);
+    console.log('this.model.q_options = ', this.model.q_options);
+    for (let step = 0; step < this.model.q_options.length; step++) {
+      this.model.q_options[step].isSelected = false;
+      console.log('step.toString === e -> ', this.model.q_options[step].id, parsed_e, this.model.q_options[step].id === parsed_e);
+
+      if (this.model.q_options[step].id === parsed_e) { toTrue = step; }
+    }
+    this.model.q_options[toTrue].isSelected = true;
+    console.log('this.model.q_options = ', this.model.q_options);
+  }
+
+  onSelectTypeChange() {
+    console.log('in onSelectTypeChange');
+    for (let step = 0; step < this.model.q_options.length; step++) {
+      this.model.q_options[step].isSelected = false;
+    }
+    console.log('this.model.q_options = ', this.model.q_options);
   }
 
   removeOption(e) {
@@ -43,7 +67,7 @@ export class NewQuestionComponent implements OnInit {
 
   addOption() {
     const oid = this.assignID();
-    this.model.q_options.push(new NewOption( oid, 'text', '', 'false'));
+    this.model.q_options.push(new NewOption( oid, 'text', '', false));
     this.updateQnty();
   }
 
