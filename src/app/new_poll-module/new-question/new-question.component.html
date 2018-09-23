@@ -30,8 +30,10 @@
 
         <div class="form-element">
           <label># of options:</label>
-          <input type="number" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty" name="questionsQnty"
-            (ngModelChange)="onQntyChange($event)" #questionsQnty="ngModel">
+          <button type="button" class="button button1" (click)="removeLastOption()"> - </button>
+          <input style="width:80px;border-radius: 0px;" type="text" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty"
+            name="questionsQnty" (ngModelChange)="onQntyChange($event)" #questionsQnty="ngModel">
+          <button type="button" class="button button1" (click)="addOption()"> + </button>
           <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
             <label></label>
             Number of options is required
@@ -47,7 +49,7 @@
         <div *ngFor="let option of model.q_options; let ind=index;">
           <hr/>
           <div style="margin-left: 110px;">
-            <p>Option {{ind + 1}}: </p>
+            <span>Option {{ind + 1}}: </span>
           </div>
           <div class="form-element">
             <label>question type:</label>
@@ -63,13 +65,20 @@
 
             </select>
 
+            <a 
+              id="{{model.q_options[ind].id}}" 
+              style="cursor: pointer;" 
+              class="noDecor"
+              #removeAncor
+              (click)="removeOption(removeAncor)"> &nbsp; remove
+            </a>
+
             <div [ngSwitch]="model.q_options[ind].type">
 
               <div *ngSwitchCase="'text'">
                 <div class="form-element">
                   <label for="q_options">Option text</label>
-                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" 
-                    required [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
+                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
                     #q_options="ngModel">
                   <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
                     <label></label>
@@ -106,29 +115,30 @@
 
   <div id="right">
     <br/>
-    <p><span class="horIndent"></span>Question: {{model.q_text}}</p>
+    <p>
+      <span class="horIndent"></span>Question: {{model.q_text}}</p>
     <div style="font-size: 14px;">
-    <span class="horIndent"></span>
+      <span class="horIndent"></span>
       <span *ngIf="model.multipleChoice=='true'">( choose multiple options )</span>
       <span *ngIf="model.multipleChoice=='false'">( choose only ONE option )</span>
-    </div>  
+    </div>
     <div *ngFor="let option of model.q_options; let ind=index;">
       <p>
         <span *ngIf="model.multipleChoice=='true'">
           <label>
             <span class="horIndent"></span>
-            <input type="checkbox" id="isSelected{{ind}}" name="isSelected{{ind}}" value="true" 
-            [(ngModel)]="model.q_options.isSelected" #isSelected="ngModel"> &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
+            <input type="checkbox" id="isSelected{{model.q_options[ind].id}}" name="isSelected{{model.q_options[ind].id}}" value="isSelected{{model.q_options[ind].id}}" [(ngModel)]="model.q_options.isSelected"
+              #isSelected="ngModel"> &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
           </label>
         </span>
         <span *ngIf="model.multipleChoice=='false'">
           <label>
             <span class="horIndent"></span>
-            <input type="radio" id="isSelected{{ind}}" name="isSelected{{ind}}" value="true" 
-            [(ngModel)]="model.q_options.isSelected" #isSelected="ngModel"> &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
+            <input type="radio" id="isSelected{{model.q_options[ind].id}}" name="isSelected{{model.q_options[ind].id}}" value="isSelected{{model.q_options[ind].id}}" [(ngModel)]="model.q_options.isSelected"
+              #isSelected="ngModel"> &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
           </label>
         </span>
-        </p>
+      </p>
     </div>
   </div>
 </div>

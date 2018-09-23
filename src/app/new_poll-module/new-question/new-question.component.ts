@@ -10,29 +10,53 @@ import { Router } from '@angular/router';
 })
 export class NewQuestionComponent implements OnInit {
 
-  // id, multipleChoice, q_text, questionsQnty, q_options
-  model = new NewQuestion(1, 'false', null, 2, [ new NewOption('text', '', 'false'), new NewOption('text', '', 'false')]);
+  model = new NewQuestion(1, 'false', null, 2, [new NewOption(0, 'text', '', 'false'), new NewOption(1, 'text', '', 'false')]);
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() { }
 
   onQntyChange() {
     this.model.q_options = [];
     for (let step = 0; step < this.model.questionsQnty; step++) {
-      this.model.q_options.push(new NewOption('text', '', 'false'));
+      const oid = this.assignID();
+      this.model.q_options.push(new NewOption(oid, 'text', '', 'false'));
     }
-    console.log('this.model.q_options = ', this.model.q_options);
-    console.log('qnty = ', this.model.questionsQnty);
-    this.model.questionsQnty = this.model.q_options.length;
-    (<HTMLInputElement>document.getElementById('questionsQnty')).value = '' + this.model.questionsQnty;
+    this.updateQnty();
+  }
+
+  removeOption(e) {
+    console.log('e=', e.id);
+    const parsed_e_id = parseInt(e.id, 10);
+    this.model.q_options = this.model.q_options.filter(option => !(option.id === parsed_e_id));
+    this.updateQnty();
+  }
+
+  removeLastOption() {
+    const newOptions = [];
+    for (let step = 0; step < this.model.q_options.length - 1; step++) {
+        newOptions.push(this.model.q_options[step]);
+    }
+    this.model.q_options = newOptions;
+    this.updateQnty();
   }
 
   addOption() {
-    this.model.q_options.push(new NewOption('text', '', 'false'));
+    const oid = this.assignID();
+    this.model.q_options.push(new NewOption( oid, 'text', '', 'false'));
+    this.updateQnty();
+  }
+
+  assignID() {
+    return this.model.q_options[this.model.q_options.length - 1].id + 1;
+  }
+
+  updateQnty() {
     this.model.questionsQnty = this.model.q_options.length;
     (<HTMLInputElement>document.getElementById('questionsQnty')).value = '' + this.model.questionsQnty;
+
+    console.log('this.model.q_options = ', this.model.q_options);
+    console.log('qnty = ', this.model.questionsQnty);
   }
 
   onSubmit() {
