@@ -16,7 +16,6 @@
               value="false"
               [(ngModel)]="model.multipleChoice" 
               #multipleChoice="ngModel"
-              (ngModelChange)="onSelectTypeChange()"
             > single choice question
           </label>
         </div>
@@ -25,7 +24,6 @@
             <input type="radio" id="multipleChoice" name="multipleChoice" 
               value="true" 
               [(ngModel)]="model.multipleChoice"
-              (ngModelChange)="onSelectTypeChange()"
             > multiple choice question
           </label>
         </div>
@@ -141,11 +139,7 @@
             <span class="horIndent"></span>
             <input 
               type="checkbox" 
-              id="isSelected{{model.q_options[ind].id}}" 
               name="isSelected{{model.q_options[ind].id}}" 
-              [(ngModel)]="model.q_options[ind].isSelected"
-              (ngModelChange)="onSelectedChange($event)"
-              #isSelected="ngModel"
             > &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
           </label>
         </span>
@@ -154,12 +148,7 @@
             <span class="horIndent"></span>
             <input
               type="radio"
-              id="isSelected{{model.q_options[ind].id}}"
               name="isSelected"
-              value="{{model.q_options[ind].id}}"
-              [(ngModel)]="model.q_options[ind].isSelected"
-              (ngModelChange)="onSelectedChange($event)"
-              #isSelected="ngModel"
             > &nbsp; {{ind + 1}}. &nbsp; {{model.q_options[ind].text}}
           </label>
         </span>
