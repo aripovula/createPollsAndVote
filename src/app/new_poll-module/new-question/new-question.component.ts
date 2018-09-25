@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './new-question.component.html',
   styleUrls: ['./new-question.component.css']
 })
+
 export class NewQuestionComponent implements OnInit {
 
   model = new NewQuestion(1, 'false', null, 2, [new NewOption(0, 'text', '', 1), new NewOption(1, 'text', '', 1)]);
@@ -15,7 +16,8 @@ export class NewQuestionComponent implements OnInit {
   // because selected checklists are discarded when uses navigates away it is not part of the model
   selectedCLs = [{id: 0, isSelected: false}, {id: 1, isSelected: false}];
 
-  multipleChoiceOption;
+  multipleChoiceOption = 'oneormore';
+  multipleChoiceOptionQnty = 2;
 
   constructor(private router: Router) {}
 
@@ -94,8 +96,24 @@ export class NewQuestionComponent implements OnInit {
     console.log('this.selectedCLs After = ', this.selectedCLs);
   }
 
-  onMultipleOptionChange() {
-    const a = 1;
+  onMultipleOptionChange(e) {
+    console.log(e);
+  }
+
+  deductMultiOption() {
+    this.multipleChoiceOptionQnty--;
+  }
+
+  onMultiOptionQntyChange(e) {
+    this.multipleChoiceOptionQnty = e;
+  }
+
+  addMultiOption() {
+    this.multipleChoiceOptionQnty++;
+  }
+
+  updateMultiOptionsQnty() {
+    (<HTMLInputElement>document.getElementById('multipleChoiceOptionQnty')).value = '' + this.multipleChoiceOptionQnty;
   }
 
   onSelectTypeChange() {
@@ -105,7 +123,6 @@ export class NewQuestionComponent implements OnInit {
     }
     console.log('this.selectedCLs = ', this.selectedCLs);
   }
-
 
   onSubmit() {
     console.log('in onSubmit');

@@ -36,37 +36,58 @@
                     type="radio"
                     id="multipleChoiceOption"
                     name="multipleChoiceOption"
-                    value="false"
-                  > any number of checkboxes (min. 1) can be selected
+                    value="oneormore"
+                    [(ngModel)]="multipleChoiceOption"
+                    (ngModelChange)="onMultipleOptionChange($event)"      
+                  > select any number of checkboxes (minimum - 1)
                 </label>
-              </div>
-              <div style="margin-left: 125px;">
-                <label>
-                  <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" 
-                    value="true" 
-                  > exact below number must be selected
-                </label>
-              </div>
-              <div style="margin-left: 125px;">
-                  <label>
-                    <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" 
-                      value="true" 
-                    > less than below number must be selected
-                  </label>
                 </div>
                 <div style="margin-left: 125px;">
+                <label>
+                  <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" 
+                  [(ngModel)]="multipleChoiceOption"
+                  (ngModelChange)="onMultipleOptionChange($event)"
+                  value="exactly" 
+                  > exactly
+                </label>
+                  <label>
+                    <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" 
+                    [(ngModel)]="multipleChoiceOption"
+                    (ngModelChange)="onMultipleOptionChange($event)"
+                    value="lessthan" 
+                    > less than
+                  </label>
                     <label>
                       <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" 
-                        value="true" 
-                      > more than below number must be selected
+                      [(ngModel)]="multipleChoiceOption"
+                      (ngModelChange)="onMultipleOptionChange($event)"          
+                      value="morethan" 
+                      > more than 
                     </label>
                   </div>
                   <div style="margin-left: 125px;">
-                    <button type="button" class="button button1" (click)="removeLastOption()"> - </button>
-                    <input style="width:80px;border-radius: 0px;" type="text" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty"
-                      name="questionsQnty" (ngModelChange)="onQntyChange($event)" #questionsQnty="ngModel">
-                    <button type="button" class="button button1" (click)="addOption()"> + </button>
+                    <button type="button" class="button button1" (click)="deductMultiOption()"> - </button>
+                    <input 
+                      type="text" 
+                      id="multipleChoiceOptionsNumber" 
+                      name="multipleChoiceOptionsNumber" 
+                      style="width:30px;border-radius: 0px;" 
+                      min="1" 
+                      required 
+                      [(ngModel)]="multipleChoiceOptionQnty"
+                      (ngModelChange)="onMultiOptionQntyChange($event)" 
+                      #multipleChoiceOptionsNumber="ngModel"
+                    >
+                    <button type="button" class="button button1" (click)="addMultiOption()"> + </button>
+                  checkboxes must be selected
                   </div>
+                  <div *ngIf="multipleChoiceOptionQnty > model.questionsQnty" class="warning"
+                      style="margin-left: 125px;"
+                    >
+                        This can not be more than number of options
+                      </div>
+          
+                  <p style="font-size: 14px; margin-left: 125px;">* try it on right panel. 'Next >' button turns blue when condition met</p>
                   <hr/>
         </div>
       
@@ -201,6 +222,6 @@
     <br/>
     <span class="horIndent"></span>
     <button type="submit" class="button button1" [disabled]="!CLsValid">Next ></button>
-
+<p style="font-size: 14px;">* this button is NOT a navigation button. It gets activated when selection criteria are met</p>
   </div>
 </div>
