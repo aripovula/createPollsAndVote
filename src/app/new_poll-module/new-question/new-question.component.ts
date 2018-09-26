@@ -14,14 +14,27 @@ export class NewQuestionComponent implements OnInit {
   model = new NewQuestion(1, 'false', null, 2, [new NewOption(0, 'text', '', 1), new NewOption(1, 'text', '', 1)]);
 
   // because selected checklists are discarded when uses navigates away it is not part of the model
-  selectedCLs = [{id: 0, isSelected: false}, {id: 1, isSelected: false}];
+  addedChecklists = [{id: 0, isSelected: false}, {id: 1, isSelected: false}];
+
+  objects = [{type: 'text', name: 'text'}, {type: 'imagelocal', name: 'image - local file'},
+  {type: 'imageurl', name: 'image URL'}, {type: 'video', name: 'video URL or other URL'},
+  {type: 'date', name: 'specific date'}, {type: 'dates', name: 'date range'},
+  {type: 'time', name: 'specific time'}, {type: 'times', name: 'time range'}];
+
+  radioButtonClicked = false;
 
   multipleChoiceOption = 'oneormore';
   multipleChoiceOptionQnty = 2;
+  selectedCLs = 0;
+  CLsValid = false;
 
   constructor(private router: Router) {}
 
   ngOnInit() { }
+
+  byId(item1: any, item2: any) {
+    return item1.id === item2.id;
+  }
 
   onQntyChange() {
     if (this.model.q_options.length < this.model.questionsQnty) {
@@ -51,7 +64,7 @@ export class NewQuestionComponent implements OnInit {
     console.log('e=', e.id);
     const parsed_e_id = parseInt(e.id, 10);
     this.model.q_options = this.model.q_options.filter(option => !(option.id === parsed_e_id));
-    this.selectedCLs = this.selectedCLs.filter(cl => !(cl.id === parsed_e_id));
+    this.addedChecklists = this.addedChecklists.filter(cl => !(cl.id === parsed_e_id));
     this.updateQnty();
   }
 
@@ -64,7 +77,7 @@ export class NewQuestionComponent implements OnInit {
   addOption() {
     const oid = this.assignID();
     this.model.q_options.push(new NewOption( oid, 'text', '', 1));
-    this.selectedCLs.push({id: oid, isSelected: false});
+    this.addedChecklists.push({id: oid, isSelected: false});
     this.updateQnty();
   }
 
@@ -85,31 +98,63 @@ export class NewQuestionComponent implements OnInit {
     // const parsed_e = parseInt(e, 10);
     // console.log('isSelected = ', e.update.value);
     console.log('isSelected = ', e);
-    // console.log('this.selectedCLs Before = ', this.selectedCLs);
-    // for (let step = 0; step < this.selectedCLs.length; step++) {
-    //   this.selectedCLs[step].isSelected = false;
-    //   console.log('step.toString === e -> ', this.selectedCLs[step].id, parsed_e, this.selectedCLs[step].id === parsed_e);
+    // console.log('this.addedChecklists Before = ', this.addedChecklists);
+    // for (let step = 0; step < this.addedChecklists.length; step++) {
+    //   this.addedChecklists[step].isSelected = false;
+    //   console.log('step.toString === e -> ', this.addedChecklists[step].id, parsed_e, this.addedChecklists[step].id === parsed_e);
 
-    //   if (this.selectedCLs[step].id === parsed_e) { toTrue = step; }
+    //   if (this.addedChecklists[step].id === parsed_e) { toTrue = step; }
     // }
-    // this.selectedCLs[toTrue].isSelected = true;
-    console.log('this.selectedCLs After = ', this.selectedCLs);
+    // this.addedChecklists[toTrue].isSelected = true;
+    this.selectedCLs = 0;
+    for (let step = 0; step < this.addedChecklists.length; step++) {
+      if (this.addedChecklists[step].isSelected === true) { this.selectedCLs++; }
+    }
+    this.checklistsSelectedComplyWithMultiOptionsConditions();
+    console.log('selected = ' + this.selectedCLs);
+
+    console.log('this.addedChecklists After = ', this.addedChecklists);
+  }
+
+  onSelectedChangeRadio(e) {
+    console.log('in onSelectedChangeRadio', e);
+    this.CLsValid = true;
   }
 
   onMultipleOptionChange(e) {
     console.log(e);
+    this.CLsValid = false;
+    for (let step = 0; step < this.addedChecklists.length; step++) {
+      this.addedChecklists[step].isSelected = false;
+    }
   }
 
   deductMultiOption() {
     this.multipleChoiceOptionQnty--;
+    this.checklistsSelectedComplyWithMultiOptionsConditions();
   }
 
   onMultiOptionQntyChange(e) {
     this.multipleChoiceOptionQnty = e;
+    this.checklistsSelectedComplyWithMultiOptionsConditions();
   }
 
   addMultiOption() {
     this.multipleChoiceOptionQnty++;
+    this.checklistsSelectedComplyWithMultiOptionsConditions();
+  }
+
+  checklistsSelectedComplyWithMultiOptionsConditions() {
+    this.CLsValid = false;
+    if (this.multipleChoiceOption === 'oneormore') {
+      if (this.selectedCLs > 0) { this.CLsValid = true; }
+    } else if (this.multipleChoiceOption === 'exactly') {
+      if (this.selectedCLs === this.multipleChoiceOptionQnty) { this.CLsValid = true; }
+    } else if (this.multipleChoiceOption === 'lessthan' && this.selectedCLs > 0) {
+      if (this.selectedCLs < this.multipleChoiceOptionQnty) { this.CLsValid = true; }
+    } else if (this.multipleChoiceOption === 'morethan') {
+      if (this.selectedCLs > this.multipleChoiceOptionQnty) { this.CLsValid = true; }
+    }
   }
 
   updateMultiOptionsQnty() {
@@ -118,10 +163,11 @@ export class NewQuestionComponent implements OnInit {
 
   onSelectTypeChange() {
     console.log('in onSelectTypeChange');
-    for (let step = 0; step < this.selectedCLs.length; step++) {
-      this.selectedCLs[step].isSelected = false;
+    this.CLsValid = false;
+    for (let step = 0; step < this.addedChecklists.length; step++) {
+      this.addedChecklists[step].isSelected = false;
     }
-    console.log('this.selectedCLs = ', this.selectedCLs);
+    console.log('this.addedChecklists = ', this.addedChecklists);
   }
 
   onSubmit() {
