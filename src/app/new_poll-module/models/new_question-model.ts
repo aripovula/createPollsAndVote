@@ -6,6 +6,7 @@ export class NewQuestion {
         public multipleChoice: string,
         public q_text: string,
         public questionsQnty: number,
+        public imageSize: string,
         public q_options: Array<NewOption>
     ) {}
 }

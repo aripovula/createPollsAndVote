@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 export class NewQuestionComponent implements OnInit {
 
-  model = new NewQuestion(1, 'false', null, 2, [new NewOption(0, 'text', '', 1), new NewOption(1, 'text', '', 1)]);
+  model = new NewQuestion(1, 'false', null, 2, '1', [new NewOption(0, 'text', ''), new NewOption(1, 'text', '')]);
 
   // because selected checklists are discarded when uses navigates away it is not part of the model
   addedChecklists = [{id: 0, isSelected: false}, {id: 1, isSelected: false}];
@@ -20,6 +20,8 @@ export class NewQuestionComponent implements OnInit {
   {type: 'imageurl', name: 'image URL'}, {type: 'video', name: 'video URL or other URL'},
   {type: 'date', name: 'specific date'}, {type: 'dates', name: 'date range'},
   {type: 'time', name: 'specific time'}, {type: 'times', name: 'time range'}];
+
+  sizes = [ 100, 150, 250 ];
 
   radioButtonClicked = false;
 
@@ -76,7 +78,7 @@ export class NewQuestionComponent implements OnInit {
 
   addOption() {
     const oid = this.assignID();
-    this.model.q_options.push(new NewOption( oid, 'text', '', 1));
+    this.model.q_options.push(new NewOption( oid, 'text', ''));
     this.addedChecklists.push({id: oid, isSelected: false});
     this.updateQnty();
   }
@@ -168,6 +170,26 @@ export class NewQuestionComponent implements OnInit {
       this.addedChecklists[step].isSelected = false;
     }
     console.log('this.addedChecklists = ', this.addedChecklists);
+  }
+
+  onUploadFinished(file: any) {
+    console.log('onUploadFinished');
+    console.log(file);
+  }
+
+  onRemoved(file: any) {
+    console.log('onRemoved');
+    console.log(file);
+  }
+
+  onUploadStateChanged(state: boolean) {
+    console.log('onUploadStateChanged');
+    console.log(state);
+  }
+
+  onImageSizeChange(e) {
+    this.model.imageSize = e;
+    console.log('size= ', this.model.imageSize);
   }
 
   onSubmit() {

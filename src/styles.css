@@ -151,13 +151,17 @@ body, html {
     background-color: #eee;
     border-radius: 2px;
     margin:2px;
-    width: 560px;
+    margin-left: 100px;
+    width: 350px;
     font-size: 14px;
 }
 
 .imageUpload .img-ul-upload {
     background-color: rgb(64, 203, 238) !important;
     margin-right: 20px;
+    font-size: 14px;
+    width: 140px;
+    text-align: center;
 }
 
 .imageUpload .img-ul-clear {
