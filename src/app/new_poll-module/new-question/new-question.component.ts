@@ -29,6 +29,8 @@ export class NewQuestionComponent implements OnInit {
   multipleChoiceOptionQnty = 2;
   selectedCLs = 0;
   CLsValid = false;
+  localImage = [];
+  uploaderHidden = [];
 
   constructor(private router: Router) {}
 
@@ -172,9 +174,14 @@ export class NewQuestionComponent implements OnInit {
     console.log('this.addedChecklists = ', this.addedChecklists);
   }
 
-  onUploadFinished(file: any) {
-    console.log('onUploadFinished');
-    console.log(file);
+  onUploadFinished(ind: number, file: any) {
+    console.log('onUploadFinished ind = ', ind);
+    // console.log(file);
+    // console.log(file.file.name);
+    // console.log('src = ', file.src);
+    // this.localImage[ind] = file.src;
+    this.uploaderHidden[ind] = true;
+    this.model.q_options[ind].text = file.src;
   }
 
   onRemoved(file: any) {
@@ -190,6 +197,10 @@ export class NewQuestionComponent implements OnInit {
   onImageSizeChange(e) {
     this.model.imageSize = e;
     console.log('size= ', this.model.imageSize);
+  }
+
+  onImageChangeRequest(e) {
+    this.uploaderHidden[e] = false;
   }
 
   onSubmit() {

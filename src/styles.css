@@ -176,6 +176,10 @@ body, html {
     background-color: #fff !important;
 }
 
+previewPanel {
+  height: 0px;
+}
+
 /* BUTTONS */
 
 .btn {
