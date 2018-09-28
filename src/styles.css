@@ -38,6 +38,23 @@ body, html {
   /* background-color: gray; */
   }
   
+  .parent {
+    position: relative;
+  }
+  .child {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }  
+
+  .vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  
   .boxed {
     width: 92%;
     border: green solid 2px;

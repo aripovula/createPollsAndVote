@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as moment from 'moment';
 
 import { NewQuestion } from './../models/new_question-model';
 import { NewOption } from './../models/new_option-model';
@@ -13,7 +14,10 @@ import { NewOption } from './../models/new_option-model';
 
 export class NewQuestionComponent implements OnInit {
 
-  model = new NewQuestion(1, 'false', null, 2, '1', [new NewOption(0, 'text', '', '', '', ''), new NewOption(1, 'text', '', '', '', '')]);
+  model = new NewQuestion(1, 'false', null, 2, '1', [
+    new NewOption(0, 'text', '', '', '', '', '', '', '', ''),
+    new NewOption(1, 'text', '', '', '', '', '', '', '', '')
+  ]);
 
   // because selected checklists are discarded when uses navigates away it is not part of the model
   addedChecklists = [{id: 0, isSelected: false}, {id: 1, isSelected: false}];
@@ -35,6 +39,7 @@ export class NewQuestionComponent implements OnInit {
   localImage = [];
   uploaderHidden = [];
   safeURL = [];
+  safeURLimage = [];
 
   constructor(
     private router: Router,
@@ -88,13 +93,14 @@ export class NewQuestionComponent implements OnInit {
 
   addOption() {
     const oid = this.assignID();
-    this.model.q_options.push(new NewOption( oid, 'text', '', '', '', ''));
+    this.model.q_options.push(new NewOption( oid, 'text', '', '', '', '', '', '', '', ''));
     this.addedChecklists.push({id: oid, isSelected: false});
     this.updateQnty();
   }
 
   assignID() {
-    return this.model.q_options[this.model.q_options.length - 1].id + 1;
+    if (this.model.q_options.length > 0) {return this.model.q_options[this.model.q_options.length - 1].id + 1; }
+    return;
   }
 
   updateQnty() {
@@ -208,7 +214,7 @@ export class NewQuestionComponent implements OnInit {
   }
 
   onImageURLChanged(ind) {
-    this.safeURL[ind] = this._sanitizer.bypassSecurityTrustResourceUrl(this.model.q_options[ind].imageURL);
+    this.safeURLimage[ind] = this._sanitizer.bypassSecurityTrustResourceUrl(this.model.q_options[ind].imageURL);
   }
 
   onVideoURLChanged(ind) {

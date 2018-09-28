@@ -6,5 +6,9 @@ export class NewOption {
         public imageFile: string,
         public imageURL: string,
         public videoURL: string,
+        public startDate: string,
+        public endDate: string,
+        public startTime: string,
+        public endTime: string
     ) {}
 }
