@@ -1,7 +1,9 @@
-import { NewOption } from './../models/new_option-model';
-import { NewQuestion } from './../models/new_question-model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+
+import { NewQuestion } from './../models/new_question-model';
+import { NewOption } from './../models/new_option-model';
 
 @Component({
   selector: 'app-new-question',
@@ -11,17 +13,18 @@ import { Router } from '@angular/router';
 
 export class NewQuestionComponent implements OnInit {
 
-  model = new NewQuestion(1, 'false', null, 2, '1', [new NewOption(0, 'text', ''), new NewOption(1, 'text', '')]);
+  model = new NewQuestion(1, 'false', null, 2, '1', [new NewOption(0, 'text', '', '', '', ''), new NewOption(1, 'text', '', '', '', '')]);
 
   // because selected checklists are discarded when uses navigates away it is not part of the model
   addedChecklists = [{id: 0, isSelected: false}, {id: 1, isSelected: false}];
 
   objects = [{type: 'text', name: 'text'}, {type: 'imagelocal', name: 'image - local file'},
-  {type: 'imageurl', name: 'image URL'}, {type: 'video', name: 'video URL or other URL'},
+  {type: 'imageurl', name: 'image URL'}, {type: 'videourl', name: 'YouTube video URL'},
   {type: 'date', name: 'specific date'}, {type: 'dates', name: 'date range'},
   {type: 'time', name: 'specific time'}, {type: 'times', name: 'time range'}];
 
   sizes = [ 100, 150, 250 ];
+  sizesW = [ 178, 266, 444 ];
 
   radioButtonClicked = false;
 
@@ -31,8 +34,13 @@ export class NewQuestionComponent implements OnInit {
   CLsValid = false;
   localImage = [];
   uploaderHidden = [];
+  safeURL = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private _sanitizer: DomSanitizer) {}
+
+
 
   ngOnInit() { }
 
@@ -80,7 +88,7 @@ export class NewQuestionComponent implements OnInit {
 
   addOption() {
     const oid = this.assignID();
-    this.model.q_options.push(new NewOption( oid, 'text', ''));
+    this.model.q_options.push(new NewOption( oid, 'text', '', '', '', ''));
     this.addedChecklists.push({id: oid, isSelected: false});
     this.updateQnty();
   }
@@ -176,12 +184,8 @@ export class NewQuestionComponent implements OnInit {
 
   onUploadFinished(ind: number, file: any) {
     console.log('onUploadFinished ind = ', ind);
-    // console.log(file);
-    // console.log(file.file.name);
-    // console.log('src = ', file.src);
-    // this.localImage[ind] = file.src;
     this.uploaderHidden[ind] = true;
-    this.model.q_options[ind].text = file.src;
+    this.model.q_options[ind].imageFile = file.src;
   }
 
   onRemoved(file: any) {
@@ -201,6 +205,16 @@ export class NewQuestionComponent implements OnInit {
 
   onImageChangeRequest(e) {
     this.uploaderHidden[e] = false;
+  }
+
+  onImageURLChanged(ind) {
+    this.safeURL[ind] = this._sanitizer.bypassSecurityTrustResourceUrl(this.model.q_options[ind].imageURL);
+  }
+
+  onVideoURLChanged(ind) {
+    this.model.q_options[ind].videoURL =
+      this.model.q_options[ind].videoURL.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/');
+    this.safeURL[ind] = this._sanitizer.bypassSecurityTrustResourceUrl(this.model.q_options[ind].videoURL);
   }
 
   onSubmit() {

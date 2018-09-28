@@ -126,10 +126,10 @@
                   <div *ngIf="uploaderHidden[ind]">
                     <span class="verIndent"></span>
                     <span style="margin-left: 110px;" class="noDecor" (click)="onImageChangeRequest(ind)">
-                      <span *ngIf="model.q_options[ind].text.length != 0">
+                      <span *ngIf="model.q_options[ind].imageFile.length != 0">
                         ( change image )
                       </span>
-                      <span *ngIf="model.q_options[ind].text.length == 0">
+                      <span *ngIf="model.q_options[ind].imageFile.length == 0">
                         ( add image )
                       </span>
                     </span>
@@ -142,16 +142,15 @@
                   </div>
                 </div>
                 <div style="font-size: 12px; color: red; margin-left: 110px;">
-                    Warning: others won't see image as it is stored in LocalStorage to save cloud traffic
-                  </div>
-
+                  Warning: others won't see image as it is stored in LocalStorage to save cloud traffic
+                </div>
               </div>
 
               <div *ngSwitchCase="'imageurl'">
                 <div class="form-element">
                   <label for="q_options">Image URL: </label>
-                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
-                    #q_options="ngModel">
+                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].imageURL" name="q_options{{ind}}"
+                    #q_options="ngModel" (ngModelChange)="onImageURLChanged(ind)">
                   <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
                     <label></label>
                     Image URL is required
@@ -159,7 +158,23 @@
                 </div>
               </div>
 
-              <div *ngSwitchCase="model.q_options[ind].type === 'imagelocal' || model.q_options[ind].type === 'imageurl' ? model.q_options[ind].type : '' ">
+              <div *ngSwitchCase="'videourl'">
+                <div class="form-element">
+                  <label for="q_options">Video URL: </label>
+                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].videoURL" name="q_options{{ind}}"
+                    (ngModelChange)="onVideoURLChanged(ind)" #q_options="ngModel">
+                  <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
+                    <label></label>
+                    Video URL is required
+                  </div>
+                </div>
+              </div>
+
+
+              <div *ngSwitchCase="model.q_options[ind].type === 'imagelocal' 
+              || model.q_options[ind].type === 'imageurl' 
+              || model.q_options[ind].type === 'videourl' 
+              ? model.q_options[ind].type : '' ">
                 <div>
                   <label for="q_options">Image size: </label>
                   <label>
@@ -225,7 +240,7 @@
     <br/>
     <p>
       <span class="horIndent"></span>Question: {{model.q_text}}
-    <span *ngIf="!model.q_text"> Your question text goes here</span>
+      <span *ngIf="!model.q_text"> Your question text goes here</span>
     </p>
     <div style="font-size: 14px;">
       <span class="horIndent"></span>
@@ -245,7 +260,6 @@
             <span class="horIndent"></span>
             <input type="checkbox" name="isSelected{{addedChecklists[ind].id}}" [(ngModel)]="addedChecklists[ind].isSelected" (ngModelChange)="onSelectedChange($event)"
               #isSelected="ngModel"> &nbsp; {{ind + 1}}. &nbsp;
-            <span *ngIf="option.text.length == 0"> Option {{ind+1}} value goes here</span>
           </label>
         </span>
 
@@ -254,26 +268,40 @@
             <span class="horIndent"></span>
             <input type="radio" name="isSelected" [(ngModel)]="radioButtonClicked" value={{ind}} (ngModelChange)="onSelectedChangeRadio($event)"
               #isSelectedRadio="ngModel"> &nbsp; {{ind + 1}}. &nbsp;
-            <span *ngIf="option.text.length == 0">
-                Option {{ind+1}} value goes here
-            </span>
           </label>
         </span>
 
         <span *ngIf="option.type=='text' ">
           {{option.text}}
+          <span *ngIf="option.text.length == 0"> Option {{ind+1}} text goes here</span>
         </span>
 
         <span *ngIf="option.type=='imagelocal' ">
-          <span *ngIf="option.text">
-            <img [src]="option.text" height={{sizes[model.imageSize]}}>
+          <span *ngIf="option.imageFile">
+            <img [src]="option.imageFile" height={{sizes[model.imageSize]}}>
           </span>
+          <span *ngIf="!option.imageFile"> Option {{ind+1}} image goes here</span>
         </span>
 
+        <!-- using  {{}}  - for image-->
         <span *ngIf="option.type=='imageurl' ">
-          <img src={{option.text}} height={{sizes[model.imageSize]}}>
-          <span class="horIndent"></span>
-          <a class="noDecor" href={{option.text}} target="_blank">view at source</a>
+          <span *ngIf="safeURL[ind]">
+            <img [src]="safeURL[ind]" height={{sizes[model.imageSize]}}>
+            <span class="horIndent"></span>
+            <a class="noDecor" [href]="safeURL[ind]" target="_blank">view at source</a>
+          </span>
+          <span *ngIf="!safeURL[ind]"> Option {{ind+1}} image goes here</span>
+        </span>
+
+        <!-- using [property]=binding:   - for video -->
+        <span *ngIf="option.type=='videourl' ">
+          <span *ngIf="safeURL[ind]">
+            <iframe [src]="safeURL[ind]" frameborder="0" 
+            height={{sizes[model.imageSize]}} 
+            width={{sizesW[model.imageSize]}}
+            allowfullscreen></iframe>
+          </span>
+          <span *ngIf="!safeURL[ind]"> Option {{ind+1}} video goes here</span>
         </span>
 
       </p>
