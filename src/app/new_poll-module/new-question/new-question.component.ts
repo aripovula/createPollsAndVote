@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
+import {MomentModule} from 'ngx-moment/moment.module';
 
 import { NewQuestion } from './../models/new_question-model';
 import { NewOption } from './../models/new_option-model';

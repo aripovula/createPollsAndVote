@@ -226,7 +226,7 @@
                   <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" 
                   [(ngModel)]="model.q_options[ind].startTime"
                     name="startTime" #startTime="ngModel">
-                  <owl-date-time [pickerType]="'timer'" #dt4 hour24Timer="true"></owl-date-time>
+                  <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
                 </div>
               </div>
 
@@ -235,13 +235,13 @@
                   <label>Time from </label>
                   <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" [(ngModel)]="model.q_options[ind].startTime"
                     name="startTime" #startTime="ngModel">
-                  <owl-date-time [pickerType]="'timer'" #dt4 hour24Timer="true"></owl-date-time>
+                  <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
                 </div>
                 <div class="form-element">
                   <label>to </label>
                   <input type="text" [owlDateTimeTrigger]="dt4a" [owlDateTime]="dt4a" size="40" id="endTime" [(ngModel)]="model.q_options[ind].endTime"
                     name="endTime" #endTime="ngModel">
-                  <owl-date-time [pickerType]="'timer'" #dt4a hour24Timer="true"></owl-date-time>
+                  <owl-date-time [pickerType]="'timer'" #dt4a hour12Timer="true"></owl-date-time>
                 </div>
               </div>
 
@@ -279,7 +279,7 @@
       <span *ngIf="model.multipleChoice=='false'">( choose only ONE option )</span>
     </div>
     <div *ngFor="let option of model.q_options; let ind=index;">
-      <p class="parent">
+      <div class="parent">
 
         <span *ngIf="model.multipleChoice=='true'">
           <label>
@@ -290,7 +290,7 @@
           </label>
         </span>
 
-        <span *ngIf="model.multipleChoice=='false'">
+        <span *ngIf="model.multipleChoice=='false'" class="leftp">
           <label>
             <span class="horIndent"></span>
             <input class="child" type="radio" name="isSelected" [(ngModel)]="radioButtonClicked" value={{ind}} (ngModelChange)="onSelectedChangeRadio($event)"
@@ -299,9 +299,9 @@
           </label>
         </span>
 
-        <span *ngIf="option.type=='text' " style="margin-left: 66px">
-          {{option.text}}
-          <span *ngIf="option.text.length == 0"> Option {{ind+1}} text goes here</span>
+        <span *ngIf="option.type=='text' " class="rightp">
+          {{option.text}}<br/>
+          <span *ngIf="option.text.length == 0"> Option {{ind+1}} text goes here Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam necessitatibus dignissimos saepe a molestiae, error cupiditate. Dolorem voluptates quae veniam vel ad iusto accusantium atque repellat? Qui omnis quia itaque!</span>
         </span>
 
         <span *ngIf="option.type=='imagelocal' " style="margin-left: 66px">
@@ -322,7 +322,7 @@
         </span>
 
         <!-- using [property]=binding:   - for video -->
-        <span *ngIf="option.type=='videourl' " style="margin-left: 66px">
+        <span *ngIf="option.type=='videourl' " style="margin-left: 0px">
           <span *ngIf="safeURL[ind]">
             <iframe [src]="safeURL[ind]" frameborder="0" height={{sizes[model.imageSize]}} width={{sizesW[model.imageSize]}} allowfullscreen></iframe>
           </span>
@@ -330,26 +330,33 @@
         </span>
 
         <span *ngIf="option.type=='date' " style="margin-left: 66px">
-          {{option.startDate}}
-          <span *ngIf="option.startDate"> Option {{ind+1}} date goes here</span>
+          {{option.startDate | date:'mediumDate'}}
+          <span *ngIf="!option.startDate"> Option {{ind+1}} date goes here</span>
         </span>
 
         <span *ngIf="option.type=='dates' " style="margin-left: 66px">
-          from {{option.startDate}} to  {{option.endDate }}
-          <span *ngIf="option.startDate"> Option {{ind+1}} dates go here</span>
+          from 
+          <span style="color: rgb(48, 190, 238)">{{option.startDate | date:'mediumDate'}}</span>
+          &nbsp; to &nbsp;
+          <span style="color: rgb(48, 190, 238)">{{option.endDate | date:'mediumDate'}}</span>
+          <span *ngIf="!option.startDate"> Option {{ind+1}} dates go here</span>
         </span>
 
         <span *ngIf="option.type=='time' " style="margin-left: 66px">
-          {{option.startTime}}
-          <span *ngIf="option.startTime"> Option {{ind+1}} time goes here</span>
+          {{option.startTime | date:'h:mm a ( z )'}}
+          <span *ngIf="!option.startTime"> Option {{ind+1}} time goes here</span>
         </span>
 
         <span *ngIf="option.type=='times' " style="margin-left: 66px">
-          from {{option.startTime}} to  {{option.endTime}}
-          <span *ngIf="option.startTime"> Option {{ind+1}} times go here</span>
+          from
+          <span style="color: rgb(48, 190, 238)">{{option.startTime | date:'h:mm a ( z )'}}</span>
+          &nbsp; to &nbsp;
+          <span style="color: rgb(48, 190, 238)">{{option.endTime | date:'h:mm a ( z )'}}</span>
+          <span *ngIf="!option.startTime"> Option {{ind+1}} times go here</span>
         </span>
-      </p>
+      </div>
     </div>
+    <div>
     <br/>
     <span class="horIndent"></span>
     <button type="button" class="button button1" [disabled]="!CLsValid">Next ></button>
@@ -360,5 +367,6 @@
     <br/>
     <span style="font-size: 14px; color: #000;">
       <span class="horIndent"></span>when selection criteria are met</span>
+    </div>
   </div>
 </div>
