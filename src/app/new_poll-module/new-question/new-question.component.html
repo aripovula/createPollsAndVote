@@ -195,9 +195,8 @@
               <div *ngSwitchCase="'date'">
                 <div class="form-element">
                   <label>Date - on:</label>
-                  <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40"
-                  [(ngModel)]="model.q_options[ind].startDate" name="startDate" #startDate="ngModel"
-                  >
+                  <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" [(ngModel)]="model.q_options[ind].startDate"
+                    name="startDate" #startDate="ngModel">
                   <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
                 </div>
               </div>
@@ -205,26 +204,23 @@
               <div *ngSwitchCase="'dates'">
                 <div class="form-element">
                   <label>Date from:</label>
-                  <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40"
-                  [(ngModel)]="model.q_options[ind].startDate" name="startDate" #startDate="ngModel"
-                  >
+                  <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" [(ngModel)]="model.q_options[ind].startDate"
+                    name="startDate" #startDate="ngModel">
                   <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
                 </div>
+
                 <div class="form-element">
                   <label>to </label>
-                  <input type="text" [owlDateTimeTrigger]="dt3a" [owlDateTime]="dt3a" size="40"
-                  [(ngModel)]="model.q_options[ind].endDate" name="endDate" #endDate="ngModel"
-                  >
+                  <input type="text" [owlDateTimeTrigger]="dt3a" [owlDateTime]="dt3a" size="40" [(ngModel)]="model.q_options[ind].endDate"
+                    name="endDate" #endDate="ngModel">
                   <owl-date-time [pickerType]="'calendar'" #dt3a></owl-date-time>
-
                 </div>
               </div>
 
               <div *ngSwitchCase="'time'">
                 <div class="form-element">
                   <label>Time - at </label>
-                  <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" 
-                  [(ngModel)]="model.q_options[ind].startTime"
+                  <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" [(ngModel)]="model.q_options[ind].startTime"
                     name="startTime" #startTime="ngModel">
                   <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
                 </div>
@@ -286,25 +282,29 @@
             <span class="horIndent"></span>
             <input class="child" type="checkbox" name="isSelected{{addedChecklists[ind].id}}" [(ngModel)]="addedChecklists[ind].isSelected"
               (ngModelChange)="onSelectedChange($event)" #isSelected="ngModel">
-            <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}. &nbsp;</span>
+            <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>
           </label>
         </span>
 
-        <span *ngIf="model.multipleChoice=='false'" class="leftp">
+        <span *ngIf="model.multipleChoice=='false'">
           <label>
             <span class="horIndent"></span>
             <input class="child" type="radio" name="isSelected" [(ngModel)]="radioButtonClicked" value={{ind}} (ngModelChange)="onSelectedChangeRadio($event)"
               #isSelectedRadio="ngModel">
-            <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}. &nbsp;</span>
+            <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>
           </label>
         </span>
 
-        <span *ngIf="option.type=='text' " class="rightp">
-          {{option.text}}<br/>
-          <span *ngIf="option.text.length == 0"> Option {{ind+1}} text goes here Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam necessitatibus dignissimos saepe a molestiae, error cupiditate. Dolorem voluptates quae veniam vel ad iusto accusantium atque repellat? Qui omnis quia itaque!</span>
+        <span *ngIf="option.type=='text' " class="inlineText">
+          <span>{{option.text}}</span>
+          <span *ngIf="option.text.length == 0">Option {{ind+1}} text goes here Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam necessitatibus
+            dignissimos saepe a molestiae, error cupiditate. Dolorem voluptates quae veniam vel ad iusto accusantium atque
+            repellat? Qui omnis quia itaque!</span>
+          <br/>
+          <br/>
         </span>
 
-        <span *ngIf="option.type=='imagelocal' " style="margin-left: 66px">
+        <span *ngIf="option.type=='imagelocal' " style="margin-left: 66px;">
           <span *ngIf="option.imageFile">
             <img [src]="option.imageFile" height={{sizes[model.imageSize]}}>
           </span>
@@ -312,7 +312,7 @@
         </span>
 
         <!-- using  {{}}  - for image-->
-        <span *ngIf="option.type=='imageurl' " style="margin-left: 66px">
+        <span *ngIf="option.type=='imageurl' " style="margin-left: 66px;">
           <span *ngIf="safeURLimage[ind]">
             <img [src]="safeURLimage[ind]" height={{sizes[model.imageSize]}}>
             <span class="horIndent"></span>
@@ -322,51 +322,65 @@
         </span>
 
         <!-- using [property]=binding:   - for video -->
-        <span *ngIf="option.type=='videourl' " style="margin-left: 0px">
+        <span *ngIf="option.type=='videourl' " style="margin-left: 66px;">
           <span *ngIf="safeURL[ind]">
             <iframe [src]="safeURL[ind]" frameborder="0" height={{sizes[model.imageSize]}} width={{sizesW[model.imageSize]}} allowfullscreen></iframe>
           </span>
           <span *ngIf="!safeURL[ind]"> Option {{ind+1}} video goes here</span>
         </span>
 
-        <span *ngIf="option.type=='date' " style="margin-left: 66px">
+        <span *ngIf="option.type=='date' " class="inlineText">
           {{option.startDate | date:'mediumDate'}}
           <span *ngIf="!option.startDate"> Option {{ind+1}} date goes here</span>
+          <br/>
+          <br/>
         </span>
 
-        <span *ngIf="option.type=='dates' " style="margin-left: 66px">
-          from 
-          <span style="color: rgb(48, 190, 238)">{{option.startDate | date:'mediumDate'}}</span>
-          &nbsp; to &nbsp;
-          <span style="color: rgb(48, 190, 238)">{{option.endDate | date:'mediumDate'}}</span>
-          <span *ngIf="!option.startDate"> Option {{ind+1}} dates go here</span>
+        <span *ngIf="option.type=='dates' " class="inlineText">
+          <span *ngIf="option.startDate && option.endDate">
+            from
+            <span style="color: rgb(48, 190, 238)">{{option.startDate | date:'mediumDate'}}</span>
+            &nbsp; to &nbsp;
+            <span style="color: rgb(48, 190, 238)">{{option.endDate | date:'mediumDate'}}</span>
+          </span>
+          <span *ngIf="!option.startDate || !option.endDate"> Option {{ind+1}} dates go here</span>
+
+          <br/>
+          <br/>
         </span>
 
-        <span *ngIf="option.type=='time' " style="margin-left: 66px">
+        <span *ngIf="option.type=='time' " class="inlineText">
           {{option.startTime | date:'h:mm a ( z )'}}
           <span *ngIf="!option.startTime"> Option {{ind+1}} time goes here</span>
+          <br/>
+          <br/>
         </span>
 
-        <span *ngIf="option.type=='times' " style="margin-left: 66px">
-          from
-          <span style="color: rgb(48, 190, 238)">{{option.startTime | date:'h:mm a ( z )'}}</span>
-          &nbsp; to &nbsp;
-          <span style="color: rgb(48, 190, 238)">{{option.endTime | date:'h:mm a ( z )'}}</span>
-          <span *ngIf="!option.startTime"> Option {{ind+1}} times go here</span>
+        <span *ngIf="option.type=='times' " class="inlineText">
+          <span *ngIf="option.startTime && option.endTime">
+            from
+            <span style="color: rgb(48, 190, 238)">{{option.startTime | date:'h:mm a ( z )'}}</span>
+            &nbsp; to &nbsp;
+            <span style="color: rgb(48, 190, 238)">{{option.endTime | date:'h:mm a ( z )'}}</span>
+          </span>
+          <span *ngIf="!option.startTime || !option.endTime"> Option {{ind+1}} times go here</span>
+          <br/>
+          <br/>
         </span>
+
       </div>
     </div>
     <div>
-    <br/>
-    <span class="horIndent"></span>
-    <button type="button" class="button button1" [disabled]="!CLsValid">Next ></button>
-    <br/>
-    <br/>
-    <span style="font-size: 14px; color: #000;">
-      <span class="horIndent"></span>* this button is NOT a navigation button. It gets activated </span>
-    <br/>
-    <span style="font-size: 14px; color: #000;">
-      <span class="horIndent"></span>when selection criteria are met</span>
+      <br/>
+      <span class="horIndent"></span>
+      <button type="button" class="button button1" [disabled]="!CLsValid">Next ></button>
+      <br/>
+      <br/>
+      <span style="font-size: 14px; color: #000;">
+        <span class="horIndent"></span>* this button is NOT a navigation button. It gets activated </span>
+      <br/>
+      <span style="font-size: 14px; color: #000;">
+        <span class="horIndent"></span>when selection criteria are met</span>
     </div>
   </div>
 </div>

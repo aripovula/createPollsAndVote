@@ -151,28 +151,11 @@ body, html {
     overflow: auto
 }
 
-
-.leftp {
-  background: #ddd;
-        float: left;
-        top:0px;
-        width: 15%;
-        color:#ffffff;
-        height: 100%;
-        overflow: scroll;
-        border-right:5px solid #000000;
-        border-left:20px solid transparent;
-    }
-    .rightp {
-        background: #ccc;
-        float: left;
-        top:0px;
-        border-right:40px solid transparent;
-        border-left:20px solid transparent;
-        width: 66%;
-        height: 100%;
-        overflow: scroll;
-    }
+.inlineText {
+  display: block;
+  margin-left: 88px;
+  margin-right: 40px;
+}
 
 .post-thumb {
     float: left
