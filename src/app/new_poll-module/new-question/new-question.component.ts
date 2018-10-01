@@ -6,6 +6,7 @@ import {MomentModule} from 'ngx-moment/moment.module';
 
 import { NewQuestion } from './../models/new_question-model';
 import { NewOption } from './../models/new_option-model';
+import { OptionItemComponent } from './../option-item/option-item.component';
 
 @Component({
   selector: 'app-new-question',

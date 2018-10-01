@@ -35,7 +35,7 @@ export class NewPollComponent implements OnInit {
   onSubmit() {
     console.log('in onSubmit');
     console.log(this.model);
-    this.router.navigate(['/question']);
+    this.router.navigate(['/questions']);
     // const newPoll = new NewPoll(1, '', 1);
   }
 }
