@@ -3,7 +3,9 @@
     <div>
       <br/>
       <span style="margin-left: 110px; font-size: 18px;">New question - question # __:</span>
-
+      <br/>
+      <span style="margin-left: 110px; font-size: 14px;color: green;">( this page uses 'Template-driven Forms' )</span>
+      <br/>
       <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
 
         <br/>
@@ -121,6 +123,13 @@
                 </div>
               </div>
 
+              <div *ngSwitchCase="model.q_options[ind].type !== 'text' 
+              ? model.q_options[ind].type : '' ">
+                <label>Comment: </label>
+                <input type="text" id="q_comment{{ind}}" autocomplete="off" size="40" placeholder=" ( optional )" [(ngModel)]="model.q_options[ind].text"
+                  name="q_comment{{ind}}" #q_comment="ngModel">
+              </div>
+              
               <div *ngSwitchCase="'imagelocal'">
                 <div class="form-element">
                   <div *ngIf="uploaderHidden[ind]">
@@ -255,6 +264,7 @@
         </div>
 
       </form>
+
     </div>
   </div>
 
@@ -304,29 +314,42 @@
           <br/>
         </span>
 
-        <span *ngIf="option.type=='imagelocal' " style="margin-left: 66px;">
+        <span *ngIf="option.type != 'text' ">
+          <span class="inlineText">{{option.text}}</span>
+        </span>
+
+        <span *ngIf="option.type=='imagelocal' " style="margin-left: 88px;">
           <span *ngIf="option.imageFile">
             <img [src]="option.imageFile" height={{sizes[model.imageSize]}}>
           </span>
-          <span *ngIf="!option.imageFile"> Option {{ind+1}} image goes here</span>
+          <span *ngIf="!option.imageFile"> Option {{ind+1}} image goes here
+            <br/>
+            <br/>
+          </span>
         </span>
 
         <!-- using  {{}}  - for image-->
-        <span *ngIf="option.type=='imageurl' " style="margin-left: 66px;">
+        <span *ngIf="option.type=='imageurl' " style="margin-left: 88px;">
           <span *ngIf="safeURLimage[ind]">
             <img [src]="safeURLimage[ind]" height={{sizes[model.imageSize]}}>
             <span class="horIndent"></span>
             <a class="noDecor" [href]="safeURLimage[ind]" target="_blank">view at source</a>
           </span>
-          <span *ngIf="!safeURLimage[ind]"> Option {{ind+1}} image goes here</span>
+          <span *ngIf="!safeURLimage[ind]"> Option {{ind+1}} image goes here
+            <br/>
+            <br/>
+          </span>
         </span>
 
         <!-- using [property]=binding:   - for video -->
-        <span *ngIf="option.type=='videourl' " style="margin-left: 66px;">
+        <span *ngIf="option.type=='videourl' " style="margin-left: 88px;">
           <span *ngIf="safeURL[ind]">
             <iframe [src]="safeURL[ind]" frameborder="0" height={{sizes[model.imageSize]}} width={{sizesW[model.imageSize]}} allowfullscreen></iframe>
           </span>
-          <span *ngIf="!safeURL[ind]"> Option {{ind+1}} video goes here</span>
+          <span *ngIf="!safeURL[ind]"> Option {{ind+1}} video goes here
+            <br/>
+            <br/>
+          </span>
         </span>
 
         <span *ngIf="option.type=='date' " class="inlineText">
