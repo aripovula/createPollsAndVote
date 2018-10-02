@@ -1,5 +1,5 @@
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, OnInit, Input } from '@angular/core';
 
 import { NewOption } from './../models/new_option-model';
 
@@ -11,9 +11,11 @@ import { NewOption } from './../models/new_option-model';
 export class OptionItemComponent implements OnInit {
   @Input() option: NewOption;
   @Input() ind: number;
+  @Input() imageFile: any;
   @Input() safeURLimage: string;
   @Input() safeURL: string;
   @Input() imageSize: number;
+  @Output() voted = new EventEmitter<boolean>();
 
   sizes = [ 100, 150, 250 ];
   sizesW = [ 178, 266, 444 ];

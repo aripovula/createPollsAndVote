@@ -12,16 +12,15 @@
     </span>
 
     <span *ngIf="option.type=='imagelocal' " style="margin-left: 88px;">
-      <span *ngIf="option.imageFile">
-        <img [src]="option.imageFile" height={{sizes[imageSize]}}>
+      <span *ngIf="imageFile">
+        <img [src]="imageFile" height={{sizes[imageSize]}}>
       </span>
-      <span *ngIf="!option.imageFile"> Option {{ind+1}} image goes here
+      <span *ngIf="!imageFile"> Option {{ind+1}} image goes here
         <br/>
         <br/>
       </span>
     </span>
 
-    <!-- using  {{}}  - for image-->
     <span *ngIf="option.type=='imageurl' " style="margin-left: 88px;">
       <span *ngIf="safeURLimage">
         <img [src]="safeURLimage" height={{sizes[imageSize]}}>
@@ -34,7 +33,6 @@
       </span>
     </span>
 
-    <!-- using [property]=binding:   - for video -->
     <span *ngIf="option.type=='videourl' " style="margin-left: 88px;">
       <span *ngIf="safeURL">
         <iframe [src]="safeURL" frameborder="0" height={{sizes[imageSize]}} width={{sizesW[imageSize]}} allowfullscreen></iframe>

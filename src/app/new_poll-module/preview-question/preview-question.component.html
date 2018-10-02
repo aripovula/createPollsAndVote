@@ -1,0 +1,63 @@
+<div>
+  <p>
+    <span class="horIndent"></span>{{q_text}}
+    <span *ngIf="!q_text"> Your question text goes here</span>
+  </p>
+  <div style="font-size: 14px;">
+    <span class="horIndent"></span>
+    <span *ngIf="multipleChoice=='true'">
+      <span *ngIf="multipleChoiceOption=='oneormore'">( select any number of options )</span>
+      <span *ngIf="multipleChoiceOption=='exactly'"> ( select exactly {{multipleChoiceOptionQnty}} options )</span>
+      <span *ngIf="multipleChoiceOption=='lessthan'"> ( select less than {{multipleChoiceOptionQnty}} options )</span>
+      <span *ngIf="multipleChoiceOption=='morethan'"> ( select more than {{multipleChoiceOptionQnty}} options )</span>
+    </span>
+    <span *ngIf="multipleChoice=='false'">( select only ONE option )</span>
+    <br/><br/>
+  </div>
+  <div *ngFor="let option of q_options; let ind=index;">
+    <div class="parent">
+
+      <span *ngIf="multipleChoice=='true'">
+        <label>
+          <span class="horIndent"></span>
+          <input class="child" type="checkbox" name="isSelected{{addedChecklists[ind].id}}" [(ngModel)]="addedChecklists[ind].isSelected"
+            (ngModelChange)="onSelectedChange($event)" #isSelected="ngModel">
+          <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>
+        </label>
+      </span>
+
+      <span *ngIf="multipleChoice=='false'">
+        <label>
+          <span class="horIndent"></span>
+          <input class="child" type="radio" name="isSelected" [(ngModel)]="radioButtonClicked" value={{ind}} (ngModelChange)="onSelectedChangeRadio($event)"
+            #isSelectedRadio="ngModel">
+          <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>
+        </label>
+      </span>    
+
+      <app-option-item 
+        [option]="option"
+        [ind]="ind"
+        [imageFile] = "q_options[ind].imageFile"
+        [safeURLimage]="safeURLimage[ind]"
+        [safeURL]="safeURL[ind]"
+        [imageSize]="imageSize"
+      >
+      </app-option-item>
+
+    </div>
+  </div>
+  <div>
+    <br/>
+    <span class="horIndent"></span>
+    <button type="button" class="button button1" [disabled]="!CLsValid">Next ></button>
+    <br/>
+    <br/>
+    <span style="font-size: 14px; color: #000;">
+      <span class="horIndent"></span>* this button is NOT a navigation button. It gets activated </span>
+    <br/>
+    <span style="font-size: 14px; color: #000;">
+      <span class="horIndent"></span>when selection criteria are met
+    </span>
+  </div>
+</div>
