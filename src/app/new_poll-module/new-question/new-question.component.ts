@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
@@ -15,11 +15,14 @@ import { PreviewQuestionComponent } from '../preview-question/preview-question.c
   styleUrls: ['./new-question.component.css']
 })
 
-export class NewQuestionComponent implements OnInit {
+export class NewQuestionComponent {
+
+  @ViewChild(PreviewQuestionComponent)
+  private previewComponent: PreviewQuestionComponent;
 
   model = new NewQuestion(1, 'false', null, 2, '1', [
-    new NewOption(0, 'text', '', '', '', '', '', '', '', ''),
-    new NewOption(1, 'text', '', '', '', '', '', '', '', '')
+    new NewOption(0, 'text', '', '', '', '', '', '', '', '', ''),
+    new NewOption(1, 'text', '', '', '', '', '', '', '', '', '')
   ]);
 
   // because selected checklists are discarded when uses navigates away it is not part of the model
@@ -27,6 +30,7 @@ export class NewQuestionComponent implements OnInit {
 
   objects = [{ type: 'text', name: 'text' }, { type: 'imagelocal', name: 'image - local file' },
   { type: 'imageurl', name: 'image URL' }, { type: 'videourl', name: 'YouTube video URL' },
+  { type: 'weburl', name: 'website URL' },
   { type: 'date', name: 'specific date' }, { type: 'dates', name: 'date range' },
   { type: 'time', name: 'specific time' }, { type: 'times', name: 'time range' }];
 
@@ -36,13 +40,15 @@ export class NewQuestionComponent implements OnInit {
   multipleChoiceOption = 'oneormore';
   multipleChoiceOptionQnty = 2;
   shouldCLsValidBeSetToFalse = false;
-  shouldCheckComplianceWithMultiOptionsConditions = false;
+
   // selectedCLs = 0;
   // CLsValid = false;
   localImage = [];
   uploaderHidden = [];
   safeURL = [];
   safeURLimage = [];
+  safeWebURL = [];
+  WebURL = [];
   validMessage = '';
   validMessageRadio = '';
 
@@ -50,7 +56,9 @@ export class NewQuestionComponent implements OnInit {
     private router: Router,
     private _sanitizer: DomSanitizer) { }
 
-  ngOnInit() { }
+  AfterViewInit() {
+
+  }
 
   byId(item1: any, item2: any) {
     return item1.id === item2.id;
@@ -89,7 +97,7 @@ export class NewQuestionComponent implements OnInit {
 
   addOption() {
     const oid = this.assignID();
-    this.model.q_options.push(new NewOption(oid, 'text', '', '', '', '', '', '', '', ''));
+    this.model.q_options.push(new NewOption(oid, 'text', '', '', '', '', '', '', '', '', ''));
     this.addedChecklists.push({ id: oid, isSelected: false });
     this.updateQnty();
   }
@@ -109,17 +117,16 @@ export class NewQuestionComponent implements OnInit {
 
   deductMultiOption() {
     this.multipleChoiceOptionQnty--;
-    this.shouldCheckComplianceWithMultiOptionsConditions = true;
   }
 
   onMultiOptionQntyChange(e) {
     this.multipleChoiceOptionQnty = e;
-    this.shouldCheckComplianceWithMultiOptionsConditions = true;
+    this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
   }
 
   addMultiOption() {
     this.multipleChoiceOptionQnty++;
-    this.shouldCheckComplianceWithMultiOptionsConditions = true;
+    this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
   }
 
   onMultipleOptionChange(e) {
@@ -179,6 +186,11 @@ export class NewQuestionComponent implements OnInit {
     this.safeURLimage[ind] = this._sanitizer.bypassSecurityTrustResourceUrl(this.model.q_options[ind].imageURL);
   }
 
+  onWebURLChanged(ind) {
+    this.WebURL[ind] = 'https://' + this.model.q_options[ind].webURL;
+    // this.safeWebURL[ind] = this._sanitizer.bypassSecurityTrustResourceUrl('http://' + this.model.q_options[ind].webURL);
+  }
+
   onVideoURLChanged(ind) {
     this.model.q_options[ind].videoURL =
       this.model.q_options[ind].videoURL.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/');
@@ -196,8 +208,8 @@ export class NewQuestionComponent implements OnInit {
         this.validMessage = '';
       }
     } else if (!event) {
-        this.validMessage = '';
-        this.validMessageRadio = '';
+      this.validMessage = '';
+      this.validMessageRadio = '';
     }
   }
 

@@ -1,4 +1,6 @@
 <div>
+    <span class="horIndent"></span>
+    <span style="font-size: 14px; color: green">( child component, each option is a sub - child )</span>
   <p>
     <span class="horIndent"></span>{{q_text}}
     <span *ngIf="!q_text"> Your question text goes here</span>
@@ -41,6 +43,7 @@
         [imageFile] = "q_options[ind].imageFile"
         [safeURLimage]="safeURLimage[ind]"
         [safeURL]="safeURL[ind]"
+        [WebURL]="WebURL[ind]"
         [imageSize]="imageSize"
       >
       </app-option-item>

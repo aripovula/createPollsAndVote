@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, Input, Output, EventEmitter, Inject} from '@angular/core';
+// import { DomSanitizer } from '@angular/platform-browser';
+// import { DOCUMENT } from '@angular/common';
 
 import { NewOption } from './../models/new_option-model';
 
@@ -14,15 +15,20 @@ export class OptionItemComponent implements OnInit {
   @Input() imageFile: any;
   @Input() safeURLimage: string;
   @Input() safeURL: string;
+  @Input() WebURL: string;
   @Input() imageSize: number;
   @Output() voted = new EventEmitter<boolean>();
 
   sizes = [ 100, 150, 250 ];
   sizesW = [ 178, 266, 444 ];
 
-  constructor(private _sanitizer: DomSanitizer) { }
+  constructor() { }
 
   ngOnInit() {
   }
+
+  goToUrl(): void {
+    window.open( this.WebURL, '_blank');
+}
 
 }

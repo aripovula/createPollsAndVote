@@ -12,18 +12,16 @@ export class PreviewQuestionComponent implements OnInit, OnChanges {
 
   @Input() q_text: string;
   @Input() multipleChoice: string;
-  // @Input() option: NewOption;
   @Input() q_options: Array<NewOption>;
-  // @Input() ind: number;
   @Input() safeURLimage: string;
   @Input() safeURL: string;
+  @Input() WebURL: string;
   @Input() imageSize: number;
 
   @Input() addedChecklists: Array<{ id: 0, isSelected: false }>;
   @Input() multipleChoiceOption: string;
   @Input() multipleChoiceOptionQnty: number;
   @Input() shouldCLsValidBeSetToFalse: boolean;
-  @Input() shouldCheckComplianceWithMultiOptionsConditions: boolean;
   @Output() buttonValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   sizes = [100, 150, 250];
@@ -40,14 +38,12 @@ export class PreviewQuestionComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log('shouldCLsValidBeSetToFalse = ', this.shouldCLsValidBeSetToFalse);
-    console.log('shouldCheckComplianceWithMultiOptionsConditions', this.shouldCheckComplianceWithMultiOptionsConditions);
+
     if (this.shouldCLsValidBeSetToFalse) {
         this.CLsValid = false;
         this.buttonValid.emit(false);
         this.radioButtonClicked = false;
-    }
-    if (this.shouldCheckComplianceWithMultiOptionsConditions) {
-      this.checklistsSelectedComplyWithMultiOptionsConditions();
+        this.selectedCLs = 0;
     }
   }
 
