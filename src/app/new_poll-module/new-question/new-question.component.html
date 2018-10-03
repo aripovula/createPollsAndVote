@@ -5,6 +5,7 @@
       <span style="margin-left: 110px; font-size: 18px;">New question - question # __:</span>
       <br/>
       <span style="margin-left: 110px; font-size: 14px;color: green;">( this page uses 'Template-driven Forms' )</span>
+      
       <br/>
       <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
 
@@ -14,11 +15,13 @@
             <input type="radio" id="multipleChoice" name="multipleChoice" value="false" [(ngModel)]="model.multipleChoice" #multipleChoice="ngModel"
               (ngModelChange)="onSelectTypeChange()"> single choice question
           </label>
+          <span style="font-size: 14px; color: green;">{{validMessageRadio}}</span>
         </div>
         <div style="margin-left: 110px;">
           <label>
             <input type="radio" id="multipleChoice" name="multipleChoice" value="true" [(ngModel)]="model.multipleChoice" (ngModelChange)="onSelectTypeChange()"> multiple choice question
           </label>
+          <span style="font-size: 14px; color: green;">{{validMessage}}</span>
         </div>
         <div *ngIf="model.multipleChoice == 'true'">
           <div style="margin-left: 125px;">
@@ -64,7 +67,7 @@
           <p style="font-size: 14px; margin-left: 125px;">* try it on right panel. 'Next >' button turns blue when condition met</p>
           <hr/>
         </div>
-
+        
         <div class="form-element">
           <label for="q_text">Question text</label>
           <input type="text" id="q_text" autocomplete="off" size="40" required [(ngModel)]="model.q_text" name="q_text" #q_text="ngModel">
@@ -281,7 +284,9 @@
       [shouldCheckComplianceWithMultiOptionsConditions]="shouldCheckComplianceWithMultiOptionsConditions" 
       [safeURLimage]="safeURLimage"
       [safeURL]="safeURL" 
-      [imageSize]="model.imageSize">
+      [imageSize]="model.imageSize"
+      (buttonValid)="onButtonIsValid($event)"
+    >
     </app-preview-question>
   </div>
 </div>

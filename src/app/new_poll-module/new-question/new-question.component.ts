@@ -33,8 +33,6 @@ export class NewQuestionComponent implements OnInit {
   sizes = [100, 150, 250];
   sizesW = [178, 266, 444];
 
-  radioButtonClicked = false;
-
   multipleChoiceOption = 'oneormore';
   multipleChoiceOptionQnty = 2;
   shouldCLsValidBeSetToFalse = false;
@@ -45,6 +43,8 @@ export class NewQuestionComponent implements OnInit {
   uploaderHidden = [];
   safeURL = [];
   safeURLimage = [];
+  validMessage = '';
+  validMessageRadio = '';
 
   constructor(
     private router: Router,
@@ -125,6 +125,7 @@ export class NewQuestionComponent implements OnInit {
   onMultipleOptionChange(e) {
     console.log(e);
     this.shouldCLsValidBeSetToFalse = true;
+    this.validMessageReset();
     for (let step = 0; step < this.addedChecklists.length; step++) {
       this.addedChecklists[step].isSelected = false;
     }
@@ -137,10 +138,16 @@ export class NewQuestionComponent implements OnInit {
   onSelectTypeChange() {
     // console.log('in onSelectTypeChange');
     this.shouldCLsValidBeSetToFalse = true;
+    this.validMessageReset();
     for (let step = 0; step < this.addedChecklists.length; step++) {
       this.addedChecklists[step].isSelected = false;
     }
     // console.log('this.addedChecklists = ', this.addedChecklists);
+  }
+
+  validMessageReset() {
+    this.validMessageRadio = '';
+    this.validMessage = '';
   }
 
   onUploadFinished(ind: number, file: any) {
@@ -176,6 +183,22 @@ export class NewQuestionComponent implements OnInit {
     this.model.q_options[ind].videoURL =
       this.model.q_options[ind].videoURL.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/');
     this.safeURL[ind] = this._sanitizer.bypassSecurityTrustResourceUrl(this.model.q_options[ind].videoURL);
+  }
+
+  onButtonIsValid(event) {
+    console.log('button valid', event);
+    if (event) {
+      if (this.model.multipleChoice === 'true') {
+        this.validMessage = ' \u2713 (uses @Output )';
+        this.validMessageRadio = '';
+      } else {
+        this.validMessageRadio = ' \u2713 (uses @Output )';
+        this.validMessage = '';
+      }
+    } else if (!event) {
+        this.validMessage = '';
+        this.validMessageRadio = '';
+    }
   }
 
   onSubmit() {

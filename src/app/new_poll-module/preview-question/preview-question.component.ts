@@ -19,16 +19,17 @@ export class PreviewQuestionComponent implements OnInit, OnChanges {
   @Input() safeURL: string;
   @Input() imageSize: number;
 
-  @Input() addedChecklists: Array<{id: 0, isSelected: false}>;
+  @Input() addedChecklists: Array<{ id: 0, isSelected: false }>;
   @Input() multipleChoiceOption: string;
   @Input() multipleChoiceOptionQnty: number;
   @Input() shouldCLsValidBeSetToFalse: boolean;
   @Input() shouldCheckComplianceWithMultiOptionsConditions: boolean;
-  @Output() voted = new EventEmitter<boolean>();
+  @Output() buttonValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  sizes = [ 100, 150, 250 ];
-  sizesW = [ 178, 266, 444 ];
+  sizes = [100, 150, 250];
+  sizesW = [178, 266, 444];
 
+  radioButtonClicked = false;
   selectedCLs = 0;
   CLsValid = false;
 
@@ -40,20 +41,27 @@ export class PreviewQuestionComponent implements OnInit, OnChanges {
   ngOnChanges() {
     console.log('shouldCLsValidBeSetToFalse = ', this.shouldCLsValidBeSetToFalse);
     console.log('shouldCheckComplianceWithMultiOptionsConditions', this.shouldCheckComplianceWithMultiOptionsConditions);
-    if (this.shouldCLsValidBeSetToFalse) {this.CLsValid = false; }
-    if (this.shouldCheckComplianceWithMultiOptionsConditions) {this.checklistsSelectedComplyWithMultiOptionsConditions(); }
+    if (this.shouldCLsValidBeSetToFalse) {
+        this.CLsValid = false;
+        this.buttonValid.emit(false);
+        this.radioButtonClicked = false;
+    }
+    if (this.shouldCheckComplianceWithMultiOptionsConditions) {
+      this.checklistsSelectedComplyWithMultiOptionsConditions();
+    }
   }
 
   checklistsSelectedComplyWithMultiOptionsConditions() {
     this.CLsValid = false;
+    this.buttonValid.emit(false);
     if (this.multipleChoiceOption === 'oneormore') {
-      if (this.selectedCLs > 0) { this.CLsValid = true; }
+      if (this.selectedCLs > 0) { this.CLsValid = true; this.buttonValid.emit(true); }
     } else if (this.multipleChoiceOption === 'exactly') {
-      if (this.selectedCLs === this.multipleChoiceOptionQnty) { this.CLsValid = true; }
+      if (this.selectedCLs === this.multipleChoiceOptionQnty) { this.CLsValid = true; this.buttonValid.emit(true); }
     } else if (this.multipleChoiceOption === 'lessthan' && this.selectedCLs > 0) {
-      if (this.selectedCLs < this.multipleChoiceOptionQnty) { this.CLsValid = true; }
+      if (this.selectedCLs < this.multipleChoiceOptionQnty) { this.CLsValid = true; this.buttonValid.emit(true); }
     } else if (this.multipleChoiceOption === 'morethan') {
-      if (this.selectedCLs > this.multipleChoiceOptionQnty) { this.CLsValid = true; }
+      if (this.selectedCLs > this.multipleChoiceOptionQnty) { this.CLsValid = true; this.buttonValid.emit(true); }
     }
   }
 
@@ -71,6 +79,7 @@ export class PreviewQuestionComponent implements OnInit, OnChanges {
     // }
     // this.addedChecklists[toTrue].isSelected = true;
     this.selectedCLs = 0;
+    this.buttonValid.emit(true);
     for (let step = 0; step < this.addedChecklists.length; step++) {
       if (this.addedChecklists[step].isSelected) { this.selectedCLs++; }
     }
@@ -82,7 +91,12 @@ export class PreviewQuestionComponent implements OnInit, OnChanges {
 
   onSelectedChangeRadio(e) {
     console.log('in onSelectedChangeRadio', e);
-    this.CLsValid = true;
+    // if (this.radioButtonClicked) {
+      this.CLsValid = true;
+      this.buttonValid.emit(true);
+    // } else {
+    //   this.CLsValid = false;
+    //   this.buttonValid.emit(false);
+    // }
   }
-
 }
