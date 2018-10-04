@@ -23,9 +23,9 @@ import { PollsListComponent } from './app-module-folders/polls-list/polls-list.c
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    AppRoutingModule,
-    NewpollMModule,
     VoteMModule,
+    NewpollMModule,
+    AppRoutingModule,
     MomentModule
   ],
   providers: [],

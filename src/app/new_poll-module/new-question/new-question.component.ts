@@ -187,7 +187,11 @@ export class NewQuestionComponent {
   }
 
   onWebURLChanged(ind) {
-    this.WebURL[ind] = 'https://' + this.model.q_options[ind].webURL;
+    if (this.model.q_options[ind].webURL.includes('https://') || this.model.q_options[ind].webURL.includes('http://')) {
+      this.WebURL[ind] = this.model.q_options[ind].webURL;
+    } else {
+      this.WebURL[ind] = 'https://' + this.model.q_options[ind].webURL;
+    }
     // this.safeWebURL[ind] = this._sanitizer.bypassSecurityTrustResourceUrl('http://' + this.model.q_options[ind].webURL);
   }
 

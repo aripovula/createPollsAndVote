@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { NewPoll } from './../models/new_poll-model';
 
+
 @Component({
   selector: 'app-new-poll',
   templateUrl: './new-poll.component.html',
@@ -16,7 +17,7 @@ export class NewPollComponent implements OnInit {
   // createdTimeStamp, expiresAt, comment
   model = new NewPoll(1, null, null, null, true, 'public', 'anonymous', null, this.dateF);
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     console.log('date=' + this.dateF);
@@ -35,7 +36,12 @@ export class NewPollComponent implements OnInit {
   onSubmit() {
     console.log('in onSubmit');
     console.log(this.model);
-    this.router.navigate(['/questions']);
+    const route = '/questions/' + this.model.questionsQnty;
+    console.log(route);
+
+    // this.router.navigate(['/questions/' + this.model.questionsQnty]);
+    this.router.navigate(['/questions', this.model.questionsQnty ]);
+    // this.router.navigate([route]);
     // const newPoll = new NewPoll(1, '', 1);
   }
 }

@@ -16,7 +16,7 @@ const appRoutes: Routes = [
   { path: 'vote1', component: VoteComponent}, /// , canActivate: [AuthGuard]  },
   { path: 'vote2', component: VoteComponent}, /// , canActivate: [AuthGuard]  },
   { path: 'question', component: NewQuestionComponent}, /// , canActivate: [AuthGuard]  },
-  { path: 'questions', component: LoopQuestionsComponent}, /// , canActivate: [AuthGuard]  },
+  // { path: 'questions/:qnty', component: LoopQuestionsComponent}, /// , canActivate: [AuthGuard]  },
     // { path: 'signout', component: SigninComponent},
     { path: 'not-found', component: NotFoundComponent},
     { path: '**', redirectTo: '/not-found' }
