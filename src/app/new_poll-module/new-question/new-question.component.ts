@@ -51,6 +51,7 @@ export class NewQuestionComponent implements OnDestroy {
   WebURL = [];
   validMessage = '';
   validMessageRadio = '';
+  isQTextUnTouched = true;
 
   subscription: Subscription;
 
@@ -61,19 +62,20 @@ export class NewQuestionComponent implements OnDestroy {
       console.log('StartEd');
       this.subscription = newPollService.questionLoopStarted$.subscribe(
         nextQuestion => {
-          this.myForm.resetForm();
+          // this.myForm.resetForm();
+          this.isQTextUnTouched = true;
           this.model = nextQuestion;
           console.log('got new Qu');
         }
     );
     }
 
-  AfterViewInit() {
-
-  }
-
   byId(item1: any, item2: any) {
     return item1.id === item2.id;
+  }
+
+  onQTextChanged() {
+    this.isQTextUnTouched = false;
   }
 
   onQntyChange() {

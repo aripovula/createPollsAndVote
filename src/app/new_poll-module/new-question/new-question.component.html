@@ -67,8 +67,9 @@
 
         <div class="form-element">
           <label for="q_text">Question text</label>
-          <input type="text" id="q_text" autocomplete="off" size="40" required [(ngModel)]="model.q_text" name="q_text" #q_text="ngModel">
-          <div [hidden]="q_text.valid || q_text.pristine || q_text.untouched" class="warning">
+          <input type="text" id="q_text" autocomplete="off" size="40" required 
+            [(ngModel)]="model.q_text" (ngModelChange)="onQTextChanged()" name="q_text" #q_text="ngModel">
+          <div [hidden]="q_text.valid || q_text.pristine || q_text.untouched || isQTextUnTouched" class="warning">
             <label></label>
             Question text is required
           </div>
