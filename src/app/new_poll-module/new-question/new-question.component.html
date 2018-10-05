@@ -1,11 +1,8 @@
 <div id="container">
   <div id="left">
     <div>
-      <br/>
-      <span style="margin-left: 110px; font-size: 18px;">New question - question # __:</span>
-      <br/>
       <span style="margin-left: 110px; font-size: 14px;color: green;">( this page uses 'Template-driven Forms' )</span>
-      
+
       <br/>
       <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
         <br/>
@@ -63,14 +60,15 @@
             </div>
           </div>
 
-          <p style="font-size: 14px; margin-left: 125px;">* try it on right panel. 'Next >' button turns blue when condition is met. Currently {{preview.selectedCLs}} checkboxes are selected ( uses local variable - parent gets data from child).</p>
+          <p style="font-size: 14px; margin-left: 125px;">* try it on right panel. 'Next >' button turns blue when condition is met. Currently {{preview.selectedCLs}} checkboxes
+            are selected ( uses local variable - parent gets data from child).</p>
           <hr/>
         </div>
-        
+
         <div class="form-element">
           <label for="q_text">Question text</label>
           <input type="text" id="q_text" autocomplete="off" size="40" required [(ngModel)]="model.q_text" name="q_text" #q_text="ngModel">
-          <div [hidden]="q_text.valid || q_text.pristine" class="warning">
+          <div [hidden]="q_text.valid || q_text.pristine || q_text.untouched" class="warning">
             <label></label>
             Question text is required
           </div>
@@ -116,7 +114,8 @@
               <div *ngSwitchCase="'text'">
                 <div class="form-element">
                   <label for="q_options">Option text</label>
-                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
+                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required 
+                  [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
                     #q_options="ngModel">
                   <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
                     <label></label>
@@ -182,17 +181,17 @@
               </div>
 
               <div *ngSwitchCase="'weburl'">
-                  <div class="form-element">
-                    <label for="q_options">Web-site URL: </label>
-                    <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].webURL"
-                      name="q_options{{ind}}" #q_options="ngModel" (ngModelChange)="onWebURLChanged(ind)">
-                    <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
-                      <label></label>
-                      Web-site URL is required
-                    </div>
+                <div class="form-element">
+                  <label for="q_options">Web-site URL: </label>
+                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].webURL"
+                    name="q_options{{ind}}" #q_options="ngModel" (ngModelChange)="onWebURLChanged(ind)">
+                  <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
+                    <label></label>
+                    Web-site URL is required
                   </div>
                 </div>
-  
+              </div>
+
               <div *ngSwitchCase="model.q_options[ind].type === 'imagelocal' 
               || model.q_options[ind].type === 'imageurl' 
               || model.q_options[ind].type === 'videourl' 
@@ -273,9 +272,13 @@
           <label></label>
           <button type="button" class="button button1" (click)="addOption()">+ add option</button>
           <span class="horIndent"></span>
-          <button type="submit" class="button button1" [disabled]="!questionForm.form.valid">Next ></button>
+          <!-- <button [disabled]="!questionForm.form.valid">Next ></button> -->
+          <button type="submit" class="button button1"
+          (click)="confirm()" [disabled]="!questionForm.form.valid">
+              Next >
+            </button>      
+  
         </div>
-
       </form>
 
     </div>
@@ -283,21 +286,11 @@
 
   <div id="right">
     <br/>
-    <app-preview-question
-      #preview
-      [q_text]="model.q_text" 
-      [multipleChoice]="model.multipleChoice" 
-      [q_options]="model.q_options" 
-      [addedChecklists]="addedChecklists"
-      [multipleChoiceOption]="multipleChoiceOption" 
-      [multipleChoiceOptionQnty]="multipleChoiceOptionQnty" 
-      [shouldCLsValidBeSetToFalse]="shouldCLsValidBeSetToFalse"
-      [safeURLimage]="safeURLimage"
-      [safeURL]="safeURL"
-      [WebURL]="WebURL"
-      [imageSize]="model.imageSize"
-      (buttonValid)="onButtonIsValid($event)"
-    >
+    <app-preview-question #preview [q_text]="model.q_text" [multipleChoice]="model.multipleChoice" [q_options]="model.q_options"
+      [addedChecklists]="addedChecklists" [multipleChoiceOption]="multipleChoiceOption" [multipleChoiceOptionQnty]="multipleChoiceOptionQnty"
+      [shouldCLsValidBeSetToFalse]="shouldCLsValidBeSetToFalse" [safeURLimage]="safeURLimage" [safeURL]="safeURL" [WebURL]="WebURL"
+      [imageSize]="model.imageSize" (buttonValid)="onButtonIsValid($event)">
     </app-preview-question>
   </div>
+
 </div>

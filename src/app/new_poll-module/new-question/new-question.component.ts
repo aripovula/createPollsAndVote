@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import * as moment from 'moment';
-import { MomentModule } from 'ngx-moment/moment.module';
+import { Subscription } from 'rxjs';
 
+import { NewPollService } from './../new-poll.service';
 import { NewQuestion } from './../models/new_question-model';
 import { NewOption } from './../models/new_option-model';
 import { OptionItemComponent } from './../option-item/option-item.component';
@@ -15,7 +15,9 @@ import { PreviewQuestionComponent } from '../preview-question/preview-question.c
   styleUrls: ['./new-question.component.css']
 })
 
-export class NewQuestionComponent {
+export class NewQuestionComponent implements OnDestroy {
+
+  @ViewChild('questionForm') myForm;
 
   @ViewChild(PreviewQuestionComponent)
   private previewComponent: PreviewQuestionComponent;
@@ -41,8 +43,6 @@ export class NewQuestionComponent {
   multipleChoiceOptionQnty = 2;
   shouldCLsValidBeSetToFalse = false;
 
-  // selectedCLs = 0;
-  // CLsValid = false;
   localImage = [];
   uploaderHidden = [];
   safeURL = [];
@@ -52,9 +52,21 @@ export class NewQuestionComponent {
   validMessage = '';
   validMessageRadio = '';
 
+  subscription: Subscription;
+
   constructor(
     private router: Router,
-    private _sanitizer: DomSanitizer) { }
+    private _sanitizer: DomSanitizer,
+    private newPollService: NewPollService) {
+      console.log('StartEd');
+      this.subscription = newPollService.questionLoopStarted$.subscribe(
+        nextQuestion => {
+          this.myForm.resetForm();
+          this.model = nextQuestion;
+          console.log('got new Qu');
+        }
+    );
+    }
 
   AfterViewInit() {
 
@@ -222,5 +234,14 @@ export class NewQuestionComponent {
     console.log(this.model);
     this.router.navigate(['/question']);
     // const newPoll = new NewPoll(1, '', 1);
+  }
+
+  confirm() {
+    this.newPollService.confirmAQuestionDone();
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component destroyed
+    this.subscription.unsubscribe();
   }
 }
