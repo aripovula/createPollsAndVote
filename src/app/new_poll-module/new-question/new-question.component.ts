@@ -59,16 +59,16 @@ export class NewQuestionComponent implements OnDestroy {
     private router: Router,
     private _sanitizer: DomSanitizer,
     private newPollService: NewPollService) {
-      console.log('StartEd');
-      this.subscription = newPollService.questionLoopStarted$.subscribe(
-        nextQuestion => {
-          // this.myForm.resetForm();
-          this.isQTextUnTouched = true;
-          this.model = nextQuestion;
-          console.log('got new Qu');
-        }
+    console.log('StartEd');
+    this.subscription = newPollService.questionLoopStarted$.subscribe(
+      nextQuestion => {
+        // this.myForm.resetForm();
+        this.isQTextUnTouched = true;
+        this.model = nextQuestion;
+        console.log('got new Qu');
+      }
     );
-    }
+  }
 
   byId(item1: any, item2: any) {
     return item1.id === item2.id;
