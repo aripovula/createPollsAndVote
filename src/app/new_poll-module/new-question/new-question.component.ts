@@ -2,7 +2,10 @@ import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
+import * as firebase from 'firebase';
 
+import { FirebaseService } from './../../firebase.service';
+import { envVars } from './../../../../envVars.js';
 import { NewPollService } from './../new-poll.service';
 import { NewQuestion } from './../models/new_question-model';
 import { NewOption } from './../models/new_option-model';
@@ -58,7 +61,9 @@ export class NewQuestionComponent implements OnDestroy {
   constructor(
     private router: Router,
     private _sanitizer: DomSanitizer,
-    private newPollService: NewPollService) {
+    private newPollService: NewPollService,
+    private firebaseService: FirebaseService
+  ) {
     console.log('StartEd');
     this.subscription = newPollService.questionLoopStarted$.subscribe(
       nextQuestion => {
@@ -239,6 +244,7 @@ export class NewQuestionComponent implements OnDestroy {
   }
 
   confirm() {
+    this.firebaseService.saveQuestionToDB(this.model);
     this.newPollService.confirmAQuestionDone();
   }
 
