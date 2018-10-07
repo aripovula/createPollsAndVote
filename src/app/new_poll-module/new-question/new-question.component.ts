@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, ViewChild, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -18,14 +18,16 @@ import { PreviewQuestionComponent } from '../preview-question/preview-question.c
   styleUrls: ['./new-question.component.css']
 })
 
-export class NewQuestionComponent implements OnDestroy {
+export class NewQuestionComponent implements OnInit, OnDestroy {
 
   @ViewChild('questionForm') myForm;
 
   @ViewChild(PreviewQuestionComponent)
   private previewComponent: PreviewQuestionComponent;
+  @Input() poll_id: string;
+  @Input() q_number: number;
 
-  model = new NewQuestion(1, 'false', null, 2, '1', [
+  model = new NewQuestion(1, this.poll_id, 'false', null, 2, '1', [
     new NewOption(0, 'text', '', '', '', '', '', '', '', '', ''),
     new NewOption(1, 'text', '', '', '', '', '', '', '', '', '')
   ]);
@@ -64,15 +66,22 @@ export class NewQuestionComponent implements OnDestroy {
     private newPollService: NewPollService,
     private firebaseService: FirebaseService
   ) {
-    console.log('StartEd');
+    console.log('StartEd poll_id = ', this.poll_id);
     this.subscription = newPollService.questionLoopStarted$.subscribe(
       nextQuestion => {
         // this.myForm.resetForm();
         this.isQTextUnTouched = true;
         this.model = nextQuestion;
-        console.log('got new Qu');
+        console.log('got new Qu2', this.model);
       }
     );
+    console.log('got new Qu', this.model);
+  }
+
+  ngOnInit() {
+    console.log('on init poll_id', this.poll_id);
+    this.model.questionOfPollWithId = this.poll_id;
+    this.model.sequenceNumber = this.q_number;
   }
 
   byId(item1: any, item2: any) {
@@ -236,15 +245,17 @@ export class NewQuestionComponent implements OnDestroy {
     }
   }
 
-  onSubmit() {
-    console.log('in onSubmit');
-    console.log(this.model);
-    this.router.navigate(['/question']);
-    // const newPoll = new NewPoll(1, '', 1);
-  }
+  // onSubmit() {
+  //   console.log('in onSubmit');
+  //   console.log(this.model);
+  //   this.router.navigate(['/question']);
+  //   // const newPoll = new NewPoll(1, '', 1);
+  // }
 
   confirm() {
-    this.firebaseService.saveQuestionToDB(this.model);
+    console.log('in confirm, poll_id = ', this.poll_id);
+    console.log('in confirm, poll_id = ', this.model.questionOfPollWithId);
+    this.firebaseService.saveNewQuestionToDB(this.model);
     this.newPollService.confirmAQuestionDone();
   }
 

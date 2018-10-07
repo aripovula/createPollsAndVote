@@ -6,7 +6,7 @@ import { NewQuestionComponent } from './new-question/new-question.component';
 import { LoopQuestionsComponent } from './loop-questions/loop-questions.component';
 
 const newpollRoutes: Routes = [
-    { path: 'questions/:qnty', component: LoopQuestionsComponent}, /// , canActivate: [AuthGuard]  },
+    { path: 'questions/:qnty/:poll_id', component: LoopQuestionsComponent}, /// , canActivate: [AuthGuard]  },
     { path: 'newpoll', component: NewPollComponent}, /// , canActivate: [AuthGuard]  },
     { path: 'question', component: NewQuestionComponent}, /// , canActivate: [AuthGuard]  },
 

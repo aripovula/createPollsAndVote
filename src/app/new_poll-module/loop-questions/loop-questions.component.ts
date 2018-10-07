@@ -16,6 +16,7 @@ import { NewOption } from '../models/new_option-model';
 export class LoopQuestionsComponent implements OnInit, OnDestroy {
   q_number = 1;
   q_qnty;
+  poll_id;
 
   constructor(private route: ActivatedRoute, private router: Router, private newPollService: NewPollService) {
     newPollService.aQuestionCompleted$.subscribe(
@@ -28,10 +29,12 @@ export class LoopQuestionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.q_qnty = this.route.snapshot.paramMap.get('qnty');
+    this.poll_id = this.route.snapshot.paramMap.get('poll_id');
+    console.log('poll_id = ', this.poll_id);
   }
 
   goToNextQuestion() {
-    const nextQuestion = new NewQuestion(1, 'false', null, 2, '1', [
+    const nextQuestion = new NewQuestion(this.q_number, this.poll_id, 'false', null, 2, '1', [
       new NewOption(0, 'text', '', '', '', '', '', '', '', '', ''),
       new NewOption(1, 'text', '', '', '', '', '', '', '', '', '')
     ]);

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import * as firebase from 'firebase';
+import { UUID } from 'angular2-uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,14 @@ export class FirebaseService {
 
   constructor() { }
 
-  saveQuestionToDB(question) {
-    firebase.database().ref('questions/' + 1).set(question);
+  saveNewPollToDB(poll, uid) {
+    console.log('poll = ', poll);
+    console.log('uid = ', uid);
+    firebase.database().ref('polls/' + uid).set(poll);
+  }
+
+  saveNewQuestionToDB(question) {
+    firebase.database().ref('questions/' + UUID.UUID()).set(question);
   }
 
 }

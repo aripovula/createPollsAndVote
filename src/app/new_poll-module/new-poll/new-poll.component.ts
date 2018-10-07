@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { UUID } from 'angular2-uuid';
 
+import { FirebaseService } from './../../firebase.service';
 import { NewPoll } from './../models/new_poll-model';
 
 
@@ -15,9 +17,9 @@ export class NewPollComponent implements OnInit {
   dateF = moment().toString();
   // id, name, questionsQnty, expiresOn, expiresMidnight, publicAccess, nameDiscloseOption, createdBy,
   // createdTimeStamp, expiresAt, comment
-  model = new NewPoll(1, null, null, null, true, 'public', 'anonymous', null, this.dateF);
+  model = new NewPoll(null, null, null, true, 'public', 'anonymous', null, this.dateF, '', '');
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private firebaseService: FirebaseService) {}
 
   ngOnInit() {
     console.log('date=' + this.dateF);
@@ -34,14 +36,8 @@ export class NewPollComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('in onSubmit');
-    console.log(this.model);
-    const route = '/questions/' + this.model.questionsQnty;
-    console.log(route);
-
-    // this.router.navigate(['/questions/' + this.model.questionsQnty]);
-    this.router.navigate(['/questions', this.model.questionsQnty ]);
-    // this.router.navigate([route]);
-    // const newPoll = new NewPoll(1, '', 1);
+    const uid = UUID.UUID();
+    this.firebaseService.saveNewPollToDB(this.model, uid);
+    this.router.navigate(['/questions', this.model.questionsQnty, uid ]);
   }
 }

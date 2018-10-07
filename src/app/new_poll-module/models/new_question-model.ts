@@ -2,7 +2,8 @@ import { NewOption } from './new_option-model';
 
 export class NewQuestion {
     constructor(
-        public id: number,
+        public sequenceNumber: number,
+        public questionOfPollWithId: string,
         public multipleChoice: string,
         public q_text: string,
         public questionsQnty: number,

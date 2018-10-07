@@ -1,6 +1,5 @@
 export class NewPoll {
     constructor(
-        public id: number,
         public name: string,
         public questionsQnty: number,
         public expiresOn: string,
@@ -9,7 +8,7 @@ export class NewPoll {
         public nameDiscloseOption: string,
         public createdBy: string,
         public createdTimeStamp: string,
-        public expiresAt?: string,
-        public comment?: string
+        public expiresAt: string,
+        public comment: string
     ) {}
 }
