@@ -17,7 +17,7 @@ export class NewPollComponent implements OnInit {
   dateF = moment().toString();
   // id, name, questionsQnty, expiresOn, expiresMidnight, publicAccess, nameDiscloseOption, createdBy,
   // createdTimeStamp, expiresAt, comment
-  model = new NewPoll(null, null, null, true, 'public', 'anonymous', null, this.dateF, '', '');
+  model = new NewPoll(null, null, null, null, true, 'public', 'anonymous', null, this.dateF, '', '');
 
   constructor(private router: Router, private firebaseService: FirebaseService) {}
 

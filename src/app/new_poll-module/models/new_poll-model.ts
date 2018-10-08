@@ -1,5 +1,6 @@
 export class NewPoll {
     constructor(
+        public id: string,
         public name: string,
         public questionsQnty: number,
         public expiresOn: string,
