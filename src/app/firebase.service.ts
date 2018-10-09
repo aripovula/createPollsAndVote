@@ -12,8 +12,6 @@ export class FirebaseService {
   constructor() { }
 
   saveNewPollToDB(poll, uid) {
-    console.log('poll = ', poll);
-    console.log('uid = ', uid);
     firebase.database().ref('polls/' + uid).set(poll);
   }
 

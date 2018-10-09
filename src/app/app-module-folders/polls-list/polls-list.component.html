@@ -1,15 +1,16 @@
 <div style="margin-left: 50px;">
   <h2>Vote and see poll results</h2>
-  <p style="color: gray">( to vote click the respective poll name )</p>
+  <p *ngIf="polls.length === 0">( No polls are found )</p>
+  <p *ngIf="polls.length > 0" style="color: gray">( to vote click the respective poll name )</p>
   <ul>
     <li *ngFor="let poll of polls; let ind=index;">
-      <a routerLink="/vote1" class="addnlightbg">{{poll.name}}</a>
+      <a routerLink="/poll/{{poll.id}}" class="addnlightbg">{{poll.name}}</a>
       <span class="horIndent"></span>
-      <a routerLink="/viewquestions:id" class="noDecor">view questions</a>
+      <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view questions</a>
       <span class="horIndent"></span>
-      <a routerLink="/editpoll:id" class="noDecor">edit</a>
+      <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
       <span class="horIndent"></span>
-      <a routerLink="/deletepoll:id" class="noDecor">delete</a>
+      <a routerLink="/deletepoll/{{poll.id}}" class="noDecor">delete</a>
     </li>
   </ul>
 </div>

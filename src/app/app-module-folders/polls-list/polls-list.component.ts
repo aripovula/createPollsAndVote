@@ -38,7 +38,7 @@ export class PollsListComponent implements OnInit {
       that.store.select('polls').subscribe(
         data => {
           console.log('data 2 = ', data);
-          this.polls2 = data[0];
+          this.polls2 = data.polls[0];
           console.log('data 2a = ', this.polls2);
         });
 
@@ -51,7 +51,7 @@ export class PollsListComponent implements OnInit {
       that.store.select('polls').subscribe(
         data => {
           console.log('data 2 = ', data);
-          this.polls2 = data[0];
+          this.polls2 = data.polls[0];
           console.log('data 2a = ', this.polls2);
         });
 
