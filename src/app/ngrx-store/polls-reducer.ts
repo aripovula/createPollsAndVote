@@ -5,33 +5,33 @@ import * as PollsActions from './polls-action';
 // import { ADD_USER, REMOVE_USER } from '../ngrx-actions/auth.action';
 
 export interface PollsState {
-  polls: Array<NewPoll>;
+  polls: any;
 }
 
 const initialState: PollsState = {
-    polls: []
+    polls: null
   };
 
-export function pollsReducer(state: PollsState = initialState, action: PollsActions.PollsActions) {
+export function pollsReducer(state = initialState, action: PollsActions.PollsActions) {
   switch (action.type) {
 
     case PollsActions.ADD_POLL:
       console.log('in PollsActions.ADD_POLL');
       return {
         ...state,
-        ...action.payload
+        polls: action.payload
       };
 
     case PollsActions.REMOVE_POLL:
         return {
             ...state,
-            ...state.polls.filter(({ id }) => id !== action.id)
+            polls: state.polls.filter(({ id }) => id !== action.id)
         };
 
     case PollsActions.UPDATE_POLL:
     return {
         ...state,
-        ...state.polls.map((poll) => {
+        polls: state.polls.map((poll) => {
         if (poll.id === action.id) {
           return {
             ...poll,
@@ -45,10 +45,10 @@ export function pollsReducer(state: PollsState = initialState, action: PollsActi
 
     case PollsActions.SET_POLLS:
       console.log('in PollsActions.payload = ', action.payload);
-      console.log('in PollsActions.SET_POLL = ', state.polls);
+      console.log('in PollsActions.SET_POLL = ', state);
       return {
         ...state,
-        ...action.payload
+        polls: action.payload
       };
 
     default:
