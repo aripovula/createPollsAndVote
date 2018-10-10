@@ -18,13 +18,13 @@ import * as AuthActions from './../../ngrx-store/auth-action';
 export class PollsListComponent implements OnInit {
   q_text = '';
   polls: Array<NewPoll>;
-  polls2: Array<NewPoll>;
+
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
     const that = this;
     this.polls = [];
-    return firebase.database().ref('/polls/').once('value').then((snapshot) => {
+    return firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
       snapshot.forEach((item) => {
         this.polls.push(item.val());
       });
@@ -38,8 +38,8 @@ export class PollsListComponent implements OnInit {
       that.store.select('polls').subscribe(
         data => {
           console.log('data 2 = ', data);
-          this.polls2 = data.polls[0];
-          console.log('data 2a = ', this.polls2);
+          const polls2 = data.polls[0];
+          console.log('data 2a = ', polls2);
         });
 
         that.store.select('auth').subscribe(data => {
@@ -51,8 +51,8 @@ export class PollsListComponent implements OnInit {
       that.store.select('polls').subscribe(
         data => {
           console.log('data 2 = ', data);
-          this.polls2 = data.polls[0];
-          console.log('data 2a = ', this.polls2);
+          const polls2 = data.polls[0];
+          console.log('data 2a = ', polls2);
         });
 
 

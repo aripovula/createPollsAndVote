@@ -3,13 +3,11 @@ export class NewPoll {
         public id: string,
         public name: string,
         public questionsQnty: number,
-        public expiresOn: string,
-        public expiresMidnight: boolean,
         public publicAccess: string,
         public nameDiscloseOption: string,
         public createdBy: string,
-        public createdTimeStamp: string,
-        public expiresAt: string,
+        public createdTimeStamp: number,
+        public expiresTimeStamp: number,
         public comment: string
     ) {}
 }

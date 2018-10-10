@@ -11,6 +11,11 @@
       <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
       <span class="horIndent"></span>
       <a routerLink="/deletepoll/{{poll.id}}" class="noDecor">delete</a>
+      <span class="horIndent"></span>
+      <span style="color: lightslategray; font-size: 14px;">created: {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
+      <span class="horIndent"></span>
+      <span style="color: lightslategray; font-size: 14px;">expires: {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm'}}</span>
+
     </li>
   </ul>
 </div>

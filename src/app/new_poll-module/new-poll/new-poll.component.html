@@ -13,6 +13,18 @@
     </div>
 
     <div class="form-element">
+      <label>expires:</label>
+      <input type="text" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" size="40" id="expiresDateTime" [(ngModel)]="expiresDateTime"
+        name="expiresDateTime" #expiresDateTime2="ngModel" [placeholder]="expiresDateTime">
+        <owl-date-time #dt></owl-date-time>
+{{expiresDateTime.valid}}
+      <div [hidden]="expiresDateTime.valid || expiresDateTime2.pristine" class="warning">
+        <label></label>
+        Expiration date and time are required
+      </div>
+    </div>
+
+    <div class="form-element">
       <label for="comments">comments</label>
       <input type="text" id="comment" autocomplete="off" size="40" placeholder=" ( OPTIONAL )" [(ngModel)]="model.comment" name="comment"
         #comment="ngModel">
@@ -25,35 +37,6 @@
       <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
         <label></label>
         Number of questions is required
-      </div>
-    </div>
-
-    <div class="form-element">
-      <label>expires on:</label>
-      <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" id="expiresOn" required [(ngModel)]="model.expiresOn"
-        name="expiresOn" #expiresOn="ngModel">
-      <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
-
-      &nbsp; &nbsp;
-
-      <span [hidden]="!model.expiresMidnight">
-        at midnight ( 00:00 )
-        <span class="horIndent"></span>
-        <a class="noDecor" style="cursor: pointer;" (click)="expiresMidnightF()">change expiration time</a>
-      </span>
-
-      <span [hidden]="model.expiresMidnight">
-        <span>@: &nbsp;</span>
-        <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="expiresAt" [(ngModel)]="model.expiresAt"
-          name="expiresAt" #expiresAt="ngModel">
-        <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
-        <span class="horIndent"></span> &nbsp; &nbsp;
-        <a class="noDecor" style="cursor: pointer;" (click)="expiresMidnightT()"> set to expire at midnight</a>
-      </span>
-
-      <div [hidden]="expiresOn.valid || expiresOn.pristine" class="warning">
-        <label></label>
-        Date is required
       </div>
     </div>
 
