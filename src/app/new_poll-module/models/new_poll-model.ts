@@ -8,6 +8,8 @@ export class NewPoll {
         public createdBy: string,
         public createdTimeStamp: number,
         public expiresTimeStamp: number,
-        public comment: string
+        public comment: string,
+        public privateAccessType: string,
+        public privateAccessorsList: string
     ) {}
 }

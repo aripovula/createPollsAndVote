@@ -20,11 +20,11 @@ import * as AuthActions from './../../ngrx-store/auth-action';
 })
 export class NewPollComponent implements OnInit {
   poll_id = null;
-  dateF: number;
   expiresDateTime = '';
+  changeDate = true;
   // id, name, questionsQnty, publicAccess, nameDiscloseOption, createdBy,
   // createdTimeStamp, expiresAt, comment
-  model = new NewPoll(null, null, null, 'public', 'anonymous', null, moment().valueOf(), 0, '');
+  model = new NewPoll(null, null, null, 'public', 'anonymous', null, moment().valueOf(), 0, '', 'withusernames', null);
 
   constructor(
     private router: Router,
@@ -47,9 +47,14 @@ export class NewPollComponent implements OnInit {
             console.log('date = ', date);
             console.log('date type = ', typeof date);
             this.expiresDateTime = date;
+            this.changeDate = false;
           }
         });
     }
+  }
+
+  onChangeDateClicked() {
+    this.changeDate = true;
   }
 
   onSubmit() {

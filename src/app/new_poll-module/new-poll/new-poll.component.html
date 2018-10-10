@@ -1,6 +1,9 @@
 <div>
   <br/>
-  <span style="margin-left: 110px; font-size: 18px;">New poll:</span>
+  <h4 style="margin-left: 110px;">
+    <span *ngIf="!poll_id">New poll:</span>
+    <span *ngIf="poll_id">Edit poll:</span>
+  </h4>
 
   <form (ngSubmit)="onSubmit()" #pollForm="ngForm">
     <div class="form-element">
@@ -14,14 +17,21 @@
 
     <div class="form-element">
       <label>expires:</label>
-      <input type="text" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" size="40" id="expiresDateTime" [(ngModel)]="expiresDateTime"
-        name="expiresDateTime" #expiresDateTime2="ngModel" [placeholder]="expiresDateTime">
+      <span *ngIf="!changeDate">
+        {{expiresDateTime}}
+        <span class="horIndent"></span>
+        <span class="noDecor" (click)="onChangeDateClicked()">change</span>
+      </span>
+      <span *ngIf="changeDate">
+        <input type="text" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" size="40" id="expiresDateTime" [(ngModel)]="expiresDateTime"
+          required name="expiresDateTime" #expiresDateTime2="ngModel">
         <owl-date-time #dt></owl-date-time>
-{{expiresDateTime.valid}}
-      <div [hidden]="expiresDateTime.valid || expiresDateTime2.pristine" class="warning">
-        <label></label>
-        Expiration date and time are required
-      </div>
+        {{expiresDateTime.valid}}
+        <div [hidden]="expiresDateTime2.valid || expiresDateTime2.pristine" class="warning">
+          <label></label>
+          Expiration date and time are required
+        </div>
+      </span>
     </div>
 
     <div class="form-element">
@@ -52,26 +62,49 @@
       </label>
     </div>
 
+    <div *ngIf="model.publicAccess == 'private'">
+      <div style="margin-left: 135px;">
+        <label>
+          <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
+            value="withusernames"> users wth these usernames ( comma separated )
+        </label>
+      </div>
+      <div style="margin-left: 135px;">
+        <label>
+          <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
+            value="withdomain"> users with below domain name(s)
+        </label>
+      </div>
+      <div style="margin-left: 135px;">
+        <label>
+          <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
+            value="withaccesscode"> users with following access code(s)  ( comma separated )
+        </label>
+      </div>
+      <span class="verIndent"></span>
+      <div style="margin-left: 135px;">
+        <input type="text" id="privateAccessorsList" name="privateAccessorsList" style="width:400px;border-radius: 0px;" min="1"
+          required [(ngModel)]="model.privateAccessorsList" #privateAccessors="ngModel">
+      </div>
+    </div>
+
     <br/>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="anonymous"
-        [(ngModel)]="model.nameDiscloseOption"
-        #nameDiscloseOption="ngModel"> voter's name is anonymous - not shown
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="anonymous" [(ngModel)]="model.nameDiscloseOption"
+          #nameDiscloseOption="ngModel"> voter's name is anonymous - not shown
       </label>
     </div>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="discreet" 
-        [(ngModel)]="model.nameDiscloseOption"
-        #nameDiscloseOption="ngModel"> voter's name is discreet - shown
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="discreet" [(ngModel)]="model.nameDiscloseOption"
+          #nameDiscloseOption="ngModel"> voter's name is discreet - shown
       </label>
     </div>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="optional"
-        [(ngModel)]="model.nameDiscloseOption"
-        #nameDiscloseOption="ngModel"> voter chooses whether his / her name should be disclosed
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="optional" [(ngModel)]="model.nameDiscloseOption"
+          #nameDiscloseOption="ngModel"> voter chooses whether his / her name should be disclosed
       </label>
     </div>
 
