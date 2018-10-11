@@ -23,7 +23,7 @@ export class NewPollComponent implements OnInit {
   expiresDateTime = '';
   changeDate = true;
   // id, name, questionsQnty, publicAccess, nameDiscloseOption, createdBy,
-  // createdTimeStamp, expiresAt, comment
+  // createdTimeStamp, expiresAt, comment, publicAccessType, publicAccessors
   model = new NewPoll(null, null, null, 'public', 'anonymous', null, moment().valueOf(), 0, '', 'withusernames', null);
 
   constructor(
@@ -42,12 +42,14 @@ export class NewPollComponent implements OnInit {
           if (data != null && data.polls != null) {
             const data2 = data.polls.filter(({ id }) => id === this.poll_id);
             this.model = data2[0];
-            console.log('model = ', this.model);
-            const date: string = moment(this.model.expiresTimeStamp).format('MMM DD, YYYY, HH:MM A').toString();
-            console.log('date = ', date);
-            console.log('date type = ', typeof date);
-            this.expiresDateTime = date;
-            this.changeDate = false;
+            if (this.model != null) {
+              console.log('model = ', this.model);
+              const date: string = moment(this.model.expiresTimeStamp).format('MMM DD, YYYY, HH:MM A').toString();
+              console.log('date = ', date);
+              console.log('date type = ', typeof date);
+              this.expiresDateTime = date;
+              this.changeDate = false;
+            }
           }
         });
     }
@@ -59,13 +61,21 @@ export class NewPollComponent implements OnInit {
 
   onSubmit() {
     let uid;
+    console.log('poll_id = ', this.poll_id);
+    console.log('expiresTimeStamp = ', this.expiresDateTime);
+    console.log('expiresTimeStamp.length = ', this.expiresDateTime.length);
+
     if (this.poll_id == null) {
       uid = UUID.UUID();
       this.model.id = uid;
+      this.model.expiresTimeStamp = moment(this.expiresDateTime).valueOf() * 1;
     } else {
       uid = this.model.id;
+      if (this.changeDate) {
+        this.model.expiresTimeStamp = moment(this.expiresDateTime).valueOf() * 1;
+      }
     }
-    this.model.expiresTimeStamp = moment(this.expiresDateTime).valueOf() * 1;
+
     console.log('model.expires = ', this.model.expiresTimeStamp);
 
     this.firebaseService.saveNewPollToDB(this.model, uid);
@@ -78,6 +88,10 @@ export class NewPollComponent implements OnInit {
     //     console.log('data 2a = ', polls2);
     //   });
 
-    this.router.navigate(['/questions', this.model.questionsQnty, uid]);
+    if (this.poll_id == null) {
+      this.router.navigate(['/questions', this.model.questionsQnty, uid]);
+    } else {
+      this.router.navigate(['/viewquestions', this.poll_id]);
+    }
   }
 }

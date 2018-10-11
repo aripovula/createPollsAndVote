@@ -13,6 +13,10 @@ import { NotFoundComponent } from './app-module-folders/not-found/not-found.comp
 import { AppRoutingModule } from './app-routing.module';
 import { PollsListComponent } from './app-module-folders/polls-list/polls-list.component';
 import { appReducers } from './ngrx-store/app-reducers';
+import { QuestionsFilterPipe } from './pipes/questions-filter.pipe';
+import { QuestionsListComponent } from './questions-list/questions-list.component';
+import { CountQuestionsPipe } from './pipes/count-questions.pipe';
+import { ReversePollsOrderPipe } from './pipes/reverse-polls-order.pipe';
 
 
 
@@ -21,6 +25,10 @@ import { appReducers } from './ngrx-store/app-reducers';
     AppComponent,
     NotFoundComponent,
     PollsListComponent,
+    QuestionsFilterPipe,
+    QuestionsListComponent,
+    CountQuestionsPipe,
+    ReversePollsOrderPipe,
   ],
   imports: [
     BrowserModule,

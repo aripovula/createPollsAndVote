@@ -1,13 +1,13 @@
-import * as firebase from 'firebase';
 import { Component, OnInit } from '@angular/core';
+import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
 
 import { NewPoll } from '../../new_poll-module/models/new_poll-model';
 import { AppState } from '../../ngrx-store/app-reducers';
-import * as pollsState from '../../ngrx-store/polls-reducer';
 import * as authState from '../../ngrx-store/auth-reducer';
-import * as PollsActions from '../../ngrx-store/polls-action';
 import * as AuthActions from './../../ngrx-store/auth-action';
+import * as pollsState from '../../ngrx-store/polls-reducer';
+import * as PollsActions from '../../ngrx-store/polls-action';
 
 
 @Component({
@@ -16,46 +16,44 @@ import * as AuthActions from './../../ngrx-store/auth-action';
   styleUrls: ['./polls-list.component.css']
 })
 export class PollsListComponent implements OnInit {
-  q_text = '';
   polls: Array<NewPoll>;
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
     const that = this;
+
     this.polls = [];
-    return firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
+    firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
       snapshot.forEach((item) => {
         this.polls.push(item.val());
       });
-      console.log('polls = ', this.polls);
-
-      that.store.dispatch(new PollsActions.SetPolls(this.polls));
-      that.store.dispatch(new PollsActions.SetPolls(this.polls));
-      that.store.dispatch(new AuthActions.SetUserId('A1234'));
-      that.store.dispatch(new AuthActions.SetUserId('A1234'));
-
-      that.store.select('polls').subscribe(
-        data => {
-          console.log('data 2 = ', data);
-          const polls2 = data.polls[0];
-          console.log('data 2a = ', polls2);
-        });
-
-        that.store.select('auth').subscribe(data => {
-          const abc = data.userId;
-          console.log('data 3 = ', abc);
-        });
-
-
-      that.store.select('polls').subscribe(
-        data => {
-          console.log('data 2 = ', data);
-          const polls2 = data.polls[0];
-          console.log('data 2a = ', polls2);
-        });
-
-
     });
+
+
+    console.log('polls = ', this.polls);
+
+    that.store.dispatch(new PollsActions.SetPolls(this.polls));
+    that.store.dispatch(new AuthActions.SetUserId('A1234'));
+
+    // that.store.select('polls').subscribe(
+    //   data => {
+    //     console.log('data 2 = ', data);
+    //     const polls2 = data.polls[0];
+    //     console.log('data 2a = ', polls2);
+    //   });
+
+    // that.store.select('auth').subscribe(data => {
+    //   const abc = data.userId;
+    //   console.log('data 3 = ', abc);
+    // });
+
+    // that.store.select('polls').subscribe(
+    //   data => {
+    //     console.log('data 2 = ', data);
+    //     const polls2 = data.polls[0];
+    //     console.log('data 2a = ', polls2);
+    //   });
+
   }
 }

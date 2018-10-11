@@ -2,20 +2,20 @@
   <h2>Vote and see poll results</h2>
   <p *ngIf="polls.length === 0">( No polls are found )</p>
   <p *ngIf="polls.length > 0" style="color: gray">( to vote click the respective poll name )</p>
-  <ul>
+  <ul *ngIf="polls.length > 0">
     <li *ngFor="let poll of polls; let ind=index;">
       <a routerLink="/poll/{{poll.id}}" class="addnlightbg">{{poll.name}}</a>
-      <span class="horIndent"></span>
-      <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view questions</a>
+      <br/>
+      <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view / edit questions</a>
       <span class="horIndent"></span>
       <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
       <span class="horIndent"></span>
       <a routerLink="/deletepoll/{{poll.id}}" class="noDecor">delete</a>
       <span class="horIndent"></span>
-      <span style="color: lightslategray; font-size: 14px;">created: {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
+      <span style="color: lightslategray; font-size: 14px;">added: {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
       <span class="horIndent"></span>
       <span style="color: lightslategray; font-size: 14px;">expires: {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm'}}</span>
-
+      <span class="verIndent"></span>
     </li>
   </ul>
 </div>

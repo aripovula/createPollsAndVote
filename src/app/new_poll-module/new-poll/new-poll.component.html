@@ -42,12 +42,20 @@
 
     <div class="form-element">
       <label># of questions:</label>
+      <span *ngIf="!poll_id">
       <input type="number" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty" name="questionsQnty"
         #questionsQnty="ngModel">
-      <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
-        <label></label>
-        Number of questions is required
-      </div>
+        <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
+            <label></label>
+            Number of questions is required
+          </div>    
+      </span>
+
+      <span *ngIf="poll_id">
+        {{model.questionsQnty}} questions
+        <span class="horIndent"></span>
+        <span style="font-size: 14px;">to edit click 'Next' button </span>
+      </span>
     </div>
 
     <br/>
