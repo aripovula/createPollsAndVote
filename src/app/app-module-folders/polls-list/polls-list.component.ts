@@ -27,19 +27,11 @@ export class PollsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const that = this;
-    firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
-      that.polls = new Array();
-      snapshot.forEach((item) => {
-        that.polls.push(item.val());
-      });
-      that.store.dispatch(new PollsActions.SetPolls(that.polls));
-      console.log('polls = ', that.polls);
-    });
+    return this.firebaseService.fetchPollsAndSaveToStore()
+    .then((data: Array<NewPoll>) => {this.polls = data; });
 
-    that.store.dispatch(new AuthActions.SetUserId('A1234'));
 
-    // that.store.select('polls').subscribe(
+    // this.store.select('polls').subscribe(
     //   data => {
     //     console.log('data 2 = ', data);
     //     const polls2 = data.polls[0];
