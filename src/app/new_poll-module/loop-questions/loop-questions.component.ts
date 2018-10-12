@@ -34,7 +34,7 @@ export class LoopQuestionsComponent implements OnInit, OnDestroy {
   }
 
   goToNextQuestion() {
-    const nextQuestion = new NewQuestion(this.q_number, this.poll_id, 'false', null, 2, '1', [
+    const nextQuestion = new NewQuestion(null, this.q_number, this.poll_id, 'false', null, 2, '1', [
       new NewOption(0, 'text', '', '', '', '', '', '', '', '', ''),
       new NewOption(1, 'text', '', '', '', '', '', '', '', '', '')
     ]);

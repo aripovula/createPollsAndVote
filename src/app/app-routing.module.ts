@@ -1,3 +1,4 @@
+import { NewQuestionComponent } from './new_poll-module/new-question/new-question.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -11,6 +12,7 @@ import { PollsListComponent } from './app-module-folders/polls-list/polls-list.c
 const appRoutes: Routes = [
   { path: 'home', component: PollsListComponent}, /// , canActivate: [AuthGuard]  },
   { path: 'viewquestions/:poll_id', component: QuestionsListComponent}, /// , canActivate: [AuthGuard]  },
+  { path: 'editquestion/:question_id', component: NewQuestionComponent}, /// , canActivate: [AuthGuard]  },
   { path: 'vote1', component: VoteComponent}, /// , canActivate: [AuthGuard]  },
   { path: 'vote2', component: VoteComponent}, /// , canActivate: [AuthGuard]  },
 

@@ -1,23 +1,29 @@
 <div style="margin-left: 50px;">
-  <h2>Questions list</h2>
-  <p *ngIf="questions" style="color: green">{{poll_name}}</p>
-  <p *ngIf="questions">this poll has <span style="color:green;font-size:20px;">{{questions | countQuestions: poll_id}}</span> question(s)</p>
-  <a routerLink="/addnewq/{{poll_id}}" class="noDecor">add new question</a>
-  <span class="horIndent"></span><span class="horIndent"></span>
+  <h3>Questions list for:</h3>
+  <h3 *ngIf="poll_name" style="color: green">{{poll_name}}</h3>
+  <h3 *ngIf="!poll_name" style="color: green">poll name is not defined</h3>
+  <a routerLink="/questions/1/{{poll_id}}" class="noDecor">add new question</a>
+  <span class="horIndent"></span>
+  <span class="horIndent"></span>
   <a routerLink="/home" class="noDecor">go back to Polls list</a>
-  
-  <ol *ngIf="questions">
-    <li *ngFor="let question of questions | questionsFilter: poll_id; let ind=index;">
-      <a routerLink="/question/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
-      <span class="horIndent"></span>
-      <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
-      <span class="horIndent"></span>
-      <a routerLink="/deletequestion/{{question.id}}" class="noDecor">delete</a>
-      <span class="horIndent"></span>
-      <a routerLink="/copyquestion/{{question.id}}" class="noDecor">copy</a>
-      <span class="horIndent"></span>
-      <a routerLink="/movequestion/{{question.id}}" class="noDecor">move</a>
-      <span class="horIndent"></span>
-    </li>
-  </ol>
+  <br/><br/>
+  <div *ngIf="!questions">No questions are found</div>
+  <div *ngIf="questions">
+    <p>this poll has
+      <span style="color:green;font-size:20px;">{{questions | countQuestions: poll_id}}</span> question(s)</p>
+    <ol>
+      <li *ngFor="let question of questions | questionsFilter: poll_id; let ind=index;">
+        <a routerLink="/question/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
+        <span class="horIndent"></span>
+        <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
+        <span class="horIndent"></span>
+        <a (click)="onDeleteQuestionClicked(question.id)" class="noDecor">delete</a>
+        <span class="horIndent"></span>
+        <a routerLink="/copyquestion/{{question.id}}" class="noDecor">copy</a>
+        <span class="horIndent"></span>
+        <a routerLink="/movequestion/{{question.id}}" class="noDecor">move</a>
+        <span class="horIndent"></span>
+      </li>
+    </ol>
+  </div>
 </div>

@@ -1,8 +1,10 @@
 import { Component, ViewChild, Input, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import * as firebase from 'firebase';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { UUID } from 'angular2-uuid';
 
 import { FirebaseService } from './../../firebase.service';
 import { envVars } from './../../../../envVars.js';
@@ -11,6 +13,9 @@ import { NewQuestion } from './../models/new_question-model';
 import { NewOption } from './../models/new_option-model';
 import { OptionItemComponent } from './../option-item/option-item.component';
 import { PreviewQuestionComponent } from '../preview-question/preview-question.component';
+import { AppState } from '../../ngrx-store/app-reducers';
+import * as questionsState from '../../ngrx-store/questions-reducer';
+import * as QuestionsActions from '../../ngrx-store/questions-action';
 
 @Component({
   selector: 'app-new-question',
@@ -27,7 +32,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   @Input() poll_id: string;
   @Input() q_number: number;
 
-  model = new NewQuestion(1, this.poll_id, 'false', null, 2, '1', [
+  model = new NewQuestion(null, 1, this.poll_id, 'false', null, 2, '1', [
     new NewOption(0, 'text', '', '', '', '', '', '', '', '', ''),
     new NewOption(1, 'text', '', '', '', '', '', '', '', '', '')
   ]);
@@ -57,14 +62,17 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   validMessage = '';
   validMessageRadio = '';
   isQTextUnTouched = true;
+  question_id;
 
   subscription: Subscription;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private _sanitizer: DomSanitizer,
     private newPollService: NewPollService,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private store: Store<AppState>
   ) {
     console.log('StartEd poll_id = ', this.poll_id);
     this.subscription = newPollService.questionLoopStarted$.subscribe(
@@ -82,6 +90,22 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
     console.log('on init poll_id', this.poll_id);
     this.model.questionOfPollWithId = this.poll_id;
     this.model.sequenceNumber = this.q_number;
+    this.question_id = this.route.snapshot.paramMap.get('question_id');
+    console.log('question_id =', this.question_id);
+
+    if (this.question_id != null) {
+      this.store.select('questions').subscribe(
+        data => {
+          console.log('q data = ', data);
+
+          if (data != null && data.questions != null) {
+            const data2 = data.questions.filter(({ id }) => id === this.question_id);
+            this.model = data2[0];
+            console.log('q model = ', this.model);
+          }
+        }
+      );
+    }
   }
 
   byId(item1: any, item2: any) {
@@ -255,7 +279,14 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   confirm() {
     console.log('in confirm, poll_id = ', this.poll_id);
     console.log('in confirm, poll_id = ', this.model.questionOfPollWithId);
-    this.firebaseService.saveNewQuestionToDB(this.model);
+    let uid;
+    if (this.question_id == null) {
+      uid = UUID.UUID();
+      this.model.id = uid;
+    } else {
+      uid = this.model.id;
+    }
+    this.firebaseService.saveNewQuestionToDB(this.model, uid);
     this.newPollService.confirmAQuestionDone();
   }
 

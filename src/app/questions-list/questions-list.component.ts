@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
+import { FirebaseService } from './../firebase.service';
 import { NewPoll } from './../new_poll-module/models/new_poll-model';
 import { NewQuestion } from './../new_poll-module/models/new_question-model';
 import { AppState } from '../ngrx-store/app-reducers';
@@ -24,7 +25,8 @@ export class QuestionsListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private firebaseService: FirebaseService,
   ) { }
 
   ngOnInit() {
@@ -35,14 +37,18 @@ export class QuestionsListComponent implements OnInit {
       snapshot.forEach((item) => {
         that.questions.push(item.val());
       });
+      console.log('questions fireb q-list = ', that.questions);
+      that.store.dispatch(new QuestionsActions.SetQuestions(that.questions));
+      this.subscribeToStore(that);
     });
 
-    that.store.dispatch(new QuestionsActions.SetQuestions(that.questions));
     that.poll_id = that.route.snapshot.paramMap.get('poll_id');
-    console.log('questions = ', that.questions);
+  }
 
+  subscribeToStore(that) {
     that.store.select('polls').subscribe(
       data => {
+        console.log('data 4 polls = ', data);
         if (data.polls != null) {
           const one_poll = data.polls.filter(poll => (poll.id === this.poll_id));
           console.log('one_poll =', one_poll);
@@ -51,15 +57,23 @@ export class QuestionsListComponent implements OnInit {
             console.log('poll_name = ', this.poll_name);
           }
         }
-      });
+      }
+    );
 
     that.store.select('questions').subscribe(
       data => {
+        console.log('data 4 quests', data);
         if (data != null) {
-          that.questions = data[0];
-          console.log('data 2a = ', that.questions);
+          that.questions = data.questions;
+          console.log('data ques = ', that.questions);
         }
-      });
+      }
+    );
+  }
 
+  onDeleteQuestionClicked(id) {
+    this.firebaseService.deleteQuestionFromDB(id);
+    this.store.dispatch(new QuestionsActions.RemoveQuestion(id));
+    this.router.navigate(['/viewquestions', this.poll_id]);
   }
 }

@@ -15,8 +15,30 @@ export class FirebaseService {
     firebase.database().ref('polls/' + uid).set(poll);
   }
 
-  saveNewQuestionToDB(question) {
-    firebase.database().ref('questions/' + UUID.UUID()).set(question);
+  deletePollFromDB(uid) {
+    const adaRef = firebase.database().ref('polls/' + uid);
+    adaRef.remove()
+      .then(function () {
+        console.log('Remove succeeded.');
+      })
+      .catch(function (error) {
+        console.log('Remove failed: ' + error.message);
+      });
+  }
+
+  saveNewQuestionToDB(question, uid) {
+    firebase.database().ref('questions/' + uid).set(question);
+  }
+
+  deleteQuestionFromDB(uid) {
+    const adaRef = firebase.database().ref('questions/' + uid);
+    adaRef.remove()
+      .then(function () {
+        console.log('Remove succeeded.');
+      })
+      .catch(function (error) {
+        console.log('Remove failed: ' + error.message);
+      });
   }
 
 }

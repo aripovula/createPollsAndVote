@@ -5,8 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ReversePollsOrderPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
-    return null;
+  transform(polls: any, order?: any): any {
+    return polls.reverse();
   }
-
 }
