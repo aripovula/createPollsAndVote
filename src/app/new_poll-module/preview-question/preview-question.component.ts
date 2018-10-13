@@ -22,6 +22,8 @@ export class PreviewQuestionComponent implements OnInit, OnChanges {
   @Input() multipleChoiceOption: string;
   @Input() multipleChoiceOptionQnty: number;
   @Input() shouldCLsValidBeSetToFalse: boolean;
+  @Input() dateTimeToDisplay1: string;
+  @Input() dateTimeToDisplay2: string;
   @Output() buttonValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   sizes = [100, 150, 250];

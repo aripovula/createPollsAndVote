@@ -35,8 +35,8 @@ export class LoopQuestionsComponent implements OnInit, OnDestroy {
 
   goToNextQuestion() {
     const nextQuestion = new NewQuestion(null, this.q_number, this.poll_id, 'false', null, 2, '1', [
-      new NewOption(0, 'text', '', '', '', '', '', '', '', '', ''),
-      new NewOption(1, 'text', '', '', '', '', '', '', '', '', '')
+      new NewOption(0, 'text', '', '', '', '', '', null, null),
+      new NewOption(1, 'text', '', '', '', '', '', null, null)
     ]);
     this.newPollService.announceQuestionStart(nextQuestion);
   }

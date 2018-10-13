@@ -1,6 +1,8 @@
 <span *ngIf="option.type=='text' " class="inlineText">
   <span>{{option.text}}</span>
-  <span *ngIf="option.text.length == 0">Option {{ind+1}} text goes here. This version of the page uses 'Template-driven Forms' and consists of 4 rather verbose components (compared to __ more decoupled components in version of this page that uses NgRX). Some other forms of this app use Reactive Form and some others use Dynamic Form.</span>
+  <span *ngIf="option.text.length == 0">Option {{ind+1}} text goes here. This version of the page uses 'Template-driven Forms' and consists of 4 rather verbose
+    components (compared to __ more decoupled components in version of this page that uses NgRX). Some other forms of this
+    app use Reactive Form and some others use Dynamic Form.</span>
   <br/>
   <br/>
 </span>
@@ -43,9 +45,9 @@
 
 <span *ngIf="option.type=='weburl' " style="margin-left: 88px;">
   <span *ngIf="WebURL">
-      <button (click)="goToUrl()">{{WebURL}}</button>
-      <br/>
-      <br/>
+    <button (click)="goToUrl()">{{WebURL}}</button>
+    <br/>
+    <br/>
   </span>
   <span *ngIf="!WebURL"> Option {{ind+1}} web-site link goes here
     <br/>
@@ -53,41 +55,61 @@
   </span>
 </span>
 
+<span *ngIf="option.type=='datetime' " class="inlineText">
+    {{option.startDateTime | date:'MMM dd, yyyy @ hh:mm a'}}
+    <span *ngIf="!option.startDateTime"> Option {{ind+1}} date and time go here</span>
+    <br/>
+    <br/>
+</span>
+
+<span *ngIf="option.type=='datestimes' " class="inlineText">
+  <span *ngIf="option.startDateTime && option.endDateTime">
+    from
+    <span style="color: rgb(48, 190, 238)">{{option.startDateTime | date:'MMM dd, yyyy @ hh:mm a'}}</span>
+    &nbsp; to &nbsp;
+    <span style="color: rgb(48, 190, 238)">{{option.endDateTime | date:'MMM dd, yyyy @ hh:mm a'}}</span>
+  </span>
+  <span *ngIf="!option.startDateTime || !option.endDateTime"> Option {{ind+1}} dates and times go here</span>
+
+  <br/>
+  <br/>
+</span>
+
 <span *ngIf="option.type=='date' " class="inlineText">
-  {{option.startDate | date:'mediumDate'}}
-  <span *ngIf="!option.startDate"> Option {{ind+1}} date goes here</span>
+  {{option.startDateTime | date:'mediumDate'}}
+  <span *ngIf="!option.startDateTime"> Option {{ind+1}} date goes here</span>
   <br/>
   <br/>
 </span>
 
 <span *ngIf="option.type=='dates' " class="inlineText">
-  <span *ngIf="option.startDate && option.endDate">
+  <span *ngIf="option.startDateTime && option.endDateTime">
     from
-    <span style="color: rgb(48, 190, 238)">{{option.startDate | date:'mediumDate'}}</span>
+    <span style="color: rgb(48, 190, 238)">{{option.startDateTime | date:'mediumDate'}}</span>
     &nbsp; to &nbsp;
-    <span style="color: rgb(48, 190, 238)">{{option.endDate | date:'mediumDate'}}</span>
+    <span style="color: rgb(48, 190, 238)">{{option.endDateTime | date:'mediumDate'}}</span>
   </span>
-  <span *ngIf="!option.startDate || !option.endDate"> Option {{ind+1}} dates go here</span>
+  <span *ngIf="!option.startDateTime || !option.endDateTime"> Option {{ind+1}} dates go here</span>
 
   <br/>
   <br/>
 </span>
 
 <span *ngIf="option.type=='time' " class="inlineText">
-  {{option.startTime | date:'h:mm a ( z )'}}
-  <span *ngIf="!option.startTime"> Option {{ind+1}} time goes here</span>
+  {{option.startDateTime | date:'h:mm a'}}
+  <span *ngIf="!option.startDateTime"> Option {{ind+1}} time goes here</span>
   <br/>
   <br/>
 </span>
 
 <span *ngIf="option.type=='times' " class="inlineText">
-  <span *ngIf="option.startTime && option.endTime">
+  <span *ngIf="option.startDateTime && option.endDateTime">
     from
-    <span style="color: rgb(48, 190, 238)">{{option.startTime | date:'h:mm a ( z )'}}</span>
+    <span style="color: rgb(48, 190, 238)">{{option.startDateTime | date:'h:mm a ( z )'}}</span>
     &nbsp; to &nbsp;
-    <span style="color: rgb(48, 190, 238)">{{option.endTime | date:'h:mm a ( z )'}}</span>
+    <span style="color: rgb(48, 190, 238)">{{option.endDateTime | date:'h:mm a ( z )'}}</span>
   </span>
-  <span *ngIf="!option.startTime || !option.endTime"> Option {{ind+1}} times go here</span>
+  <span *ngIf="!option.startDateTime || !option.endDateTime"> Option {{ind+1}} times go here</span>
   <br/>
   <br/>
 </span>

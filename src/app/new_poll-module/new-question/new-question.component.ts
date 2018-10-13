@@ -2,6 +2,7 @@ import { Component, ViewChild, Input, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import * as firebase from 'firebase';
+import * as moment from 'moment';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UUID } from 'angular2-uuid';
@@ -33,8 +34,8 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   @Input() q_number: number;
 
   model = new NewQuestion(null, 1, this.poll_id, 'false', null, 2, '1', [
-    new NewOption(0, 'text', '', '', '', '', '', '', '', '', ''),
-    new NewOption(1, 'text', '', '', '', '', '', '', '', '', '')
+    new NewOption(0, 'text', '', '', '', '', '', null, null),
+    new NewOption(1, 'text', '', '', '', '', '', null, null)
   ]);
 
   // because selected checklists are discarded when uses navigates away it is not part of the model
@@ -43,6 +44,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   objects = [{ type: 'text', name: 'text' }, { type: 'imagelocal', name: 'image - local file' },
   { type: 'imageurl', name: 'image URL' }, { type: 'videourl', name: 'YouTube video URL' },
   { type: 'weburl', name: 'website URL' },
+  { type: 'datetime', name: 'specific date and time' }, { type: 'datestimes', name: 'date and time range' },
   { type: 'date', name: 'specific date' }, { type: 'dates', name: 'date range' },
   { type: 'time', name: 'specific time' }, { type: 'times', name: 'time range' }];
 
@@ -59,6 +61,9 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   safeURLimage = [];
   safeWebURL = [];
   WebURL = [];
+  inputHidden = [];
+  dateTimeToDisplay1 = [];
+  dateTimeToDisplay2 = [];
   validMessage = '';
   validMessageRadio = '';
   isQTextUnTouched = true;
@@ -87,29 +92,45 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.question_id = this.route.snapshot.paramMap.get('question_id');
+    console.log('question_id =', this.question_id);
+    console.log('this.model = ', this.model);
+    if (this.question_id != null) {
+      if (this.model.q_text == null) {
+        return this.firebaseService.fetchQuestionsAndSaveToStore()
+          .then((data: Array<NewQuestion>) => {
+            if (data != null) {
+              this.getQuestionWithPassedId(data);
+            }
+          });
+      } else {
+        this.store.select('questions').subscribe(
+          data => {
+            console.log('q data = ', data);
+            this.getQuestionWithPassedId(data.questions);
+          }
+        );
+      }
+    }
     console.log('on init poll_id', this.poll_id);
     this.model.questionOfPollWithId = this.poll_id;
     this.model.sequenceNumber = this.q_number;
-    this.question_id = this.route.snapshot.paramMap.get('question_id');
-    console.log('question_id =', this.question_id);
 
-    if (this.question_id != null) {
-      this.store.select('questions').subscribe(
-        data => {
-          console.log('q data = ', data);
-
-          if (data != null && data.questions != null) {
-            const data2 = data.questions.filter(({ id }) => id === this.question_id);
-            this.model = data2[0];
-            console.log('q model = ', this.model);
-          }
-        }
-      );
-    }
   }
 
   byId(item1: any, item2: any) {
     return item1.id === item2.id;
+  }
+
+  getQuestionWithPassedId(data: Array<NewQuestion>) {
+    const data2 = data.filter(({ id }) => id === this.question_id);
+    this.model = data2[0];
+      for (const option of this.model.q_options) {
+        this.inputHidden[option.id] = true;
+        if (option.type === 'imageurl') {this.onImageURLChanged(option.id); }
+        if (option.type === 'videourl') {this.onVideoURLChanged(option.id); }
+        if (option.type === 'weburl') {this.onWebURLChanged(option.id); }
+      }
   }
 
   onQTextChanged() {
@@ -149,7 +170,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
 
   addOption() {
     const oid = this.assignID();
-    this.model.q_options.push(new NewOption(oid, 'text', '', '', '', '', '', '', '', '', ''));
+    this.model.q_options.push(new NewOption(oid, 'text', '', '', '', '', '', null, null));
     this.addedChecklists.push({ id: oid, isSelected: false });
     this.updateQnty();
   }
@@ -276,15 +297,31 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   //   // const newPoll = new NewPoll(1, '', 1);
   // }
 
+  onChangeDateTimeClicked(ind) {
+    this.inputHidden[ind] = false;
+  }
+
+  assignDateTime() {
+    for (const option of this.model.q_options) {
+      if (!this.inputHidden[option.id]) {
+        this.model.q_options[option.id].startDateTime = moment(this.dateTimeToDisplay1[option.id]).valueOf() * 1;
+        this.model.q_options[option.id].endDateTime = moment(this.dateTimeToDisplay2[option.id]).valueOf() * 1;
+      }
+    }
+  }
+
   confirm() {
+    console.log('in confirm, model = ', this.model);
     console.log('in confirm, poll_id = ', this.poll_id);
     console.log('in confirm, poll_id = ', this.model.questionOfPollWithId);
     let uid;
     if (this.question_id == null) {
       uid = UUID.UUID();
       this.model.id = uid;
+      this.assignDateTime();
     } else {
       uid = this.model.id;
+      this.assignDateTime();
     }
     this.firebaseService.saveNewQuestionToDB(this.model, uid);
     this.newPollService.confirmAQuestionDone();

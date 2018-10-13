@@ -40,18 +40,20 @@ export class NewPollComponent implements OnInit {
       this.store.select('polls').subscribe(
         data => {
           if (data != null && data.polls != null) {
-            const data2 = data.polls.filter(({ id }) => id === this.poll_id);
-            this.model = data2[0];
-            if (this.model != null) {
-              console.log('model = ', this.model);
-              const date: string = moment(this.model.expiresTimeStamp).format('MMM DD, YYYY, HH:MM A').toString();
-              console.log('date = ', date);
-              console.log('date type = ', typeof date);
-              this.expiresDateTime = date;
-              this.changeDate = false;
-            }
+            this.selectAPollById(data.polls);
+          } else {
+            return this.firebaseService.fetchPollsAndSaveToStore()
+            .then((thePolls) => {this.selectAPollById(thePolls); });
           }
         });
+    }
+  }
+
+  selectAPollById(polls) {
+    const data2 = polls.filter(({ id }) => id === this.poll_id);
+    this.model = data2[0];
+    if (this.model != null) {
+      this.changeDate = false;
     }
   }
 

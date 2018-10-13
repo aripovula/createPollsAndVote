@@ -31,6 +31,14 @@ export class QuestionsListComponent implements OnInit {
 
   ngOnInit() {
     this.poll_id = this.route.snapshot.paramMap.get('poll_id');
+
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('POST', 'https://edv8edmxxj.execute-api.us-east-2.amazonaws.com/development/find-your-match');
+    // xhr.onreadystatechange = function(event) {
+    //   console.log(event.target);
+    // };
+    // xhr.send();
+
     return this.firebaseService.fetchQuestionsAndSaveToStore()
     .then((data: Array<NewQuestion>) => {
       // console.log('data from Promise = ', data);

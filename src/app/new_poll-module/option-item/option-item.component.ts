@@ -17,6 +17,8 @@ export class OptionItemComponent implements OnInit {
   @Input() safeURL: string;
   @Input() WebURL: string;
   @Input() imageSize: number;
+  @Input() dateTimeToDisplay1: string;
+  @Input() dateTimeToDisplay2: string;
   @Output() voted = new EventEmitter<boolean>();
 
   sizes = [ 100, 150, 250 ];

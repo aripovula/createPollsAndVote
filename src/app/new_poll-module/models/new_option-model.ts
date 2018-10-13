@@ -7,9 +7,7 @@ export class NewOption {
         public imageURL: string,
         public webURL: string,
         public videoURL: string,
-        public startDate: string,
-        public endDate: string,
-        public startTime: string,
-        public endTime: string
+        public startDateTime: number,
+        public endDateTime: number,
     ) {}
 }

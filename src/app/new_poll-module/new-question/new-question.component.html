@@ -67,8 +67,8 @@
 
         <div class="form-element">
           <label for="q_text">Question text</label>
-          <input type="text" id="q_text" autocomplete="off" size="40" required 
-            [(ngModel)]="model.q_text" (ngModelChange)="onQTextChanged()" name="q_text" #q_text="ngModel">
+          <input type="text" id="q_text" autocomplete="off" size="40" required [(ngModel)]="model.q_text" (ngModelChange)="onQTextChanged()"
+            name="q_text" #q_text="ngModel">
           <div [hidden]="q_text.valid || q_text.pristine || q_text.untouched || isQTextUnTouched" class="warning">
             <label></label>
             Question text is required
@@ -115,8 +115,7 @@
               <div *ngSwitchCase="'text'">
                 <div class="form-element">
                   <label for="q_options">Option text</label>
-                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required 
-                  [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
+                  <input type="text" id="q_options{{ind}}" autocomplete="off" size="40" required [(ngModel)]="model.q_options[ind].text" name="q_options{{ind}}"
                     #q_options="ngModel">
                   <div [hidden]="q_options.valid || q_options.pristine || q_options.untouched" class="warning">
                     <label></label>
@@ -214,52 +213,129 @@
                 </div>
               </div>
 
+              <div *ngSwitchCase="'datetime'">
+                <div class="form-element">
+                  <label>Date and time:</label>
+                  <span *ngIf="inputHidden[ind]">{{model.q_options[ind].startDateTime | date:'MMM dd, yyyy @ hh:mm a'}}
+                    <span class="horIndent"></span>
+                    <span class="noDecor" (click)="onChangeDateTimeClicked(ind)">change</span>
+                  </span>
+                  <span *ngIf="!inputHidden[ind]">
+                    <input type="text" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" size="40" [(ngModel)]="dateTimeToDisplay1[ind]" name="startDateTime"
+                      #startDateTime="ngModel">
+                    <owl-date-time #dt></owl-date-time>
+                  </span>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'datestimes'">
+                <div class="form-element">
+                  <label>from: </label>
+                  <span *ngIf="inputHidden[ind]">{{model.q_options[ind].startDateTime | date:'MMM dd, yyyy @ hh:mm a'}}
+                    <span class="horIndent"></span>
+                    <span class="noDecor" (click)="onChangeDateTimeClicked(ind)">change</span>
+                    <br/>
+                    <label>to: </label>
+                    <span *ngIf="inputHidden[ind]">{{model.q_options[ind].endDateTime | date:'MMM dd, yyyy @ hh:mm a'}}
+                    </span>
+                  </span>
+                  <span *ngIf="!inputHidden[ind]">
+                    <input type="text" [owlDateTimeTrigger]="dtA" [owlDateTime]="dtA" size="40" [(ngModel)]="dateTimeToDisplay1[ind]" name="startDateTime"
+                      #startDateTime="ngModel">
+                    <owl-date-time #dtA></owl-date-time>
+                  </span>
+                </div>
+                <div class="form-element">
+                  <span *ngIf="!inputHidden[ind]">
+                    <label>to: </label>
+                    <input type="text" [owlDateTimeTrigger]="dtB" [owlDateTime]="dtB" size="40" [(ngModel)]="dateTimeToDisplay2[ind]" name="endDateTime"
+                      #endDateTime="ngModel">
+                    <owl-date-time #dtB></owl-date-time>
+                  </span>
+                </div>
+              </div>
+
               <div *ngSwitchCase="'date'">
                 <div class="form-element">
                   <label>Date - on:</label>
-                  <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" [(ngModel)]="model.q_options[ind].startDate"
-                    name="startDate" #startDate="ngModel">
-                  <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+                  <span *ngIf="inputHidden[ind]">{{model.q_options[ind].startDateTime | date:'MMM dd, yyyy'}}
+                    <span class="horIndent"></span>
+                    <span class="noDecor" (click)="onChangeDateTimeClicked(ind)">change</span>
+                  </span>
+                  <span *ngIf="!inputHidden[ind]">
+                    <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" [(ngModel)]="dateTimeToDisplay1[ind]" name="startDate"
+                      #startDate="ngModel">
+                    <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+                  </span>
                 </div>
               </div>
 
               <div *ngSwitchCase="'dates'">
                 <div class="form-element">
-                  <label>Date from:</label>
-                  <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" [(ngModel)]="model.q_options[ind].startDate"
-                    name="startDate" #startDate="ngModel">
-                  <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+                  <label>Date from: </label>
+                  <span *ngIf="inputHidden[ind]">{{model.q_options[ind].startDateTime | date:'MMM dd, yyyy'}}
+                    <span class="horIndent"></span>
+                    <span class="noDecor" (click)="onChangeDateTimeClicked(ind)">change</span>
+                    <br/>
+                    <label>to: </label>
+                    <span *ngIf="inputHidden[ind]">{{model.q_options[ind].endDateTime | date:'MMM dd, yyyy'}}
+                    </span>
+                  </span>
+                  <span *ngIf="!inputHidden[ind]">
+                    <input type="text" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" size="40" [(ngModel)]="dateTimeToDisplay1[ind]" name="startDate"
+                      #startDate="ngModel">
+                    <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+                  </span>
                 </div>
-
                 <div class="form-element">
-                  <label>to </label>
-                  <input type="text" [owlDateTimeTrigger]="dt3a" [owlDateTime]="dt3a" size="40" [(ngModel)]="model.q_options[ind].endDate"
-                    name="endDate" #endDate="ngModel">
-                  <owl-date-time [pickerType]="'calendar'" #dt3a></owl-date-time>
+                  <span *ngIf="!inputHidden[ind]">
+                    <label>to: </label>
+                    <input type="text" [owlDateTimeTrigger]="dt3a" [owlDateTime]="dt3a" size="40" [(ngModel)]="dateTimeToDisplay2[ind]" name="endDate"
+                      #endDate="ngModel">
+                    <owl-date-time [pickerType]="'calendar'" #dt3a></owl-date-time>
+                  </span>
                 </div>
               </div>
 
               <div *ngSwitchCase="'time'">
                 <div class="form-element">
-                  <label>Time - at </label>
-                  <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" [(ngModel)]="model.q_options[ind].startTime"
-                    name="startTime" #startTime="ngModel">
-                  <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
+                  <label>Time - at: </label>
+                  <span *ngIf="inputHidden[ind]">{{model.q_options[ind].startDateTime | date:'hh:mm a'}}
+                    <span class="horIndent"></span>
+                    <span class="noDecor" (click)="onChangeDateTimeClicked(ind)">change</span>
+                  </span>
+                  <span *ngIf="!inputHidden[ind]">
+                    <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" [(ngModel)]="dateTimeToDisplay1[ind]"
+                      name="startTime" #startTime="ngModel">
+                    <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
+                  </span>
                 </div>
               </div>
 
               <div *ngSwitchCase="'times'">
                 <div class="form-element">
-                  <label>Time from </label>
-                  <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" [(ngModel)]="model.q_options[ind].startTime"
-                    name="startTime" #startTime="ngModel">
-                  <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
+                  <label>Time from: </label>
+                  <span *ngIf="inputHidden[ind]">{{model.q_options[ind].startDateTime | date:'hh:mm a'}}
+                    <span class="horIndent"></span>
+                    <span class="noDecor" (click)="onChangeDateTimeClicked(ind)">change</span>
+                    <br/>
+                    <label>to: </label>
+                    <span *ngIf="inputHidden[ind]">{{model.q_options[ind].endDateTime | date:'hh:mm a'}}
+                    </span>
+                  </span>
+                  <span *ngIf="!inputHidden[ind]">
+                    <input type="text" [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" size="40" id="startTime" [(ngModel)]="dateTimeToDisplay1[ind]"
+                      name="startTime" #startTime="ngModel">
+                    <owl-date-time [pickerType]="'timer'" #dt4 hour12Timer="true"></owl-date-time>
+                  </span>
                 </div>
                 <div class="form-element">
-                  <label>to </label>
-                  <input type="text" [owlDateTimeTrigger]="dt4a" [owlDateTime]="dt4a" size="40" id="endTime" [(ngModel)]="model.q_options[ind].endTime"
-                    name="endTime" #endTime="ngModel">
-                  <owl-date-time [pickerType]="'timer'" #dt4a hour12Timer="true"></owl-date-time>
+                  <span *ngIf="!inputHidden[ind]">
+                    <label>to: </label>
+                    <input type="text" [owlDateTimeTrigger]="dt4a" [owlDateTime]="dt4a" size="40" id="endTime" [(ngModel)]="dateTimeToDisplay2[ind]"
+                      name="endTime" #endTime="ngModel">
+                    <owl-date-time [pickerType]="'timer'" #dt4a hour12Timer="true"></owl-date-time>
+                  </span>
                 </div>
               </div>
 
@@ -274,11 +350,10 @@
           <button type="button" class="button button1" (click)="addOption()">+ add option</button>
           <span class="horIndent"></span>
           <!-- <button [disabled]="!questionForm.form.valid">Next ></button> -->
-          <button type="submit" class="button button1"
-          (click)="confirm()" [disabled]="!questionForm.form.valid">
-              Next >
-            </button>      
-  
+          <button type="submit" class="button button1" (click)="confirm()" [disabled]="!questionForm.form.valid">
+            Next >
+          </button>
+
         </div>
       </form>
 
@@ -289,7 +364,7 @@
     <app-preview-question #preview [q_text]="model.q_text" [multipleChoice]="model.multipleChoice" [q_options]="model.q_options"
       [addedChecklists]="addedChecklists" [multipleChoiceOption]="multipleChoiceOption" [multipleChoiceOptionQnty]="multipleChoiceOptionQnty"
       [shouldCLsValidBeSetToFalse]="shouldCLsValidBeSetToFalse" [safeURLimage]="safeURLimage" [safeURL]="safeURL" [WebURL]="WebURL"
-      [imageSize]="model.imageSize" (buttonValid)="onButtonIsValid($event)">
+      [imageSize]="model.imageSize" [dateTimeToDisplay1]="dateTimeToDisplay1" [dateTimeToDisplay2]="dateTimeToDisplay2" (buttonValid)="onButtonIsValid($event)">
     </app-preview-question>
   </div>
 
