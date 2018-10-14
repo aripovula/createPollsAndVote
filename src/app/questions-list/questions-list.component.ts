@@ -39,38 +39,30 @@ export class QuestionsListComponent implements OnInit {
     // };
     // xhr.send();
 
-    return this.firebaseService.fetchQuestionsAndSaveToStore()
-    .then((data: Array<NewQuestion>) => {
-      // console.log('data from Promise = ', data);
-      // console.log('data from Promise = ', data.length);
-      // console.log('data type from Promise = ', typeof data);
-      // console.log('data[0] from Promise = ', data[0]);
-      this.questions = data;
-      // console.log('this.questions = ', this.questions);
-      // console.log('this.questions len = ', this.questions.length);
-      this.subscribeToStore();
-    });
+    this.firebaseService.fetchQuestionsAndSaveToStore();
+    this.store.select('questions').subscribe(data => { this.questions = data.questions; });
+    this.getPollNameToDisplay();
   }
 
-  subscribeToStore() {
+  getPollNameToDisplay() {
     this.store.select('polls').subscribe(
       data => {
         console.log('data 4 polls = ', data);
         // if polls data is already stored in NgRX Store get it from there.
         if (data.polls == null) {
           return this.firebaseService.fetchPollsAndSaveToStore()
-          .then((thePolls) => {
-            this.getPollFor(thePolls, this.poll_id);
-          });
+            .then((thePolls) => {
+              this.filterToFindNeededPoll(thePolls, this.poll_id);
+            });
         } else {
-        // if not - fetch it again, store in NgRX Store and get needed one
-        this.getPollFor(data.polls, this.poll_id);
+          // if not - fetch it again, store in NgRX Store and get needed one
+          this.filterToFindNeededPoll(data.polls, this.poll_id);
         }
       }
     );
   }
 
-  getPollFor(polls, id) {
+  filterToFindNeededPoll(polls, id) {
     const one_poll = polls.filter(poll => (poll.id === this.poll_id));
     console.log('one_poll =', one_poll);
     if (one_poll != null && one_poll[0] != null) {
@@ -80,8 +72,9 @@ export class QuestionsListComponent implements OnInit {
   }
 
   onDeleteQuestionClicked(id) {
-    this.firebaseService.deleteQuestionFromDB(id);
-    this.store.dispatch(new QuestionsActions.RemoveQuestion(id));
-    this.router.navigate(['/viewquestions', this.poll_id]);
+    this.firebaseService.deleteQuestionFromDBandDeleteFromStore(id);
+    // this.store.dispatch(new QuestionsActions.RemoveQuestion(id));
+    // location.reload();
+    // this.router.navigate(['/viewquestions', this.poll_id]);
   }
 }

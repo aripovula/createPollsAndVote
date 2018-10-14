@@ -80,11 +80,13 @@ export class FirebaseService {
     firebase.database().ref('polls/' + uid).set(poll);
   }
 
-  deletePollFromDB(uid) {
+  deletePollFromDBandDeleteFromStore(uid) {
+    const that = this;
     const adaRef = firebase.database().ref('polls/' + uid);
     adaRef.remove()
       .then(function () {
         console.log('Remove succeeded.');
+        that.store.dispatch(new PollsActions.RemovePoll(uid));
       })
       .catch(function (error) {
         console.log('Remove failed: ' + error.message);
@@ -95,11 +97,13 @@ export class FirebaseService {
     firebase.database().ref('questions/' + uid).set(question);
   }
 
-  deleteQuestionFromDB(uid) {
+  deleteQuestionFromDBandDeleteFromStore(uid) {
+    const that = this;
     const adaRef = firebase.database().ref('questions/' + uid);
     adaRef.remove()
       .then(function () {
         console.log('Remove succeeded.');
+        that.store.dispatch(new QuestionsActions.RemoveQuestion(uid));
       })
       .catch(function (error) {
         console.log('Remove failed: ' + error.message);
