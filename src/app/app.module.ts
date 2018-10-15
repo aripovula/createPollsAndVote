@@ -19,7 +19,6 @@ import { CountQuestionsPipe } from './pipes/count-questions.pipe';
 import { ReversePollsOrderPipe } from './pipes/reverse-polls-order.pipe';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

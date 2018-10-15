@@ -20,6 +20,8 @@ import * as QuestionsActions from './ngrx-store/questions-action';
 })
 export class FirebaseService {
   database = firebase.database();
+  polls: Array<NewPoll>;
+  questions: Array<NewQuestion>;
 
   constructor(private store: Store<AppState>) { }
 
@@ -80,17 +82,21 @@ export class FirebaseService {
     firebase.database().ref('polls/' + uid).set(poll);
   }
 
-  deletePollFromDBandDeleteFromStore(uid) {
+  delete_Poll_And_Related_Questions_From_DB_and_Store(uid) {
     const that = this;
-    const adaRef = firebase.database().ref('polls/' + uid);
-    adaRef.remove()
+    return new Promise((resolve, reject) => {
+    firebase.database().ref('polls/' + uid)
+      .remove()
       .then(function () {
         console.log('Remove succeeded.');
         that.store.dispatch(new PollsActions.RemovePoll(uid));
+        resolve();
       })
       .catch(function (error) {
         console.log('Remove failed: ' + error.message);
+        reject();
       });
+    });
   }
 
   saveNewQuestionToDB(question, uid) {

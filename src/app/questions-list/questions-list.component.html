@@ -26,4 +26,27 @@
       </li>
     </ol>
   </div>
+
+  <div *ngIf="isModalDisplayed">
+      <form>
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <span class="close" (click)="onCancel()">&times;</span>
+              <p>Please confirm</p>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete this question ?</p>
+              <p>- {{questionNameToDelete}}</p>
+              <br/>
+              <button type="button" class="button button1" (click)="onConfirm()">Confirm</button>
+              <button type="button" class="button button1" (click)="onCancel()">Cancel</button>
+              <br/>
+              <br/>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  
 </div>

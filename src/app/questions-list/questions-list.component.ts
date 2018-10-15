@@ -21,6 +21,9 @@ export class QuestionsListComponent implements OnInit {
   poll_name;
   polls: Array<NewPoll>;
   questions: Array<NewQuestion>;
+  questionIdToDelete: string;
+  questionNameToDelete: string;
+  isModalDisplayed = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -71,10 +74,20 @@ export class QuestionsListComponent implements OnInit {
     }
   }
 
-  onDeleteQuestionClicked(id) {
-    this.firebaseService.deleteQuestionFromDBandDeleteFromStore(id);
-    // this.store.dispatch(new QuestionsActions.RemoveQuestion(id));
-    // location.reload();
-    // this.router.navigate(['/viewquestions', this.poll_id]);
+  onDeleteQuestionClicked(uid) {
+    this.questionIdToDelete = uid;
+    const one_question = this.questions.filter(question => (question.id === uid));
+    this.questionNameToDelete = one_question[0].q_text;
+    this.isModalDisplayed = true;
   }
+
+  onConfirm() {
+    this.isModalDisplayed = false;
+    this.firebaseService.deleteQuestionFromDBandDeleteFromStore(this.questionIdToDelete);
+  }
+
+  onCancel() {
+    this.isModalDisplayed = false;
+  }
+
 }
