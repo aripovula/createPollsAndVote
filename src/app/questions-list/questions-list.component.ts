@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { UUID } from 'angular2-uuid';
 
 import { FirebaseService } from './../firebase.service';
 import { NewPoll } from './../new_poll-module/models/new_poll-model';
@@ -23,7 +24,12 @@ export class QuestionsListComponent implements OnInit {
   questions: Array<NewQuestion>;
   questionIdToDelete: string;
   questionNameToDelete: string;
-  isModalDisplayed = false;
+  questionNameToCopyMove: string;
+  isDeleteModalDisplayed = false;
+  isCopyOrMoveClicked = false;
+  copyOrMove;
+  questionToCopyMove: NewQuestion;
+  addedChecklists = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -66,6 +72,7 @@ export class QuestionsListComponent implements OnInit {
   }
 
   filterToFindNeededPoll(polls, id) {
+    this.polls = polls;
     const one_poll = polls.filter(poll => (poll.id === this.poll_id));
     console.log('one_poll =', one_poll);
     if (one_poll != null && one_poll[0] != null) {
@@ -78,16 +85,54 @@ export class QuestionsListComponent implements OnInit {
     this.questionIdToDelete = uid;
     const one_question = this.questions.filter(question => (question.id === uid));
     this.questionNameToDelete = one_question[0].q_text;
-    this.isModalDisplayed = true;
+    this.isDeleteModalDisplayed = true;
   }
 
-  onConfirm() {
-    this.isModalDisplayed = false;
+  onDeleteConfirm() {
+    this.isDeleteModalDisplayed = false;
     this.firebaseService.deleteQuestionFromDBandDeleteFromStore(this.questionIdToDelete);
   }
 
-  onCancel() {
-    this.isModalDisplayed = false;
+  onDeleteCancel() {
+    this.isDeleteModalDisplayed = false;
   }
 
+  onCopyQuestionClicked(uid) {
+    this.copyOrMove = 'copy ';
+    this.isCopyOrMoveClicked = true;
+    const one_question = this.questions.filter(question => (question.id === uid));
+    this.questionToCopyMove = one_question[0];
+    this.questionNameToCopyMove = this.questionToCopyMove.q_text;
+  }
+
+  onMoveQuestionClicked(uid) {
+    this.copyOrMove = 'move ';
+    this.isCopyOrMoveClicked = true;
+    const one_question = this.questions.filter(question => (question.id === uid));
+    this.questionToCopyMove = one_question[0];
+    this.questionNameToCopyMove = this.questionToCopyMove.q_text;
+  }
+
+  onCopyOrMoveCancelled() {
+    this.isCopyOrMoveClicked = false;
+    this.addedChecklists = [];
+  }
+
+  onCopyMoveConfirm() {
+    console.log('in onCopyMoveConfirm');
+    console.log(this.addedChecklists);
+    for (let x = 0; x < this.polls.length; x++) {
+      if (this.addedChecklists[x]) {
+        if (this.copyOrMove === 'copy ') {
+          const uid = UUID.UUID();
+          this.questionToCopyMove.id = uid;
+          this.questionToCopyMove.questionOfPollWithId = this.polls[x].id;
+          this.firebaseService.saveNewQuestionToDB(this.questionToCopyMove, uid);
+        } else {
+
+        }
+        this.router.navigate(['/home']);
+      }
+    }
+  }
 }

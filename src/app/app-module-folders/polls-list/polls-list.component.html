@@ -9,6 +9,8 @@
         <br/>
         <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view / edit questions</a>
         <span class="horIndent"></span>
+        <a routerLink="/clonepoll/{{poll.id}}" class="noDecor">clone</a>
+        <span class="horIndent"></span>
         <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
         <span class="horIndent"></span>
         <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>

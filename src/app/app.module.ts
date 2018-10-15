@@ -17,6 +17,7 @@ import { QuestionsFilterPipe } from './pipes/questions-filter.pipe';
 import { QuestionsListComponent } from './questions-list/questions-list.component';
 import { CountQuestionsPipe } from './pipes/count-questions.pipe';
 import { ReversePollsOrderPipe } from './pipes/reverse-polls-order.pipe';
+import { CopyOrMoveComponent } from './questions-list/copy-or-move/copy-or-move.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { ReversePollsOrderPipe } from './pipes/reverse-polls-order.pipe';
     QuestionsListComponent,
     CountQuestionsPipe,
     ReversePollsOrderPipe,
+    CopyOrMoveComponent,
   ],
   imports: [
     BrowserModule,
