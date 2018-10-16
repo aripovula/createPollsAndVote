@@ -41,6 +41,36 @@ export class FirebaseService {
     });
   }
 
+  saveNewPollToDB(poll, uid) {
+    return firebase.database().ref('polls/' + uid).set(poll)
+    .then(() => {
+      this.store.dispatch(new PollsActions.AddPoll(poll));
+    });
+  }
+
+  updatePollInDB(poll, uid) {
+    return firebase.database().ref('polls/' + uid).update(poll)
+    .then(() => {
+      this.store.dispatch(new PollsActions.UpdatePoll(poll, uid));
+    });
+  }
+
+  delete_Poll_And_Related_Questions_From_DB_and_Store(uid) {
+    const that = this;
+    return new Promise((resolve, reject) => {
+    firebase.database().ref('polls/' + uid).remove()
+      .then(function () {
+        console.log('Remove succeeded.');
+        that.store.dispatch(new PollsActions.RemovePoll(uid));
+        resolve();
+      })
+      .catch(function (error) {
+        console.log('Remove failed: ' + error.message);
+        reject();
+      });
+    });
+  }
+
   fetchQuestionsAndSaveToStore() {
     const questions = new Array();
     return new Promise((resolve, reject) => {
@@ -62,33 +92,17 @@ export class FirebaseService {
     });
   }
 
-  saveNewPollToDB(poll, uid) {
-    return firebase.database().ref('polls/' + uid).set(poll)
-    .then(() => {
-      this.store.dispatch(new PollsActions.AddPoll(poll));
-    });
-  }
-
-  delete_Poll_And_Related_Questions_From_DB_and_Store(uid) {
-    const that = this;
-    return new Promise((resolve, reject) => {
-    firebase.database().ref('polls/' + uid).remove()
-      .then(function () {
-        console.log('Remove succeeded.');
-        that.store.dispatch(new PollsActions.RemovePoll(uid));
-        resolve();
-      })
-      .catch(function (error) {
-        console.log('Remove failed: ' + error.message);
-        reject();
-      });
-    });
-  }
-
   saveNewQuestionToDB(question, uid) {
     firebase.database().ref('questions/' + uid).set(question)
     .then(() => {
       this.store.dispatch(new QuestionsActions.AddQuestion(question));
+    });
+  }
+
+  updateQuestionsInDB(question, uid) {
+    firebase.database().ref('questions/' + uid).update(question)
+    .then(() => {
+      this.store.dispatch(new QuestionsActions.UpdateQuestion(question, uid));
     });
   }
 

@@ -1,77 +1,87 @@
 <div style="margin-left: 50px;">
   <div *ngIf="!isCopyOrMoveClicked">
-    <h3>Questions list for:</h3>
-    <h3 *ngIf="poll_name" style="color: green">{{poll_name}}</h3>
-    <h3 *ngIf="!poll_name" style="color: green">poll name is not defined</h3>
-    <a routerLink="/questions/1/{{poll_id}}" class="noDecor">add new question</a>
-    <span class="horIndent"></span>
-    <span class="horIndent"></span>
-    <a routerLink="/home" class="noDecor">go back to Polls list</a>
-    <br/>
-    <br/>
-    <div *ngIf="!questions">No questions are found</div>
-    <div *ngIf="questions">
-      <p>this poll has
-        <span style="color:green;font-size:20px;">{{questions | countQuestions: poll_id}}</span> question(s)</p>
-      <ol>
-        <li *ngFor="let question of questions | questionsFilter: poll_id; let ind=index;">
-          <a routerLink="/question/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
-          <br/>
-          &nbsp;
-          <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
-          <span class="horIndent"></span>
-          <a (click)="onDeleteQuestionClicked(question.id)" class="noDecor">delete</a>
-          <span class="horIndent"></span>
-          <a (click)="onCopyQuestionClicked(question.id)" class="noDecor">copy</a>
-          <span class="horIndent"></span>
-          <a (click)="onMoveQuestionClicked(question.id)" class="noDecor">move</a>
-          <span class="verIndent"></span>
-        </li>
-      </ol>
-    </div>
+    <h3>Questions list:</h3>
 
-    <div *ngIf="isDeleteModalDisplayed">
-      <form>
-        <div id="myModal" class="modal">
-          <div class="modal-content">
-            <div class="modal-header">
-              <span class="close" (click)="onDeleteCancel()">&times;</span>
-              <p>Please confirm</p>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to delete this question ?</p>
-              <p>- {{questionNameToDelete}}</p>
-              <br/>
-              <button type="button" class="button button1" (click)="onDeleteConfirm()">Confirm</button>
-              <button type="button" class="button button1" (click)="onDeleteCancel()">Cancel</button>
-              <br/>
-              <br/>
+    <label style="color: lightslategray; font-size: 14px; float: right; margin-right: 30px;">
+      <input type="checkbox" name="showAllQuestions" [(ngModel)]="showAllQuestions"> &nbsp; show all questions
+    </label>
+
+    <div *ngIf="!showAllQuestions">
+      <h3 *ngIf="poll_name" style="color: green">{{poll_name}}</h3>
+      <h3 *ngIf="!poll_name" style="color: green">poll name is not defined</h3>
+
+      <a routerLink="/questions/1/{{poll_id}}" class="noDecor">add new question</a>
+      <span class="horIndent"></span>
+      <span class="horIndent"></span>
+      <a routerLink="/home" class="noDecor">go back to Polls list</a>
+      <br/>
+      <br/>
+      <div *ngIf="!questions">No questions are found</div>
+      <div *ngIf="questions">
+        <p>this poll has
+          <span style="color:green;font-size:20px;">{{questions | countQuestions: poll_id}}</span> question(s)</p>
+        <ol>
+          <li *ngFor="let question of questions | questionsFilter: poll_id; let ind=index;">
+            <a routerLink="/question/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
+            <br/> &nbsp;
+            <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
+            <span class="horIndent"></span>
+            <a (click)="onDeleteQuestionClicked(question.id)" class="noDecor">delete</a>
+            <span class="horIndent"></span>
+            <a (click)="onCopyQuestionClicked(question.id)" class="noDecor">copy</a>
+            <span class="horIndent"></span>
+            <a (click)="onMoveQuestionClicked(question.id)" class="noDecor">move</a>
+            <span class="verIndent"></span>
+          </li>
+        </ol>
+      </div>
+
+      <div *ngIf="isDeleteModalDisplayed">
+        <form>
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <span class="close" (click)="onDeleteCancel()">&times;</span>
+                <p>Please confirm</p>
+              </div>
+              <div class="modal-body">
+                <p>Are you sure you want to delete this question ?</p>
+                <p>- {{questionNameToDelete}}</p>
+                <br/>
+                <button type="button" class="button button1" (click)="onDeleteConfirm()">Confirm</button>
+                <button type="button" class="button button1" (click)="onDeleteCancel()">Cancel</button>
+                <br/>
+                <br/>
+              </div>
             </div>
           </div>
+        </form>
+      </div>
+    </div>
+    <div *ngIf="isCopyOrMoveClicked">
+      <div>
+        <br/>
+        <h4>{{copyOrMove | titlecase}} '{{questionNameToCopyMove}}' to:</h4>
+
+        <div *ngFor="let poll of polls; let ind=index;">
+          <label style="color: lightslategray; font-size: 14px;">
+            <input type="radio" name="isToCopyMove" value={{ind}} [(ngModel)]="radioSelected[ind]"> &nbsp; {{copyOrMove}} to
+          </label>
+          <a routerLink="/poll/{{poll.id}}" class="addnlightbg"> &nbsp; {{poll.name}}</a>
+          <span class="verIndent"></span>
         </div>
-      </form>
+      </div>
+      <br/>
+      <button type="button" class="button button1" (click)="onCopyMoveConfirm()">Submit</button>
+      <span class="horIndent"></span>
+      <button type="button" class="button button1" (click)="onCopyOrMoveCancelled()">Cancel</button>
     </div>
   </div>
-  <div *ngIf="isCopyOrMoveClicked">
-    <div>
-      <br/>
-      <h4>{{copyOrMove | titlecase}} '{{questionNameToCopyMove}}' to:</h4>
-      <ul>
-        <li *ngFor="let poll of polls; let ind=index;">
-          <a routerLink="/poll/{{poll.id}}" class="addnlightbg"> &nbsp; {{poll.name}}</a>
-          &nbsp;
-          <label style="color: lightslategray; font-size: 14px;">
-            <input type="checkbox" name="isSelected{{ind}}"
-            name="isSelected{{ind}}" [(ngModel)]="addedChecklists[ind]"
-            > &nbsp; {{copyOrMove}} to this poll
-          </label>
-          <span class="verIndent"></span>
-        </li>
-      </ul>
+  <div *ngIf="showAllQuestions">
+    <div *ngFor="let question of questions; let ind=index;">
+      <div>- {{question.q_text}}</div>
+      <div><span style="color: rgb(64, 203, 238);"> &nbsp; poll name:</span> {{polls | getPollNameForQuestion: question.questionOfPollWithId}}</div>
+      <span class="verIndent"></span>
     </div>
-    <br/>
-    <button type="button" class="button button1" (click)="onCopyMoveConfirm()">Submit</button>
-    <span class="horIndent"></span>
-    <button type="button" class="button button1" (click)="onCopyOrMoveCancelled()">Cancel</button>
   </div>
 </div>

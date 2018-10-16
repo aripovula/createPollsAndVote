@@ -18,9 +18,13 @@
         <span style="color: lightslategray; font-size: 14px;">added: {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
         <span class="horIndent"></span>
         <span style="color: lightslategray; font-size: 14px;">expires: {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm'}}</span>
+        <span class="horIndent"></span>
+        <a (click)="onPublishClicked(poll.id)" class="noDecor">un-publish your poll</a>
         <span class="verIndent"></span>
       </li>
     </ul>
+    <br/>
+    <span style="color: lightslategray; font-size: 14px;">* clone also copies all associated questions</span>
   </div>
 
   <div *ngIf="isModalDisplayed">

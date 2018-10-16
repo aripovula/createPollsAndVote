@@ -30,7 +30,8 @@ export class QuestionsListComponent implements OnInit {
   isCopyOrMoveClicked = false;
   copyOrMove;
   questionToCopyMove: NewQuestion;
-  addedChecklists = [];
+  radioSelected = [];
+  showAllQuestions = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -116,23 +117,26 @@ export class QuestionsListComponent implements OnInit {
 
   onCopyOrMoveCancelled() {
     this.isCopyOrMoveClicked = false;
-    this.addedChecklists = [];
+    this.radioSelected = [];
   }
 
   onCopyMoveConfirm() {
     console.log('in onCopyMoveConfirm');
-    console.log(this.addedChecklists);
+    console.log(this.radioSelected);
     for (let x = 0; x < this.polls.length; x++) {
-      if (this.addedChecklists[x]) {
+      if (this.radioSelected[x] === x.toString()) {
+        console.log('adding copy move poll = ', this.polls[x].name );
         let uid;
         if (this.copyOrMove === 'copy ') {
           uid = UUID.UUID();
           this.questionToCopyMove.id = uid;
+          this.questionToCopyMove.questionOfPollWithId = this.polls[x].id;
+          this.firebaseService.saveNewQuestionToDB(this.questionToCopyMove, uid);
         } else if (this.copyOrMove === 'move ') {
           uid = this.questionToCopyMove.id;
+          this.questionToCopyMove.questionOfPollWithId = this.polls[x].id;
+          this.firebaseService.updateQuestionsInDB(this.questionToCopyMove, uid);
         }
-        this.questionToCopyMove.questionOfPollWithId = this.polls[x].id;
-        this.firebaseService.saveNewQuestionToDB(this.questionToCopyMove, uid);
         this.router.navigate(['/home']);
       }
     }
