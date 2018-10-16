@@ -43,7 +43,7 @@ export class NewPollComponent implements OnInit {
             this.selectAPollById(data.polls);
           } else {
             return this.firebaseService.fetchPollsAndSaveToStore()
-            .then((thePolls) => {this.selectAPollById(thePolls); });
+              .then((thePolls) => { this.selectAPollById(thePolls); });
           }
         });
     }

@@ -16,10 +16,10 @@ export function pollsReducer(state = initialState, action: PollsActions.PollsAct
   switch (action.type) {
 
     case PollsActions.ADD_POLL:
-      console.log('in PollsActions.ADD_POLL');
+      console.log('in PollsActions.ADD_POLL payload = ', action.payload);
       return {
         ...state,
-        polls: action.payload
+        polls: [...state.polls, action.payload]
       };
 
     case PollsActions.REMOVE_POLL:

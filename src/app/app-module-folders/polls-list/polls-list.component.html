@@ -9,7 +9,7 @@
         <br/>
         <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view / edit questions</a>
         <span class="horIndent"></span>
-        <a routerLink="/clonepoll/{{poll.id}}" class="noDecor">clone</a>
+        <a (click)="onClonePollClicked(poll.id)" class="noDecor">clone</a>
         <span class="horIndent"></span>
         <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
         <span class="horIndent"></span>
@@ -28,7 +28,7 @@
       <div id="myModal" class="modal">
         <div class="modal-content">
           <div class="modal-header">
-            <span class="close" (click)="onCancel()">&times;</span>
+            <span class="close" (click)="onDeleteCancel()">&times;</span>
             <p>Please confirm</p>
           </div>
           <div class="modal-body">
@@ -36,8 +36,8 @@
             <p>- '{{pollNameToDelete}}'</p>
             <p style='color: red'>Warning: all questions associated with this poll will be permanently deleted</p>
             <br/>
-            <button type="button" class="button button1" (click)="onConfirm()">Confirm</button>
-            <button type="button" class="button button1" (click)="onCancel()">Cancel</button>
+            <button type="button" class="button button1" (click)="onDeleteConfirm()">Confirm</button>
+            <button type="button" class="button button1" (click)="onDeleteCancel()">Cancel</button>
             <br/>
             <br/>
           </div>

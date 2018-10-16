@@ -8,8 +8,8 @@ export interface QuestionsState {
 }
 
 const initialState: QuestionsState = {
-    questions: null
-  };
+  questions: null
+};
 
 export function questionsReducer(state = initialState, action: QuestionsActions.QuestionsActions) {
   switch (action.type) {
@@ -18,29 +18,29 @@ export function questionsReducer(state = initialState, action: QuestionsActions.
       console.log('in QuestionsActions.ADD_QUESTION');
       return {
         ...state,
-        questions: action.payload
+        questions: [...state.questions, action.payload]
       };
 
     case QuestionsActions.REMOVE_QUESTION:
-        return {
-            ...state,
-            questions: state.questions.filter(({ id }) => id !== action.id)
-        };
+      return {
+        ...state,
+        questions: state.questions.filter(({ id }) => id !== action.id)
+      };
 
     case QuestionsActions.UPDATE_QUESTION:
-    return {
+      return {
         ...state,
         questions: state.questions.map((poll) => {
-        if (poll.id === action.id) {
-          return {
-            ...poll,
-            ...action.payload
-          };
-        } else {
-          return poll;
-        }
-      })
-    };
+          if (poll.id === action.id) {
+            return {
+              ...poll,
+              ...action.payload
+            };
+          } else {
+            return poll;
+          }
+        })
+      };
 
     case QuestionsActions.SET_QUESTIONS:
       console.log('in QuestionsActions.payload = ', action.payload);

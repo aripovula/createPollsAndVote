@@ -16,6 +16,7 @@
       <ol>
         <li *ngFor="let question of questions | questionsFilter: poll_id; let ind=index;">
           <a routerLink="/question/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
+          <br/>
           &nbsp;
           <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
           <span class="horIndent"></span>
@@ -24,6 +25,7 @@
           <a (click)="onCopyQuestionClicked(question.id)" class="noDecor">copy</a>
           <span class="horIndent"></span>
           <a (click)="onMoveQuestionClicked(question.id)" class="noDecor">move</a>
+          <span class="verIndent"></span>
         </li>
       </ol>
     </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
+import { UUID } from 'angular2-uuid';
+import * as moment from 'moment';
 // import { Router } from '@angular/router';
 
 import { NewPoll } from '../../new_poll-module/models/new_poll-model';
@@ -29,11 +31,16 @@ export class PollsListComponent implements OnInit {
     private store: Store<AppState>,
     private firebaseService: FirebaseService,
     // private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.firebaseService.fetchPollsAndSaveToStore();
-    this.store.select('polls').subscribe(data => {this.polls = data.polls; });
+    this.store.select('polls').subscribe(data => { this.polls = data.polls; console.log('polls in p-list = ', this.polls);
+    });
+    this.store.select('questions').subscribe(data => {
+      this.questions = data.questions;
+      if (this.questions == null) { this.firebaseService.fetchQuestionsAndSaveToStore(); }
+     });
   }
 
   onDeletePollClicked(uid) {
@@ -43,23 +50,58 @@ export class PollsListComponent implements OnInit {
     this.isModalDisplayed = true;
   }
 
-  onConfirm() {
+  onDeleteConfirm() {
     this.isModalDisplayed = false;
-    this.store.select('questions').subscribe(data => { this.questions = data.questions; });
 
     return this.firebaseService.delete_Poll_And_Related_Questions_From_DB_and_Store(this.pollIdToDelete)
-    .then(() => {
-      for (const question of this.questions) {
-        if (question.questionOfPollWithId === this.pollIdToDelete) {
-          return this.firebaseService.deleteQuestionFromDBandDeleteFromStore(question.id);
+      .then(() => {
+        console.log('this.questions in Delete = ', this.questions);
+
+        for (const question of this.questions) {
+          if (question.questionOfPollWithId === this.pollIdToDelete) {
+            return this.firebaseService.deleteQuestionFromDBandDeleteFromStore(question.id);
+          }
         }
-      }
-    })
-    ;
+      })
+      ;
   }
 
-  onCancel() {
+  onDeleteCancel() {
     this.isModalDisplayed = false;
   }
 
+  onClonePollClicked(uid) {
+    const idOfNewPoll = UUID.UUID();
+    const arrayWithOnePoll = this.polls.filter(poll => (poll.id === uid));
+    const onePoll: NewPoll = arrayWithOnePoll[0];
+    let pollToClone: NewPoll;
+
+    // according to StackOv. thread below JSON.parse(JSON.stringify(..) is one of best ways to DEEP clone an object
+    // from https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
+    pollToClone = JSON.parse(JSON.stringify(onePoll));
+    pollToClone.id = idOfNewPoll;
+    pollToClone.createdTimeStamp = moment().valueOf();
+    if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) {pollToClone.expiresTimeStamp = pollToClone.createdTimeStamp; }
+    if (!pollToClone.name.includes(' ( cloned - edit as you need )')) {
+      pollToClone.name = pollToClone.name + ' ( cloned - edit as you need )';
+    }
+    this.firebaseService.saveNewPollToDB(pollToClone, idOfNewPoll);
+
+    for (const question of this.questions) {
+      if (question.questionOfPollWithId === uid) {
+        const idOfNewQuestion = UUID.UUID();
+        const questionToClone = JSON.parse(JSON.stringify(question));
+        questionToClone.id = idOfNewQuestion;
+        questionToClone.questionOfPollWithId = pollToClone.id;
+        this.firebaseService.saveNewQuestionToDB(questionToClone, idOfNewQuestion);
+
+        // question.q_text = question.q_text + ' - Copy';
+        // console.log(question.q_text);
+        // console.log(questionToClone.q_text);
+        // question.q_options[0].text = question.q_options[0].text + ' - Copy';
+        // console.log(question.q_options[0].text);
+        // console.log(questionToClone.q_options[0].text);
+      }
+    }
+  }
 }

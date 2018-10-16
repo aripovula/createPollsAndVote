@@ -25,6 +25,9 @@ export class FirebaseService {
 
   constructor(private store: Store<AppState>) { }
 
+  // STRICT RULE - ALL DEALINGS WITH FIREBASE SHOULD BE A FUNCTION IN FIREBASE_SERVICE AND
+  // ALL FUNCTIONS DEALING WITH FIREBASE SHOULD DIRECTLY / IMMEDIATELY UPDATE NGRX STORE
+
   fetchPollsAndSaveToStore() {
     const polls = new Array();
     return new Promise((resolve, reject) => {
@@ -37,25 +40,6 @@ export class FirebaseService {
       });
     });
   }
-
-  // fetchPollsSaveToStoreReturnAPollFor(id) {
-  //   const polls = new Array();
-  //   firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
-  //     snapshot.forEach((item) => {
-  //       polls.push(item.val());
-  //     });
-  //     this.store.dispatch(new PollsActions.SetPolls(polls));
-  //     // console.log('polls = ', polls);
-  //     return polls;
-  //   }).then((data) => {
-  //     const one_poll = data.filter(poll => (poll.id === id));
-  //     if (one_poll != null && one_poll[0] != null) {
-  //       return one_poll[0].name;
-  //     }
-  //     return 'Poll name is not found';
-  //   });
-  //   return polls;
-  // }
 
   fetchQuestionsAndSaveToStore() {
     const questions = new Array();
@@ -79,14 +63,16 @@ export class FirebaseService {
   }
 
   saveNewPollToDB(poll, uid) {
-    firebase.database().ref('polls/' + uid).set(poll);
+    return firebase.database().ref('polls/' + uid).set(poll)
+    .then(() => {
+      this.store.dispatch(new PollsActions.AddPoll(poll));
+    });
   }
 
   delete_Poll_And_Related_Questions_From_DB_and_Store(uid) {
     const that = this;
     return new Promise((resolve, reject) => {
-    firebase.database().ref('polls/' + uid)
-      .remove()
+    firebase.database().ref('polls/' + uid).remove()
       .then(function () {
         console.log('Remove succeeded.');
         that.store.dispatch(new PollsActions.RemovePoll(uid));
@@ -100,7 +86,10 @@ export class FirebaseService {
   }
 
   saveNewQuestionToDB(question, uid) {
-    firebase.database().ref('questions/' + uid).set(question);
+    firebase.database().ref('questions/' + uid).set(question)
+    .then(() => {
+      this.store.dispatch(new QuestionsActions.AddQuestion(question));
+    });
   }
 
   deleteQuestionFromDBandDeleteFromStore(uid) {

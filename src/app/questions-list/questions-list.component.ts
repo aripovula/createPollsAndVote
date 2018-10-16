@@ -17,6 +17,7 @@ import * as QuestionsActions from '../ngrx-store/questions-action';
   templateUrl: './questions-list.component.html',
   styleUrls: ['./questions-list.component.css']
 })
+
 export class QuestionsListComponent implements OnInit {
   poll_id;
   poll_name;
@@ -123,14 +124,15 @@ export class QuestionsListComponent implements OnInit {
     console.log(this.addedChecklists);
     for (let x = 0; x < this.polls.length; x++) {
       if (this.addedChecklists[x]) {
+        let uid;
         if (this.copyOrMove === 'copy ') {
-          const uid = UUID.UUID();
+          uid = UUID.UUID();
           this.questionToCopyMove.id = uid;
-          this.questionToCopyMove.questionOfPollWithId = this.polls[x].id;
-          this.firebaseService.saveNewQuestionToDB(this.questionToCopyMove, uid);
-        } else {
-
+        } else if (this.copyOrMove === 'move ') {
+          uid = this.questionToCopyMove.id;
         }
+        this.questionToCopyMove.questionOfPollWithId = this.polls[x].id;
+        this.firebaseService.saveNewQuestionToDB(this.questionToCopyMove, uid);
         this.router.navigate(['/home']);
       }
     }
