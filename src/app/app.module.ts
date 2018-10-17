@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { StoreModule } from '@ngrx/store';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import { NewpollMModule } from './new_poll-module/newpoll-m.module';
 import { VoteMModule } from './vote-module/vote-m.module';
@@ -40,7 +41,8 @@ import { GetPollNameForQuestionPipe } from './pipes/get-poll-name-for-question.p
     NewpollMModule,
     AppRoutingModule,
     MomentModule,
-    StoreModule.forRoot(appReducers)
+    StoreModule.forRoot(appReducers),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

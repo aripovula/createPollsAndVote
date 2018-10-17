@@ -56,12 +56,16 @@ export class PollsListComponent implements OnInit {
     return this.firebaseService.delete_Poll_And_Related_Questions_From_DB_and_Store(this.pollIdToDelete)
       .then(() => {
         console.log('this.questions in Delete = ', this.questions);
-
+        let count = 0;
         for (const question of this.questions) {
+          count++;
           if (question.questionOfPollWithId === this.pollIdToDelete) {
-            return this.firebaseService.deleteQuestionFromDBandDeleteFromStore(question.id);
+            this.firebaseService.deleteQuestionFromDBandDeleteFromStore(question.id);
           }
+          console.log(count, this.questions.length);
         }
+        console.log('hiding spinner in delete');
+        this.firebaseService.hideLoadingSpinner();
       })
       ;
   }
@@ -95,12 +99,15 @@ export class PollsListComponent implements OnInit {
         questionToClone.questionOfPollWithId = pollToClone.id;
         this.firebaseService.saveNewQuestionToDB(questionToClone, idOfNewQuestion);
 
-        // question.q_text = question.q_text + ' - Copy';
+        // CHECKED IF cloned object is DEEP cloned -
+        // questionToClone.q_text = questionToClone.q_text + ' - Copy';
         // console.log(question.q_text);
-        // console.log(questionToClone.q_text);
-        // question.q_options[0].text = question.q_options[0].text + ' - Copy';
+        // console.log(questionToClone.q_text); // THIS AND ABOVE ONE ARE DIFFERENT
+        // console.log(questionToClone.q_text === question.q_text);  // FALSE
+        // questionToClone.q_options[0].text = questionToClone.q_options[0].text + ' - Copy';
         // console.log(question.q_options[0].text);
-        // console.log(questionToClone.q_options[0].text);
+        // console.log(questionToClone.q_options[0].text); // THIS AND ABOVE ONE ARE DIFFERENT
+        // console.log(questionToClone.q_options[0].text === question.q_options[0].text);  // FALSE
       }
     }
   }

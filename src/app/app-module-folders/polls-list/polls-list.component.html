@@ -38,7 +38,8 @@
           <div class="modal-body">
             <p>Are you sure you want to delete this poll and all associated questions ?</p>
             <p>- '{{pollNameToDelete}}'</p>
-            <p style='color: red'>Warning: all questions associated with this poll will be permanently deleted</p>
+            <br/>
+            <p><span style='color: red;'><strong>Warning:</strong></span> all questions associated with this poll will be permanently deleted</p>
             <br/>
             <button type="button" class="button button1" (click)="onDeleteConfirm()">Confirm</button>
             <button type="button" class="button button1" (click)="onDeleteCancel()">Cancel</button>

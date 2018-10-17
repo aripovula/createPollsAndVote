@@ -319,12 +319,13 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
       uid = UUID.UUID();
       this.model.id = uid;
       this.assignDateTime();
+      this.firebaseService.saveNewQuestionToDB(this.model, uid);
+      this.newPollService.confirmAQuestionDone();
     } else {
-      uid = this.model.id;
       this.assignDateTime();
+      this.firebaseService.saveNewQuestionToDB(this.model, this.model.id);
+      this.router.navigate(['/home']);
     }
-    this.firebaseService.saveNewQuestionToDB(this.model, uid);
-    this.newPollService.confirmAQuestionDone();
   }
 
   ngOnDestroy() {

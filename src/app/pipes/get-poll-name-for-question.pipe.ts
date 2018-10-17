@@ -13,6 +13,7 @@ export class GetPollNameForQuestionPipe implements PipeTransform {
     for (const poll of polls) {
       if (poll.id === args) {
         name = poll.name;
+        break;
       }
     }
     return name;

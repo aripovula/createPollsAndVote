@@ -92,11 +92,19 @@ export class QuestionsListComponent implements OnInit {
 
   onDeleteConfirm() {
     this.isDeleteModalDisplayed = false;
-    this.firebaseService.deleteQuestionFromDBandDeleteFromStore(this.questionIdToDelete);
+    this.firebaseService.deleteQuestionFromDBandDeleteFromStore(this.questionIdToDelete)
+    .then(() => this.firebaseService.hideLoadingSpinner());
   }
 
   onDeleteCancel() {
     this.isDeleteModalDisplayed = false;
+  }
+
+  cancelShowAllQuestionsAndGoToAPoll(pollID) {
+    this.poll_id = pollID;
+    this.filterToFindNeededPoll(this.polls, pollID);
+    this.showAllQuestions = false;
+    this.router.navigate(['/viewquestions', pollID]);
   }
 
   onCopyQuestionClicked(uid) {

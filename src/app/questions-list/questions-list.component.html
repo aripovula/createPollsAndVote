@@ -1,11 +1,11 @@
 <div style="margin-left: 50px;">
   <div *ngIf="!isCopyOrMoveClicked">
-    <h3>Questions list:</h3>
-
-    <label style="color: lightslategray; font-size: 14px; float: right; margin-right: 30px;">
-      <input type="checkbox" name="showAllQuestions" [(ngModel)]="showAllQuestions"> &nbsp; show all questions
-    </label>
-
+    <br/>
+    <h3>Questions list:
+      <label style="color: lightslategray; font-size: 14px; margin-left: 100px;">
+        <input type="checkbox" name="showAllQuestions" [(ngModel)]="showAllQuestions"> &nbsp; show all questions
+      </label>
+    </h3>
     <div *ngIf="!showAllQuestions">
       <h3 *ngIf="poll_name" style="color: green">{{poll_name}}</h3>
       <h3 *ngIf="!poll_name" style="color: green">poll name is not defined</h3>
@@ -22,7 +22,7 @@
           <span style="color:green;font-size:20px;">{{questions | countQuestions: poll_id}}</span> question(s)</p>
         <ol>
           <li *ngFor="let question of questions | questionsFilter: poll_id; let ind=index;">
-            <a routerLink="/question/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
+            <a routerLink="/editquestion/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
             <br/> &nbsp;
             <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
             <span class="horIndent"></span>
@@ -58,29 +58,39 @@
         </form>
       </div>
     </div>
-    <div *ngIf="isCopyOrMoveClicked">
-      <div>
-        <br/>
-        <h4>{{copyOrMove | titlecase}} '{{questionNameToCopyMove}}' to:</h4>
-
-        <div *ngFor="let poll of polls; let ind=index;">
-          <label style="color: lightslategray; font-size: 14px;">
-            <input type="radio" name="isToCopyMove" value={{ind}} [(ngModel)]="radioSelected[ind]"> &nbsp; {{copyOrMove}} to
-          </label>
-          <a routerLink="/poll/{{poll.id}}" class="addnlightbg"> &nbsp; {{poll.name}}</a>
-          <span class="verIndent"></span>
-        </div>
-      </div>
-      <br/>
-      <button type="button" class="button button1" (click)="onCopyMoveConfirm()">Submit</button>
-      <span class="horIndent"></span>
-      <button type="button" class="button button1" (click)="onCopyOrMoveCancelled()">Cancel</button>
-    </div>
   </div>
+  <div *ngIf="isCopyOrMoveClicked">
+    <div>
+      <br/>
+      <h4>{{copyOrMove | titlecase}} '{{questionNameToCopyMove}}' to:</h4>
+
+      <div *ngFor="let poll of polls; let ind=index;">
+        <label style="color: lightslategray; font-size: 14px;">
+          <input type="radio" name="isToCopyMove" value={{ind}} [(ngModel)]="radioSelected[ind]"> &nbsp; {{copyOrMove}} to
+        </label>
+        <a routerLink="/poll/{{poll.id}}" class="addnlightbg"> &nbsp; {{poll.name}}</a>
+        <span class="verIndent"></span>
+      </div>
+    </div>
+    <br/>
+    <button type="button" class="button button1" (click)="onCopyMoveConfirm()">Submit</button>
+    <span class="horIndent"></span>
+    <button type="button" class="button button1" (click)="onCopyOrMoveCancelled()">Cancel</button>
+  </div>
+
   <div *ngIf="showAllQuestions">
+    <a routerLink="/home" class="noDecor">go back to Polls list</a>
+    <br/>
+    <br/>
+    <div *ngIf="questions.length == 0" style="font-size: 14px; color:lightslategray">
+      <br/><br/>( no questions are found )
+    </div>
     <div *ngFor="let question of questions; let ind=index;">
-      <div>- {{question.q_text}}</div>
-      <div><span style="color: rgb(64, 203, 238);"> &nbsp; poll name:</span> {{polls | getPollNameForQuestion: question.questionOfPollWithId}}</div>
+      <a routerLink="/editquestion/{{question.id}}" class="addnlightbg">- {{question.q_text}}</a>
+      <div>
+        <span style="font-size: 14px; color:lightslategray"> &nbsp; poll name:&nbsp; </span>
+        <a (click)="cancelShowAllQuestionsAndGoToAPoll(question.questionOfPollWithId)" class="noDecor">&nbsp;{{polls | getPollNameForQuestion: question.questionOfPollWithId}}</a>
+      </div>
       <span class="verIndent"></span>
     </div>
   </div>
