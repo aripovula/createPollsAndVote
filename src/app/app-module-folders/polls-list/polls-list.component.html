@@ -8,6 +8,7 @@
         <a routerLink="/poll/{{poll.id}}" class="addnlightbg">{{poll.name}}</a>
         <br/>
         <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view / edit questions</a>
+        <span style="color: lightslategray; font-size: 14px;"> ( {{questions | countQuestions: poll.id}} )</span>
         <span class="horIndent"></span>
         <a (click)="onClonePollClicked(poll.id)" class="noDecor">clone</a>
         <span class="horIndent"></span>

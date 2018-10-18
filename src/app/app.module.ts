@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { StoreModule } from '@ngrx/store';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { NewpollMModule } from './new_poll-module/newpoll-m.module';
 import { VoteMModule } from './vote-module/vote-m.module';
@@ -15,7 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PollsListComponent } from './app-module-folders/polls-list/polls-list.component';
 import { appReducers } from './ngrx-store/app-reducers';
 import { QuestionsFilterPipe } from './pipes/questions-filter.pipe';
-import { QuestionsListComponent } from './questions-list/questions-list.component';
+import { QuestionsListComponent } from './app-module-folders/questions-list/questions-list.component';
 import { CountQuestionsPipe } from './pipes/count-questions.pipe';
 import { ReversePollsOrderPipe } from './pipes/reverse-polls-order.pipe';
 import { GetPollNameForQuestionPipe } from './pipes/get-poll-name-for-question.pipe';
@@ -42,7 +43,8 @@ import { GetPollNameForQuestionPipe } from './pipes/get-poll-name-for-question.p
     AppRoutingModule,
     MomentModule,
     StoreModule.forRoot(appReducers),
-    Ng4LoadingSpinnerModule.forRoot()
+    Ng4LoadingSpinnerModule.forRoot(),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
