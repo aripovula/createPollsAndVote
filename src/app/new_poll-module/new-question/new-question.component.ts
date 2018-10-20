@@ -27,19 +27,17 @@ import * as QuestionsActions from '../../ngrx-store/questions-action';
 export class NewQuestionComponent implements OnInit, OnDestroy {
 
   @ViewChild('questionForm') myForm;
-
   @ViewChild(PreviewQuestionComponent)
-  private previewComponent: PreviewQuestionComponent;
   @Input() poll_id: string;
   @Input() q_number: number;
 
-  model = new NewQuestion(null, 1, this.poll_id, 'false', null, 2, '1', [
+  private previewComponent: PreviewQuestionComponent;
+  model = new NewQuestion(null, 1, this.poll_id, 'false', 'oneormore', 2, null, 2, '1', [
     new NewOption(0, 'text', '', '', '', '', '', null, null),
     new NewOption(1, 'text', '', '', '', '', '', null, null)
   ]);
 
   // because selected checklists are discarded when uses navigates away it is not part of the model
-  addedChecklists = [{ id: 0, isSelected: false }, { id: 1, isSelected: false }];
 
   objects = [{ type: 'text', name: 'text' }, { type: 'imagelocal', name: 'image - local file' },
   { type: 'imageurl', name: 'image URL' }, { type: 'videourl', name: 'YouTube video URL' },
@@ -48,11 +46,10 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   { type: 'date', name: 'specific date' }, { type: 'dates', name: 'date range' },
   { type: 'time', name: 'specific time' }, { type: 'times', name: 'time range' }];
 
+  addedChecklists = [{ id: 0, isSelected: false }, { id: 1, isSelected: false }];
   sizes = [100, 150, 250];
   sizesW = [178, 266, 444];
 
-  multipleChoiceOption = 'oneormore';
-  multipleChoiceOptionQnty = 2;
   shouldCLsValidBeSetToFalse = false;
 
   localImage = [];
@@ -131,6 +128,13 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
         if (option.type === 'videourl') {this.onVideoURLChanged(option.id); }
         if (option.type === 'weburl') {this.onWebURLChanged(option.id); }
       }
+      if (this.model.multipleChoice === 'true') {
+        this.addedChecklists = [];
+        for (let step = 0; step < this.model.q_options.length; step++) {
+          this.addedChecklists.push({ id: 0, isSelected: false });
+        }
+      }
+
   }
 
   onQTextChanged() {
@@ -189,16 +193,16 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   }
 
   deductMultiOption() {
-    this.multipleChoiceOptionQnty--;
+    this.model.multipleChoiceOptionQnty--;
   }
 
   onMultiOptionQntyChange(e) {
-    this.multipleChoiceOptionQnty = e;
+    this.model.multipleChoiceOptionQnty = e;
     this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
   }
 
   addMultiOption() {
-    this.multipleChoiceOptionQnty++;
+    this.model.multipleChoiceOptionQnty++;
     this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
   }
 
@@ -212,7 +216,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   }
 
   updateMultiOptionsQnty() {
-    (<HTMLInputElement>document.getElementById('multipleChoiceOptionQnty')).value = '' + this.multipleChoiceOptionQnty;
+    (<HTMLInputElement>document.getElementById('multipleChoiceOptionQnty')).value = '' + this.model.multipleChoiceOptionQnty;
   }
 
   onSelectTypeChange() {

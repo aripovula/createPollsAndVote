@@ -3,7 +3,6 @@ import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FormGroup, FormControl } from '@angular/forms';
 
 import { FirebaseService } from './../../firebase.service';
 import { NewPoll } from './../models/new_poll-model';
@@ -20,11 +19,6 @@ import * as AuthActions from './../../ngrx-store/auth-action';
   styleUrls: ['./new-poll.component.css']
 })
 export class NewPollComponent implements OnInit {
-  voteForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-  });
-
   poll_id = null;
   expiresDateTime = '';
   changeDate = true;

@@ -10,7 +10,7 @@
       <h3 *ngIf="poll_name" style="color: green">{{poll_name}}</h3>
       <h3 *ngIf="!poll_name" style="color: green">poll name is not defined</h3>
 
-      <a routerLink="/questions/1/{{poll_id}}" class="noDecor">add new question</a>
+      <a routerLink="/addquestion/{{questions | countQuestions: poll_id}}/{{poll_id}}/{{questions | countQuestions: poll_id}}" class="noDecor">add new question</a>
       <span class="horIndent"></span>
       <span class="horIndent"></span>
       <a routerLink="/home" class="noDecor">go back to Polls list</a>

@@ -23,40 +23,40 @@
         <div *ngIf="model.multipleChoice == 'true'">
           <div style="margin-left: 125px;">
             <label>
-              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" value="oneormore" [(ngModel)]="multipleChoiceOption"
+              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" value="oneormore" [(ngModel)]="model.multipleChoiceOption"
                 (ngModelChange)="onMultipleOptionChange($event)"> select any number of checkboxes (minimum - 1)
             </label>
           </div>
           <div style="margin-left: 125px;">
             <label>
-              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" [(ngModel)]="multipleChoiceOption" (ngModelChange)="onMultipleOptionChange($event)"
+              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" [(ngModel)]="model.multipleChoiceOption" (ngModelChange)="onMultipleOptionChange($event)"
                 value="exactly"> exactly
             </label>
             <label>
-              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" [(ngModel)]="multipleChoiceOption" (ngModelChange)="onMultipleOptionChange($event)"
+              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" [(ngModel)]="model.multipleChoiceOption" (ngModelChange)="onMultipleOptionChange($event)"
                 value="lessthan"> less than (min.1)
             </label>
             <label>
-              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" [(ngModel)]="multipleChoiceOption" (ngModelChange)="onMultipleOptionChange($event)"
+              <input type="radio" id="multipleChoiceOption" name="multipleChoiceOption" [(ngModel)]="model.multipleChoiceOption" (ngModelChange)="onMultipleOptionChange($event)"
                 value="morethan"> more than
             </label>
           </div>
           <div style="margin-left: 125px;">
             <button type="button" class="button button1" (click)="deductMultiOption()"> - </button>
             <input type="text" id="multipleChoiceOptionsNumber" name="multipleChoiceOptionsNumber" style="width:30px;border-radius: 0px;"
-              min="1" required [(ngModel)]="multipleChoiceOptionQnty" (ngModelChange)="onMultiOptionQntyChange($event)" #multipleChoiceOptionsNumber="ngModel">
+              min="1" required [(ngModel)]="model.multipleChoiceOptionQnty" (ngModelChange)="onMultiOptionQntyChange($event)" #multipleChoiceOptionsNumber="ngModel">
             <button type="button" class="button button1" (click)="addMultiOption()"> + </button>
             checkboxes must be selected
           </div>
 
-          <div *ngIf="multipleChoiceOption != 'morethan' ">
-            <div *ngIf="multipleChoiceOptionQnty > model.questionsQnty" class="warning" style="margin-left: 125px;">
+          <div *ngIf="model.multipleChoiceOption != 'morethan' ">
+            <div *ngIf="model.multipleChoiceOptionQnty > model.questionsQnty" class="warning" style="margin-left: 125px;">
               This can not be more than number of options
             </div>
           </div>
 
-          <div *ngIf="multipleChoiceOption == 'morethan' ">
-            <div *ngIf="multipleChoiceOptionQnty >= model.questionsQnty" class="warning" style="margin-left: 125px;">
+          <div *ngIf="model.multipleChoiceOption == 'morethan' ">
+            <div *ngIf="model.multipleChoiceOptionQnty >= model.questionsQnty" class="warning" style="margin-left: 125px;">
               This can not be equal to or more than number of options
             </div>
           </div>
@@ -363,7 +363,7 @@
 
   <div id="right">
     <app-preview-question #preview [q_text]="model.q_text" [multipleChoice]="model.multipleChoice" [q_options]="model.q_options"
-      [addedChecklists]="addedChecklists" [multipleChoiceOption]="multipleChoiceOption" [multipleChoiceOptionQnty]="multipleChoiceOptionQnty"
+      [addedChecklists]="addedChecklists" [multipleChoiceOption]="model.multipleChoiceOption" [multipleChoiceOptionQnty]="model.multipleChoiceOptionQnty"
       [shouldCLsValidBeSetToFalse]="shouldCLsValidBeSetToFalse" [safeURLimage]="safeURLimage" [safeURL]="safeURL" [WebURL]="WebURL"
       [imageSize]="model.imageSize" [dateTimeToDisplay1]="dateTimeToDisplay1" [dateTimeToDisplay2]="dateTimeToDisplay2" (buttonValid)="onButtonIsValid($event)">
     </app-preview-question>

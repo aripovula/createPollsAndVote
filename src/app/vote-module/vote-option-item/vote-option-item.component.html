@@ -1,0 +1,88 @@
+<span *ngIf="option.type=='text' " class="inlineText">
+  <span>{{option.text}}</span>
+  <br/>
+  <br/>
+</span>
+
+<span *ngIf="option.type != 'text' ">
+  <span class="inlineText">{{option.text}}</span>
+</span>
+
+<span *ngIf="option.type=='imagelocal' " style="margin-left: 88px;">
+  <span *ngIf="imageFile">
+    <img [src]="imageFile" height={{sizes[imageSize]}}>
+  </span>
+</span>
+
+<span *ngIf="option.type=='imageurl' " style="margin-left: 88px;">
+  <span *ngIf="safeURLimage">
+    <img [src]="safeURLimage" height={{sizes[imageSize]}}>
+    <span class="horIndent"></span>
+    <a class="noDecor" [href]="safeURLimage" target="_blank">view at source</a>
+  </span>
+</span>
+
+<span *ngIf="option.type=='videourl' " style="margin-left: 88px;">
+  <span *ngIf="safeURL">
+    <iframe [src]="safeURL" frameborder="0" height={{sizes[imageSize]}} width={{sizesW[imageSize]}} allowfullscreen></iframe>
+  </span>
+</span>
+
+<span *ngIf="option.type=='weburl' " style="margin-left: 88px;">
+  <span *ngIf="WebURL">
+    <button (click)="goToUrl()">{{WebURL}}</button>
+    <br/>
+    <br/>
+  </span>
+</span>
+
+<span *ngIf="option.type=='datetime' " class="inlineText">
+    {{option.startDateTime | date:'MMM dd, yyyy @ hh:mm a'}}
+    <br/>
+    <br/>
+</span>
+
+<span *ngIf="option.type=='datestimes' " class="inlineText">
+  <span *ngIf="option.startDateTime && option.endDateTime">
+    from
+    <span style="color: rgb(48, 190, 238)">{{option.startDateTime | date:'MMM dd, yyyy @ hh:mm a'}}</span>
+    &nbsp; to &nbsp;
+    <span style="color: rgb(48, 190, 238)">{{option.endDateTime | date:'MMM dd, yyyy @ hh:mm a'}}</span>
+  </span>
+  <br/>
+  <br/>
+</span>
+
+<span *ngIf="option.type=='date' " class="inlineText">
+  {{option.startDateTime | date:'mediumDate'}}
+  <br/>
+  <br/>
+</span>
+
+<span *ngIf="option.type=='dates' " class="inlineText">
+  <span *ngIf="option.startDateTime && option.endDateTime">
+    from
+    <span style="color: rgb(48, 190, 238)">{{option.startDateTime | date:'mediumDate'}}</span>
+    &nbsp; to &nbsp;
+    <span style="color: rgb(48, 190, 238)">{{option.endDateTime | date:'mediumDate'}}</span>
+  </span>
+  <br/>
+  <br/>
+</span>
+
+<span *ngIf="option.type=='time' " class="inlineText">
+  {{option.startDateTime | date:'h:mm a'}}
+  <br/>
+  <br/>
+</span>
+
+<span *ngIf="option.type=='times' " class="inlineText">
+  <span *ngIf="option.startDateTime && option.endDateTime">
+    from
+    <span style="color: rgb(48, 190, 238)">{{option.startDateTime | date:'h:mm a ( z )'}}</span>
+    &nbsp; to &nbsp;
+    <span style="color: rgb(48, 190, 238)">{{option.endDateTime | date:'h:mm a ( z )'}}</span>
+  </span>
+  <br/>
+  <br/>
+</span>

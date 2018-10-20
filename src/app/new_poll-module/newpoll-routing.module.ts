@@ -8,6 +8,7 @@ import { LoopQuestionsComponent } from './loop-questions/loop-questions.componen
 const newpollRoutes: Routes = [
   { path: 'editpoll/:poll_id', component: NewPollComponent }, /// , canActivate: [AuthGuard]  },
   { path: 'questions/:qnty/:poll_id', component: LoopQuestionsComponent }, /// , canActivate: [AuthGuard]  },
+  { path: 'addquestion/:qnty/:poll_id/:seqnumber', component: LoopQuestionsComponent }, /// , canActivate: [AuthGuard]  },
   { path: 'newpoll', component: NewPollComponent }, /// , canActivate: [AuthGuard]  },
   // { path: 'question', component: NewQuestionComponent }, /// , canActivate: [AuthGuard]  },
 

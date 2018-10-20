@@ -1,0 +1,60 @@
+<div *ngIf="model">
+  <div style="margin-left: 100px;">
+    <p>
+      <span class="horIndent"></span>{{model.q_text}}
+    </p>
+
+    <div style="font-size: 14px;">
+      <span class="horIndent"></span>
+      <span *ngIf="model.multipleChoice=='true'">
+        <span *ngIf="model.multipleChoiceOption=='oneormore'">( select any number of options )</span>
+        <span *ngIf="model.multipleChoiceOption=='exactly'"> ( select exactly {{model.multipleChoiceOptionQnty}} options )</span>
+        <span *ngIf="model.multipleChoiceOption=='lessthan'"> ( select less than {{model.multipleChoiceOptionQnty}} options )</span>
+        <span *ngIf="model.multipleChoiceOption=='morethan'"> ( select more than {{model.multipleChoiceOptionQnty}} options )</span>
+      </span>
+      <span *ngIf="model.multipleChoice=='false'">( select only ONE option )</span>
+      <br/>
+      <br/>
+    </div>
+    <div *ngFor="let option of model.q_options; let ind=index;">
+      <div class="parent">
+        <span *ngIf="model.multipleChoice=='true'">
+        <label>
+          <span class="horIndent"></span>
+          <input class="child" type="checkbox" name="isQSelected{{addedVoteChecklists[ind].id}}" 
+          [(ngModel)]="addedVoteChecklists[ind].isQSelected"
+          (ngModelChange)="onQSelectedChange()" #isQSelected="ngModel">
+          <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>
+        </label>
+      </span>
+
+      <span *ngIf="model.multipleChoice=='false'">
+        <label>
+          <span class="horIndent"></span>
+          <input class="child" type="radio" name="isQSelected" value={{ind}}
+          [(ngModel)]="vRadioButtonClicked" value={{ind}} (ngModelChange)="onQSelectedChangeRadio($event)"
+          #isSelectedRadio="ngModel"
+            >
+          <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>
+        </label>
+      </span>    
+
+      <app-vote-option-item
+        [option]="option"
+        [ind]="ind"
+        [imageFile] = "model.q_options[ind].imageFile"
+        [safeURLimage]="safeURLimage[ind]"
+        [safeURL]="safeURL[ind]"
+        [WebURL]="WebURL[ind]"
+        [imageSize]="model.imageSize"
+      >
+      </app-vote-option-item>
+      </div>
+    </div>
+    <br/>
+    <button type="submit" class="button button1" (click)="confirm()" [disabled]="!isSelectionValid">
+      Next >
+    </button>
+  
+  </div>
+</div>

@@ -30,11 +30,13 @@ export class LoopQuestionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.q_qnty = this.route.snapshot.paramMap.get('qnty');
     this.poll_id = this.route.snapshot.paramMap.get('poll_id');
+    const seqnumber = this.route.snapshot.paramMap.get('seqnumber');
+    if (seqnumber != null) { this.q_number = parseInt(seqnumber, 10) + 1; }
     console.log('poll_id = ', this.poll_id);
   }
 
   goToNextQuestion() {
-    const nextQuestion = new NewQuestion(null, this.q_number, this.poll_id, 'false', null, 2, '1', [
+    const nextQuestion = new NewQuestion(null, this.q_number, this.poll_id, 'false', 'oneormore', 2, null, 2, '1', [
       new NewOption(0, 'text', '', '', '', '', '', null, null),
       new NewOption(1, 'text', '', '', '', '', '', null, null)
     ]);

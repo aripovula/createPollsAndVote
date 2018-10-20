@@ -6,6 +6,8 @@ export class NewQuestion {
         public sequenceNumber: number,
         public questionOfPollWithId: string,
         public multipleChoice: string,
+        public multipleChoiceOption: string,
+        public multipleChoiceOptionQnty: number,
         public q_text: string,
         public questionsQnty: number,
         public imageSize: string,
