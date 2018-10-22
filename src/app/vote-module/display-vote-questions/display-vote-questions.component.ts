@@ -22,7 +22,7 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
   // inputHidden = [];
   vRadioButtonClicked = null;
   model: NewQuestion;
-  votedModel = { pollId: null, questionID: null, type: null, CLs: null, Radio: null };
+  votedModel = { pollId: null, questionID: null, questionsQnty: null, type: null, CLs: null, Radio: null };
   subscription: Subscription;
 
   selectedCLs;
@@ -112,6 +112,7 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
     this.votedModel = {
       pollId: this.model.questionOfPollWithId,
       questionID: this.model.id,
+      questionsQnty: this.model.q_options.length,
       type,
       CLs,
       Radio: this.vRadioButtonClicked

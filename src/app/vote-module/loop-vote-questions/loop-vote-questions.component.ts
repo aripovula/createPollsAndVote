@@ -83,6 +83,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
   pushToVotedQuestionModel(votedModel) {
     this.votedQuestionModel.aVote.questions.push({
       questionID: votedModel.questionID,
+      questionsQnty: votedModel.questionsQnty,
       type: votedModel.type,
       CLs: votedModel.CLs,
       Radio: votedModel.Radio

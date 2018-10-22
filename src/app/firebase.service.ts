@@ -25,7 +25,7 @@ export class FirebaseService {
   polls: Array<NewPoll>;
   questions: Array<NewQuestion>;
   isSpinnerShown = false;
-  user_id = 'def';
+  user_id = 'xyz';
 
   constructor(private store: Store<AppState>, private spinnerService: Ng4LoadingSpinnerService) { }
 

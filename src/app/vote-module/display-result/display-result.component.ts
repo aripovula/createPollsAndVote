@@ -72,22 +72,30 @@ export class DisplayResultComponent implements OnInit {
         console.log('in result  poll_id = ', this.poll_id);
         console.log('in result  this.votes_on_poll = ', this.votes_on_poll);
 
-        const xLength = this.votes_on_poll.length;
-        this.votes_count = new Array(xLength);
-        for (let x = 0; x < xLength; x++) {
-          const yLength = this.votes_on_poll[x].aVote.questions.length;
-          this.votes_count[x] = new Array(yLength);
-          console.log('x=', xLength, ' y= ', yLength);
+        // prepare two-diamentional array
+        const anyVote = this.votes_on_poll[0];
+        const x_Length = anyVote.aVote.questions.length;
+        this.votes_count = new Array(x_Length);
+        for (let x = 0; x < x_Length; x++) {
+          const y_Length = anyVote.aVote.questions[x].questionsQnty;
+          this.votes_count[x] = new Array(y_Length);
+          for (let y = 0; y < y_Length; y++) {
+            this.votes_count[x][y] = 0;
+          }
 
-          for (let y = 0; y < yLength; y++) {
-            if (this.votes_count[x][y] == null) { this.votes_count[x][y] = 0; }
-            if (this.votes_on_poll[x].aVote.questions[y].type === 0) {
-              this.votes_count[x][parseInt(this.votes_on_poll[x].aVote.questions[0].Radio, 10)] =
-                this.votes_count[x][parseInt(this.votes_on_poll[x].aVote.questions[0].Radio, 10)] + 1;
+        }
+
+        for (let vote = 0; vote < this.votes_on_poll.length; vote++) {
+          const nextVote = this.votes_on_poll[vote];
+          const xLength = nextVote.aVote.questions.length;
+          for (let x = 0; x < xLength; x++) {
+            if (nextVote.aVote.questions[x].type === 0) {
+              this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] =
+                this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] + 1;
             } else {
-              for (let z = 0; z < this.votes_on_poll[x].aVote.questions[y].CLs.length; z++) {
-                if (this.votes_on_poll[x].aVote.questions[y].CLs != null ) {
-                  if (this.votes_on_poll[x].aVote.questions[y].CLs[z].isQSelected) {
+              if (nextVote.aVote.questions[x].CLs != null) {
+                for (let z = 0; z < nextVote.aVote.questions[x].CLs.length; z++) {
+                  if (nextVote.aVote.questions[x].CLs[z].isQSelected) {
                     this.votes_count[x][z] = this.votes_count[x][z] + 1;
                   }
                 }
