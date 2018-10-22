@@ -1,3 +1,4 @@
+import { SelectedCLs } from './../vote-models/selected-cls-model';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -12,16 +13,16 @@ import { VoteService } from './../vote-service';
   styleUrls: ['./display-vote-questions.component.css']
 })
 export class DisplayVoteQuestionsComponent implements OnDestroy {
-  addedVoteChecklists = [{ id: 0, isQSelected: false }, { id: 1, isQSelected: false }];
+  addedVoteChecklists: Array<SelectedCLs> = [{ id: 0, isQSelected: false }, { id: 1, isQSelected: false }];
   isSelectionValid = false;
   safeURL = [];
   safeURLimage = [];
   safeWebURL = [];
   WebURL = [];
   // inputHidden = [];
-  vRadioButtonClicked = false;
+  vRadioButtonClicked = null;
   model: NewQuestion;
-  votedModel = {pollId: null, questionID: null, votes: null };
+  votedModel = { pollId: null, questionID: null, type: null, CLs: null, Radio: null };
   subscription: Subscription;
 
   selectedCLs;
@@ -50,7 +51,7 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
     if (this.model.multipleChoice === 'true') {
       this.addedVoteChecklists = [];
       for (let step = 0; step < this.model.q_options.length; step++) {
-        this.addedVoteChecklists.push({ id: 0, isQSelected: false });
+        this.addedVoteChecklists.push({ id: step, isQSelected: false });
       }
     }
   }
@@ -96,7 +97,8 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
   onQSelectedChangeRadio(e) {
     this.isSelectionValid = false;
     if (this.model.multipleChoice === 'false') {
-      if (this.vRadioButtonClicked) {this.isSelectionValid = true; }
+      this.isSelectionValid = true;
+      // this.vRadioButtonClicked = parseInt(e, 10);
     }
 
     console.log('in onSelectedChangeRadio', e);
@@ -105,12 +107,18 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
 
   confirm() {
     // this.firebaseService.saveNewQuestionToDB(this.model, uid);
+    const type = this.model.multipleChoice === 'true' ? 1 : 0;
+    const CLs = this.model.multipleChoice === 'true' ? this.addedVoteChecklists : [];
     this.votedModel = {
       pollId: this.model.questionOfPollWithId,
       questionID: this.model.id,
-      votes: this.addedVoteChecklists
+      type,
+      CLs,
+      Radio: this.vRadioButtonClicked
     };
-    this.voteService.confirmAVoteQuestionDone();
+    console.log(this.votedModel);
+
+    this.voteService.confirmAVoteQuestionDone(this.votedModel);
   }
 
   ngOnDestroy() {

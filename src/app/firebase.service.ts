@@ -1,3 +1,4 @@
+import { AVote } from './vote-module/vote-models/a-vote-model';
 import { Injectable } from '@angular/core';
 // import { Http } from '@angular/http';
 import * as firebase from 'firebase';
@@ -24,6 +25,7 @@ export class FirebaseService {
   polls: Array<NewPoll>;
   questions: Array<NewQuestion>;
   isSpinnerShown = false;
+  user_id = 'def';
 
   constructor(private store: Store<AppState>, private spinnerService: Ng4LoadingSpinnerService) { }
 
@@ -140,6 +142,53 @@ export class FirebaseService {
           reject();
         });
     });
+  }
+
+  fetchVotedQuestions(poll_id) {
+    this.showLoadingSpinner();
+    const votedQuestions = [];
+    const allVotes: Array<AVote> = [];
+    const that = this;
+    return new Promise((resolve, reject) => {
+      firebase.database().ref('voted_questions').once('value')
+        .then((snapshot) => {
+          snapshot.forEach((item) => {
+            console.log('item.val() = ', item.val());
+            votedQuestions.push(item.val());
+          });
+          console.log('questions fireb q-list = ', votedQuestions);
+          console.log('questions len fireb q-list = ', votedQuestions.length);
+          return votedQuestions;
+        })
+        .then((data) => {
+          // https://stackoverflow.com/questions/126100/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip
+
+          const data2 = data[0];
+          const votesQnty = Object.keys(data2).length;
+          console.log('data in 2nd next =', data);
+          console.log('votesQnty in 2nd next =', votesQnty);
+          for (let x = 0; x < votesQnty; x++) {
+            // https://stackoverflow.com/questions/983267/how-to-access-the-first-property-of-an-object-in-javascript
+            const VoteItem = data2[Object.keys(data2)[x]];
+            console.log('ano item = ', VoteItem);
+
+            allVotes.push(VoteItem);
+          }
+          console.log('allVotes fireb q-list = ', allVotes);
+          console.log('allVotes len fireb q-list = ', allVotes.length);
+
+          that.hideLoadingSpinner();
+          resolve(allVotes);
+        });
+    });
+  }
+
+  saveVotedQuestionToDB(question, poll_id) {
+    // this.user_id = 'a' + Math.floor(Math.random() * (100 - 1 + 1) + 1);
+    firebase.database().ref('voted_questions/' + poll_id + '/' + this.user_id).set(question)
+      .then(() => {
+        // this.store.dispatch(new QuestionsActions.AddQuestion(question));
+      });
   }
 
   // own function is used in all above functions to make easier to change 3rd party spinner.

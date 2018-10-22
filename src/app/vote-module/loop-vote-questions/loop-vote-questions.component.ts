@@ -12,6 +12,9 @@ import { AppState } from '../../ngrx-store/app-reducers';
 import * as pollsState from '../../ngrx-store/polls-reducer';
 import * as PollsActions from '../../ngrx-store/polls-action';
 
+// you already voted - here are the results
+// do not show expired polls
+// identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
 
 @Component({
   selector: 'app-loop-vote-questions',
@@ -27,6 +30,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
   poll_name;
   questions: Array<NewQuestion>;
   questionsOfPoll: Array<NewQuestion>;
+  votedQuestionModel;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -35,11 +39,14 @@ export class LoopVoteQuestionsComponent implements OnInit {
     private store: Store<AppState>,
     private voteService: VoteService) {
     voteService.aVoteQuestionCompleted$.subscribe(
-      () => {
+      (votedModel) => {
+        console.log('votedModel in loop = ', votedModel);
+        this.pushToVotedQuestionModel(votedModel);
         this.q_number++;
         console.log('q_number, qnty = ', this.q_number, this.q_qnty);
         if (this.q_number >= this.q_qnty) {
-          this.router.navigate(['/result']);
+          this.firebaseService.saveVotedQuestionToDB(this.votedQuestionModel, this.votedQuestionModel.aVote.pollID);
+          this.router.navigate(['/result', this.poll_id]);
         } else {
           console.log('before sending to goToNextQuestion');
           this.goToNextQuestion();
@@ -49,6 +56,14 @@ export class LoopVoteQuestionsComponent implements OnInit {
 
   ngOnInit() {
     this.poll_id = this.route.snapshot.paramMap.get('poll_id');
+    this.votedQuestionModel = {
+      aVote: {
+        pollID: this.poll_id,
+        questions: []
+      }
+    };
+    console.log('votedQuestionModel = ', this.votedQuestionModel);
+
     let polls;
     this.store.select('polls').subscribe(data => { polls = data.polls; });
     console.log('polls = ', polls);
@@ -65,8 +80,19 @@ export class LoopVoteQuestionsComponent implements OnInit {
 
   }
 
+  pushToVotedQuestionModel(votedModel) {
+    this.votedQuestionModel.aVote.questions.push({
+      questionID: votedModel.questionID,
+      type: votedModel.type,
+      CLs: votedModel.CLs,
+      Radio: votedModel.Radio
+    });
+    console.log('votedQuestionModel = ', this.votedQuestionModel);
+    this.firebaseService.saveVotedQuestionToDB(this.votedQuestionModel, this.votedQuestionModel.aVote.pollID);
+  }
+
   getPollName(polls) {
-    for (const poll of polls) { if (poll.id === this.poll_id) { this.poll_name = poll.name; }}
+    for (const poll of polls) { if (poll.id === this.poll_id) { this.poll_name = poll.name; } }
     this.goToNextQuestion();
   }
 

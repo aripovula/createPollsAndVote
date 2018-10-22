@@ -16,7 +16,7 @@ const appRoutes: Routes = [
   { path: 'viewquestions/:poll_id', component: QuestionsListComponent}, /// , canActivate: [AuthGuard]  },
   { path: 'editquestion/:question_id', component: NewQuestionComponent}, /// , canActivate: [AuthGuard]  },
   { path: 'vote/:poll_id', component: LoopVoteQuestionsComponent}, /// , canActivate: [AuthGuard]  },
-  { path: 'result', component: DisplayResultComponent},
+  { path: 'result/:poll_id', component: DisplayResultComponent},
 
     // { path: 'signout', component: SigninComponent},
     { path: 'not-found', component: NotFoundComponent},

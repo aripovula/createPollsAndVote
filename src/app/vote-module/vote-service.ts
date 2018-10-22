@@ -21,7 +21,7 @@ export class VoteService {
      this.loopVoteQuestionSource.next(nextVoteQuestion);
    }
 
-   confirmAVoteQuestionDone() {
-     this.nextVoteQuestionSource.next();
+   confirmAVoteQuestionDone(votedModel) {
+     this.nextVoteQuestionSource.next(votedModel);
    }
 }
