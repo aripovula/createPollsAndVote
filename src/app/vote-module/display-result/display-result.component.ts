@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { VotesOnPoll } from './../vote-models/votes-on-poll-model';
-// import { AVote } from './../vote-models/a-vote-model';
 import { FirebaseService } from './../../firebase.service';
+import { AppState } from '../../ngrx-store/app-reducers';
+import * as questionsState from '../../ngrx-store/questions-reducer';
+import * as QuestionsActions from '../../ngrx-store/questions-action';
+
 
 @Component({
   selector: 'app-display-result',
@@ -28,22 +32,15 @@ export class DisplayResultComponent implements OnInit {
     }
   };
   barChartLabels: Array<Array<number>>;
-  //  = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   barChartType = 'bar';
   barChartLegend = false;
-
   barChartData: any[];
-
-  chartColors: any[] = [
-    { backgroundColor: ['#FF7360', '#6FC8CE', '#FAFFF2', '#FFFCC4', '#B9E8E0'] }];
-  //  = [
-  //   { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-  //   // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-  // ];
+  chartColors: any[] = [{ backgroundColor: ['#FF7360', '#6FC8CE', '#FAFFF2', '#FFFCC4', '#B9E8E0'] }];
 
   pieChartLabels: Array<Array<number>>;
   pieChartData: number[];
   pieChartType = 'pie';
+  question_ids = [];
 
   constructor(
     private firebaseService: FirebaseService,
@@ -56,8 +53,6 @@ export class DisplayResultComponent implements OnInit {
     this.firebaseService.fetchVotedQuestions(this.poll_id)
       .then((data: Array<VotesOnPoll>) => {
         this.votes_on_poll = data;
-        console.log('in result  poll_id = ', this.poll_id);
-        console.log('in result  this.votes_on_poll = ', this.votes_on_poll);
 
         // prepare two-diamentional array
         const anyVote = this.votes_on_poll[0];
@@ -70,6 +65,7 @@ export class DisplayResultComponent implements OnInit {
           this.votes_count[x] = new Array(y_Length);
           this.barChartLabels[x] = new Array(y_Length);
           this.pieChartLabels[x] = new Array(y_Length);
+          this.question_ids[x] = anyVote.aVote.questions[x].questionID;
           for (let y = 0; y < y_Length; y++) {
             this.votes_count[x][y] = 0;
             this.barChartLabels[x][y] = y + 1;
@@ -95,55 +91,17 @@ export class DisplayResultComponent implements OnInit {
                 }
               }
             }
-            // console.log('this.votes_count[x].length=', this.votes_count[x].length);
-            // this.barChartData[x] = new Array(this.votes_count[x].length);
-            // this.barChartData[x].data = this.votes_count[x];
-            // this.barChartData[x].label = 'Question ' + (x + 1);
           }
         }
         console.log('final count = ', this.votes_count);
         console.log('count[0] = ', this.votes_count[0]);
-        console.log('this.barChartData[0] = ', this.barChartData[0]);
-        console.log('this.barChartData[1] = ', this.barChartData[1]);
         for (let x = 0; x < this.votes_on_poll[0].aVote.questions.length; x++) {
           this.barChartData[x] = [
             { data: this.votes_count[x], label: ''}
           ];
         }
-
         // this.pieChartData = [this.votes_count[0]];
 
-
       });
-  }
-
-  // events
-  chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  chartHovered(e: any): void {
-    console.log(e);
-  }
-
-  randomize(): void {
-    // Only Change 3 values
-    const data = [
-      Math.round(Math.random() * 100),
-      59,
-      80,
-      (Math.random() * 100),
-      56,
-      (Math.random() * 100),
-      40];
-    const clone = JSON.parse(JSON.stringify(this.barChartData));
-    clone[0].data = data;
-    this.barChartData = clone;
-    /**
-     * (My guess), for Angular to recognize the change in the dataset
-     * it has to change the dataset variable directly,
-     * so one way around it, is to clone the data, change it and then
-     * assign it;
-     */
   }
 }

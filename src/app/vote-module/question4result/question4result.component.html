@@ -1,0 +1,31 @@
+<div *ngIf="model">
+  <div style="margin-left: 50px;">
+    <p>
+      <span class="horIndent"></span>{{model.q_text}}
+    </p>
+
+    <div style="font-size: 14px;">
+      <span class="horIndent"></span>
+      <span *ngIf="model.multipleChoice=='true'">
+        <span *ngIf="model.multipleChoiceOption=='oneormore'">( you were asked to select any number of options )</span>
+        <span *ngIf="model.multipleChoiceOption=='exactly'"> ( you were asked to select exactly {{model.multipleChoiceOptionQnty}} options )</span>
+        <span *ngIf="model.multipleChoiceOption=='lessthan'"> ( you were asked to select less than {{model.multipleChoiceOptionQnty}} options )</span>
+        <span *ngIf="model.multipleChoiceOption=='morethan'"> ( you were asked to select more than {{model.multipleChoiceOptionQnty}} options )</span>
+      </span>
+      <span *ngIf="model.multipleChoice=='false'">( you were asked to select only ONE option )</span>
+      <br/>
+      <br/>
+    </div>
+    <div *ngFor="let option of model.q_options; let ind=index;">
+      <div class="parent">
+        <span class="horIndent"></span>
+        <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>
+
+        <app-vote-option-item [option]="option" [ind]="ind" 
+        [imageFile]="model.q_options[ind].imageFile" [safeURLimage]="safeURLimage[ind]"
+          [safeURL]="safeURL[ind]" [WebURL]="WebURL[ind]" [imageSize]="model.imageSize">
+        </app-vote-option-item>
+      </div>
+    </div>
+  </div>
+</div>

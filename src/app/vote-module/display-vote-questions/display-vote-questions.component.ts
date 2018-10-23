@@ -1,10 +1,10 @@
-import { SelectedCLs } from './../vote-models/selected-cls-model';
-import { NewQuestion } from './../../new_poll-module/models/new_question-model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
+import { SelectedCLs } from './../vote-models/selected-cls-model';
+import { NewQuestion } from './../../new_poll-module/models/new_question-model';
 import { VoteService } from './../vote-service';
 
 @Component({
@@ -12,6 +12,7 @@ import { VoteService } from './../vote-service';
   templateUrl: './display-vote-questions.component.html',
   styleUrls: ['./display-vote-questions.component.css']
 })
+
 export class DisplayVoteQuestionsComponent implements OnDestroy {
   addedVoteChecklists: Array<SelectedCLs> = [{ id: 0, isQSelected: false }, { id: 1, isQSelected: false }];
   isSelectionValid = false;

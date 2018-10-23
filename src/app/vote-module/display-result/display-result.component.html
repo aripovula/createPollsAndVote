@@ -4,8 +4,10 @@
   </p>
 
   <div *ngIf="votes_count">
-    <!-- <app-barchart votes_count={{votes_count}}></app-barchart> -->
+
     <div *ngFor="let vote_count of votes_count; let ind=index;">
+
+      <app-question4result [question_id]="question_ids[ind]"></app-question4result>
 
       <div class="w3-container">
         <h2>Large Table</h2>

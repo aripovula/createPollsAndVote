@@ -112,7 +112,6 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
     console.log('on init poll_id', this.poll_id);
     this.model.questionOfPollWithId = this.poll_id;
     this.model.sequenceNumber = this.q_number;
-
   }
 
   byId(item1: any, item2: any) {
