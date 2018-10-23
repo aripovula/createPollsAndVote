@@ -15,6 +15,7 @@ import * as PollsActions from '../../ngrx-store/polls-action';
 // you already voted - here are the results
 // do not show expired polls
 // identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
+// if at least one vote of OTHER user exists on the poll do not allow to change poll
 
 @Component({
   selector: 'app-loop-vote-questions',

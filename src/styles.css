@@ -407,6 +407,31 @@ padding: 6px;
 
 .warning {color: red; font-size: 14px; margin-bottom: 10px;}
 
+#container4chart{
+  width: 100%;
+  overflow:hidden;
+  /* border-bottom: 2px solid rgb(30, 218, 208); */
+}
+
+#container4chart > div{
+  /* height:180px; */
+  float:left;
+  text-align: center;
+  /* border-bottom: 2px solid rgb(30, 218, 208); */
+}
+
+#left4chart {
+  width:45%;
+  margin: 20px;
+}
+
+#right4chart {
+  width: 45%;
+  /* border-left: 2px solid rgb(30, 218, 208); */
+}
+
+
+
 
 /* MODAL */
 

@@ -1,3 +1,4 @@
+import { VotesOnPoll } from './vote-module/vote-models/votes-on-poll-model';
 import { AVote } from './vote-module/vote-models/a-vote-model';
 import { Injectable } from '@angular/core';
 // import { Http } from '@angular/http';
@@ -147,10 +148,10 @@ export class FirebaseService {
   fetchVotedQuestions(poll_id) {
     this.showLoadingSpinner();
     const votedQuestions = [];
-    const allVotes: Array<AVote> = [];
+    const allVotes: Array<VotesOnPoll> = [];
     const that = this;
     return new Promise((resolve, reject) => {
-      firebase.database().ref('voted_questions').once('value')
+      firebase.database().ref('voted_questions/' + poll_id).once('value')
         .then((snapshot) => {
           snapshot.forEach((item) => {
             console.log('item.val() = ', item.val());
@@ -163,22 +164,22 @@ export class FirebaseService {
         .then((data) => {
           // https://stackoverflow.com/questions/126100/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip
 
-          const data2 = data[0];
-          const votesQnty = Object.keys(data2).length;
-          console.log('data in 2nd next =', data);
-          console.log('votesQnty in 2nd next =', votesQnty);
-          for (let x = 0; x < votesQnty; x++) {
-            // https://stackoverflow.com/questions/983267/how-to-access-the-first-property-of-an-object-in-javascript
-            const VoteItem = data2[Object.keys(data2)[x]];
-            console.log('ano item = ', VoteItem);
+          // const data2 = data[0];
+          // const votesQnty = Object.keys(data2).length;
+          // console.log('data in 2nd next =', data);
+          // console.log('votesQnty in 2nd next =', votesQnty);
+          // for (let x = 0; x < votesQnty; x++) {
+          //   // https://stackoverflow.com/questions/983267/how-to-access-the-first-property-of-an-object-in-javascript
+          //   const VoteItem = data2[Object.keys(data2)[x]];
+          //   console.log('ano item = ', VoteItem);
 
-            allVotes.push(VoteItem);
-          }
-          console.log('allVotes fireb q-list = ', allVotes);
-          console.log('allVotes len fireb q-list = ', allVotes.length);
+          //   allVotes.push(VoteItem);
+          // }
+          // console.log('allVotes fireb q-list = ', allVotes);
+          // console.log('allVotes len fireb q-list = ', allVotes.length);
 
           that.hideLoadingSpinner();
-          resolve(allVotes);
+          resolve(data);
         });
     });
   }

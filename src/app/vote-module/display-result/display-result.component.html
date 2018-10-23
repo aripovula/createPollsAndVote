@@ -1,11 +1,54 @@
 <div>
   <p>
-    display-result works!
+    Results on the vote
   </p>
 
-  <div style="display: block">
-    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-      [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+  <div *ngIf="votes_count">
+    <!-- <app-barchart votes_count={{votes_count}}></app-barchart> -->
+    <div *ngFor="let vote_count of votes_count; let ind=index;">
+
+      <div class="w3-container">
+        <h2>Large Table</h2>
+        <p>The w3-large class creates a large table:</p>
+
+        <table class="w3-table-all w3-large">
+          <tr>
+            <th>#</th>
+            <th>Options</th>
+            <th>Votes</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Smith</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Jackson</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Johnson</td>
+            <td>2</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="container4chart">
+        <div id="left4chart" style="display: block" *ngIf="barChartData">
+          <canvas baseChart [datasets]="barChartData[ind]" [labels]="barChartLabels[ind]" [options]="barChartOptions" [legend]="barChartLegend"
+            [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [colors]="chartColors">
+          </canvas>
+        </div>
+
+        <div id="right4chart" style="display: block" *ngIf="vote_count">
+          <canvas baseChart [data]="vote_count" [labels]="pieChartLabels[ind]" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </div>
+      <hr/>
+    </div>
   </div>
-  <button (click)="randomize()">Update</button>
 </div>

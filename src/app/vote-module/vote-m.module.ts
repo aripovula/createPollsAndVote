@@ -7,6 +7,7 @@ import { DisplayResultComponent } from './display-result/display-result.componen
 import { LoopVoteQuestionsComponent } from './loop-vote-questions/loop-vote-questions.component';
 import { DisplayVoteQuestionsComponent } from './display-vote-questions/display-vote-questions.component';
 import { VoteOptionItemComponent } from './vote-option-item/vote-option-item.component';
+import { BarchartComponent } from './barchart/barchart.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { VoteOptionItemComponent } from './vote-option-item/vote-option-item.com
     DisplayResultComponent,
     LoopVoteQuestionsComponent,
     DisplayVoteQuestionsComponent,
-    VoteOptionItemComponent
+    VoteOptionItemComponent,
+    BarchartComponent
   ]
 })
 export class VoteMModule { }
