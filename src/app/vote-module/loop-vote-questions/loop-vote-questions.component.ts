@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
 
-import { FirebaseService } from './../../firebase.service';
+import { FirebaseService } from './../../services/firebase.service';
 import { NewOption } from '../../new_poll-module/models/new_option-model';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
 import { VoteService } from './../vote-service';

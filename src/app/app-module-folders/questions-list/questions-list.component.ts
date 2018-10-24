@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 
-import { FirebaseService } from './../../firebase.service';
+import { FirebaseService } from './../../services/firebase.service';
 import { NewPoll } from './../../new_poll-module/models/new_poll-model';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
 import { AppState } from '../../ngrx-store/app-reducers';

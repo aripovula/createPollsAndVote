@@ -10,7 +10,9 @@
     <span class="horIndent"></span>
     <!-- <a class="header__title" routerLink="/newpoll" routerLinkActive="active-link">Logout and log in as a different user - demo v. only</a> -->
     <span class="horIndent"></span>
-    <a class="header__title">Logout</a>
+    <span *ngIf="isLoggedIn">
+      <a class="header__title" routerLink="/logout" routerLinkActive="active-link">Logout</a>
+    </span>
   </nav>
 </div>
 

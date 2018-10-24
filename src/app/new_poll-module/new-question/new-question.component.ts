@@ -7,7 +7,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UUID } from 'angular2-uuid';
 
-import { FirebaseService } from './../../firebase.service';
+import { FirebaseService } from './../../services/firebase.service';
 import { envVars } from './../../../../envVars.js';
 import { NewPollService } from './../new-poll.service';
 import { NewQuestion } from './../models/new_question-model';

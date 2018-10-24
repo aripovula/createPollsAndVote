@@ -1,13 +1,13 @@
 import { Action } from '@ngrx/store';
 // import { User } from '../models/user.model';
 
-export const ADD_USER = 'ADD_USER';
+export const SET_USER = 'ADD_USER';
 export const REMOVE_USER = 'REMOVE_USER';
 export const SET_USER_ID = 'SET_USER_ID';
 export const SET_TOKEN = 'SET_TOKEN';
 
-export class AddUser implements Action {
-    readonly type = ADD_USER;
+export class SetUser implements Action {
+    readonly type = SET_USER;
     constructor (public payload: string) {}
 }
 
@@ -26,4 +26,4 @@ export class SetToken implements Action {
 }
 
 // export type AuthActions = AddUser;
-export type AuthActions = AddUser | RemoveUser | SetUserId | SetToken;
+export type AuthActions = SetUser | RemoveUser | SetUserId | SetToken;

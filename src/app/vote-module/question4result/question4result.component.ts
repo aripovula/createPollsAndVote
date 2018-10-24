@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import * as firebase from 'firebase';
 
-import { FirebaseService } from './../../firebase.service';
+import { FirebaseService } from './../../services/firebase.service';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
 import { NewOption } from './../../new_poll-module/models/new_option-model';
 import { VoteOptionItemComponent } from './../vote-option-item/vote-option-item.component';

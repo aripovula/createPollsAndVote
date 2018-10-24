@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { VotesOnPoll } from './../vote-models/votes-on-poll-model';
-import { FirebaseService } from './../../firebase.service';
+import { FirebaseService } from './../../services/firebase.service';
 import { AppState } from '../../ngrx-store/app-reducers';
 import * as questionsState from '../../ngrx-store/questions-reducer';
 import * as QuestionsActions from '../../ngrx-store/questions-action';

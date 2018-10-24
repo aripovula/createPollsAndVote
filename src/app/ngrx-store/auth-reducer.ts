@@ -16,7 +16,7 @@ const initialState: AuthState = {
 
 export function authReducer(state = initialState, action: AuthActions.AuthActions) {
   switch (action.type) {
-    case AuthActions.ADD_USER:
+    case AuthActions.SET_USER:
       console.log('in AuthActions.ADD_USER');
       return {
         ...state,

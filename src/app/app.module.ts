@@ -1,3 +1,4 @@
+import { FirebaseService } from './services/firebase.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -20,6 +21,9 @@ import { QuestionsListComponent } from './app-module-folders/questions-list/ques
 import { CountQuestionsPipe } from './pipes/count-questions.pipe';
 import { ReversePollsOrderPipe } from './pipes/reverse-polls-order.pipe';
 import { GetPollNameForQuestionPipe } from './pipes/get-poll-name-for-question.pipe';
+import { LoginComponent } from './app-module-folders/login/login.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { LogoutComponent } from './app-module-folders/logout/logout.component';
 
 
 @NgModule({
@@ -32,6 +36,8 @@ import { GetPollNameForQuestionPipe } from './pipes/get-poll-name-for-question.p
     CountQuestionsPipe,
     ReversePollsOrderPipe,
     GetPollNameForQuestionPipe,
+    LoginComponent,
+    LogoutComponent,
 
   ],
   imports: [
@@ -46,7 +52,7 @@ import { GetPollNameForQuestionPipe } from './pipes/get-poll-name-for-question.p
     Ng4LoadingSpinnerModule.forRoot(),
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [FirebaseService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

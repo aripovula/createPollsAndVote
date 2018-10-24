@@ -1,21 +1,22 @@
-import { VotesOnPoll } from './vote-module/vote-models/votes-on-poll-model';
-import { AVote } from './vote-module/vote-models/a-vote-model';
+import { VotesOnPoll } from './../vote-module/vote-models/votes-on-poll-model';
+import { AVote } from './../vote-module/vote-models/a-vote-model';
 import { Injectable } from '@angular/core';
 // import { Http } from '@angular/http';
 import * as firebase from 'firebase';
+import { Router } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 import { Store } from '@ngrx/store';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
-import { NewPoll } from './new_poll-module/models/new_poll-model';
-import { NewQuestion } from './new_poll-module/models/new_question-model';
-import { AppState } from './ngrx-store/app-reducers';
-import * as authState from './ngrx-store/auth-reducer';
-import * as AuthActions from './ngrx-store/auth-action';
-import * as pollsState from './ngrx-store/polls-reducer';
-import * as PollsActions from './ngrx-store/polls-action';
-import * as questionsState from './ngrx-store/questions-reducer';
-import * as QuestionsActions from './ngrx-store/questions-action';
+import { NewPoll } from './../new_poll-module/models/new_poll-model';
+import { NewQuestion } from './../new_poll-module/models/new_question-model';
+import { AppState } from './../ngrx-store/app-reducers';
+import * as authState from './../ngrx-store/auth-reducer';
+import * as AuthActions from './../ngrx-store/auth-action';
+import * as pollsState from './../ngrx-store/polls-reducer';
+import * as PollsActions from './../ngrx-store/polls-action';
+import * as questionsState from './../ngrx-store/questions-reducer';
+import * as QuestionsActions from './../ngrx-store/questions-action';
 
 
 @Injectable({
@@ -26,9 +27,13 @@ export class FirebaseService {
   polls: Array<NewPoll>;
   questions: Array<NewQuestion>;
   isSpinnerShown = false;
-  user_id = 'xyz';
+  user_id: string;
 
-  constructor(private store: Store<AppState>, private spinnerService: Ng4LoadingSpinnerService) { }
+  constructor(
+    private store: Store<AppState>,
+    private spinnerService: Ng4LoadingSpinnerService,
+    private router: Router
+  ) { }
 
   // STRICT RULE - ALL DEALINGS WITH FIREBASE SHOULD BE A FUNCTION IN FIREBASE_SERVICE AND
   // ALL FUNCTIONS DEALING WITH FIREBASE SHOULD DIRECTLY / IMMEDIATELY UPDATE NGRX STORE
@@ -185,11 +190,65 @@ export class FirebaseService {
   }
 
   saveVotedQuestionToDB(question, poll_id) {
-    // this.user_id = 'a' + Math.floor(Math.random() * (100 - 1 + 1) + 1);
     firebase.database().ref('voted_questions/' + poll_id + '/' + this.user_id).set(question)
       .then(() => {
         // this.store.dispatch(new QuestionsActions.AddQuestion(question));
       });
+  }
+
+  //  ****
+  // AUTHENTICATION
+  //  ****
+
+  checkLoginStatus() {
+    const currentUser = firebase.auth().currentUser;
+    console.log('firebase.auth().currentUser = ', currentUser);
+    return currentUser;
+  }
+
+  signUpAUser(email: string, password: string) {
+    const that = this;
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(response => {
+        console.log('Sign up success', response);
+        this.user_id = response.user.uid;
+        that.store.dispatch(new AuthActions.SetUser(response.user.uid));
+        this.router.navigate(['/home']);
+      })
+      .catch(
+        error => {
+          console.log('error, sending to signIn', error);
+        }
+      );
+  }
+
+  signInAUser(email: string, password: string) {
+    const that = this;
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(response => {
+        console.log('Log in success', response);
+        this.user_id = response.user.uid;
+        that.store.dispatch(new AuthActions.SetUser(response.user.uid));
+        this.router.navigate(['/home']);
+      })
+      .catch(
+        error => {
+          console.log(error);
+        this.signUpAUser(email, password);
+      }
+      );
+  }
+
+  signOut() {
+    const that = this;
+    firebase.auth().signOut()
+    .then(() => {
+      that.store.dispatch(new AuthActions.RemoveUser());
+    });
+  }
+
+  getToken() {
+    return firebase.auth().currentUser.getIdToken();
   }
 
   // own function is used in all above functions to make easier to change 3rd party spinner.

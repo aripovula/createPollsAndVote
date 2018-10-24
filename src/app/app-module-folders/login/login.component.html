@@ -1,0 +1,56 @@
+<div>
+  <div style="margin-left: 100px; margin-right: 100px; margin-top: 60px; background-color: rgb(220, 248, 220);">
+      <h3 style="padding:15px;">Login with username:</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-element">
+        <label>Username:</label>
+        <input type="text" formControlName="username">
+      </div>
+      <br/>
+      <div class="form-element">
+        <label>Password:</label>
+        <input type="password" formControlName="password">
+      </div>
+      <br/>
+      <div style="margin-left: 110px;">
+        <label>
+          <input type="radio" name='user' value='Alex' formControlName="user"> sign in as Alex</label>
+      </div>
+      <div style="margin-left: 110px;">
+        <label>
+          <input type="radio" name='user' value='Ann' formControlName="user"> sign in as Ann</label>
+      </div>
+      <div style="margin-left: 110px;">
+        <label>
+          <input type="radio" name='user' value='John' formControlName="user"> sign in as John</label>
+      </div>
+      <div style="margin-left: 110px;">
+        <label>
+          <input type="radio" name='user' value='new' formControlName="user"> sign in as a new user (type your username above)</label>
+      </div>
+
+      <br/>
+      <div class="form-element">
+        <label></label>
+        <button class="button button1" type="submit" [disabled]="!loginForm.valid">Submit</button>
+      </div>
+      <br/>
+    </form>
+  </div>
+
+  <div style="margin-left: 100px; margin-right: 100px; background-color: rgb(220, 248, 220);">
+    <h3 style="padding:15px;">Login with access code:</h3>
+    <form [formGroup]="accessCodeForm" (ngSubmit)="onSubmitWithCode()">
+      <div class="form-element">
+        <label>Access code:</label>
+        <input type="text" formControlName="accessCode">
+      </div>
+      <br/>
+      <div class="form-element">
+        <label></label>
+        <button class="button button1" type="submit" [disabled]="!accessCodeForm.valid">Submit</button>
+      </div>
+      <br/>
+    </form>
+  </div>
+</div>

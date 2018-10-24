@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { NewPoll } from '../../new_poll-module/models/new_poll-model';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
-import { FirebaseService } from './../../firebase.service';
+import { FirebaseService } from './../../services/firebase.service';
 import { AppState } from '../../ngrx-store/app-reducers';
 // import * as authState from '../../ngrx-store/auth-reducer';
 // import * as AuthActions from './../../ngrx-store/auth-action';
