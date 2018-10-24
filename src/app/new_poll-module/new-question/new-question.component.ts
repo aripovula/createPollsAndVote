@@ -326,7 +326,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
       this.newPollService.confirmAQuestionDone();
     } else {
       this.assignDateTime();
-      this.firebaseService.saveNewQuestionToDB(this.model, this.model.id);
+      this.firebaseService.updateQuestionsInDB(this.model, this.model.id);
       this.router.navigate(['/home']);
     }
   }

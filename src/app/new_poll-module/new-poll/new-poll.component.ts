@@ -71,28 +71,16 @@ export class NewPollComponent implements OnInit {
       uid = UUID.UUID();
       this.model.id = uid;
       this.model.expiresTimeStamp = moment(this.expiresDateTime).valueOf() * 1;
+      console.log('model.expires = ', this.model.expiresTimeStamp);
+      this.firebaseService.saveNewPollToDB(this.model, uid);
+      this.router.navigate(['/questions', this.model.questionsQnty, uid]);
     } else {
       uid = this.model.id;
       if (this.changeDate) {
         this.model.expiresTimeStamp = moment(this.expiresDateTime).valueOf() * 1;
       }
-    }
-
-    console.log('model.expires = ', this.model.expiresTimeStamp);
-
-    this.firebaseService.saveNewPollToDB(this.model, uid);
-    this.store.dispatch(new PollsActions.UpdatePoll(this.model, this.poll_id));
-
-    // this.store.select('polls').subscribe(
-    //   data => {
-    //     console.log('data 2 = ', data);
-    //     const polls2 = data.polls[0];
-    //     console.log('data 2a = ', polls2);
-    //   });
-
-    if (this.poll_id == null) {
-      this.router.navigate(['/questions', this.model.questionsQnty, uid]);
-    } else {
+      console.log('model.expires = ', this.model.expiresTimeStamp);
+      this.firebaseService.updatePollInDB(this.model, uid);
       this.router.navigate(['/viewquestions', this.poll_id]);
     }
   }

@@ -12,6 +12,7 @@ export class CountQuestionsPipe implements PipeTransform {
     }
     let result = 0;
     for (const question of questions) {
+
       if (question.questionOfPollWithId === poll_id ) {
         result++;
       }
