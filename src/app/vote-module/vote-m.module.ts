@@ -8,6 +8,7 @@ import { LoopVoteQuestionsComponent } from './loop-vote-questions/loop-vote-ques
 import { DisplayVoteQuestionsComponent } from './display-vote-questions/display-vote-questions.component';
 import { VoteOptionItemComponent } from './vote-option-item/vote-option-item.component';
 import { Question4resultComponent } from './question4result/question4result.component';
+import { MaskUsername2Pipe } from '../pipes/mask-username2.pipe';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { Question4resultComponent } from './question4result/question4result.comp
     LoopVoteQuestionsComponent,
     DisplayVoteQuestionsComponent,
     VoteOptionItemComponent,
-    Question4resultComponent
+    Question4resultComponent,
+    MaskUsername2Pipe
   ]
 })
 export class VoteMModule { }

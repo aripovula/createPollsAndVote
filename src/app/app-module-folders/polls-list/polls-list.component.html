@@ -7,20 +7,32 @@
       <li *ngFor="let poll of polls | reversePollsOrder; let ind=index;">
         <a routerLink="/vote/{{poll.id}}" class="addnlightbg">{{poll.name}}</a>
         <br/>
-        <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view / edit questions</a>
+        <a routerLink="/viewquestions/{{poll.id}}" class="noDecor">view questions</a>
         <span style="color: lightslategray; font-size: 14px;"> ( {{questions | countQuestions: poll.id}} )</span>
         <span class="horIndent"></span>
         <a (click)="onClonePollClicked(poll.id)" class="noDecor">clone</a>
         <span class="horIndent"></span>
-        <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
-        <span class="horIndent"></span>
-        <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>
-        <span class="horIndent"></span>
         <span style="color: lightslategray; font-size: 14px;">added: {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
         <span class="horIndent"></span>
         <span style="color: lightslategray; font-size: 14px;">expires: {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm'}}</span>
-        <span class="horIndent"></span>
-        <a (click)="onPublishClicked(poll.id)" class="noDecor">un-publish your poll</a>
+        <span *ngIf="poll.createdBy == currentUserID">
+          <span class="horIndent"></span>
+          <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
+          <span class="horIndent"></span>
+          <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>
+          <span class="horIndent"></span>
+          <span *ngIf="!poll.isPublished">
+            <a (click)="onPublishClicked(poll.id, 1)" class="noDecor">publish your poll</a>
+          </span>
+          <span *ngIf="poll.isPublished">
+            <a (click)="onPublishClicked(poll.id, 0)" class="noDecor">un-publish your poll</a>
+          </span>
+        </span>
+        <span *ngIf="!(poll.createdBy == currentUserID)">
+            <span class="horIndent"></span>
+            <span style="color: lightslategray; font-size: 14px;">added by &nbsp; {{poll.createdByUsername | maskUsername}}</span>
+        </span>
+
         <span class="verIndent"></span>
       </li>
     </ul>
@@ -40,7 +52,10 @@
             <p>Are you sure you want to delete this poll and all associated questions ?</p>
             <p>- '{{pollNameToDelete}}'</p>
             <br/>
-            <p><span style='color: red;'><strong>Warning:</strong></span> all questions associated with this poll will be permanently deleted</p>
+            <p>
+              <span style='color: red;'>
+                <strong>Warning:</strong>
+              </span> all questions associated with this poll will be permanently deleted</p>
             <br/>
             <button type="button" class="button button1" (click)="onDeleteConfirm()">Confirm</button>
             <button type="button" class="button button1" (click)="onDeleteCancel()">Cancel</button>

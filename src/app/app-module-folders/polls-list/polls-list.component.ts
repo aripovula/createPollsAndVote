@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
-// import { Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { NewPoll } from '../../new_poll-module/models/new_poll-model';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
@@ -26,14 +26,18 @@ export class PollsListComponent implements OnInit {
   isModalDisplayed = false;
   pollIdToDelete: string;
   pollNameToDelete: string;
+  currentUserID: string;
 
   constructor(
     private store: Store<AppState>,
     private firebaseService: FirebaseService,
-    // private router: Router
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.firebaseService.checkLoginStatus();
+    this.currentUserID = this.firebaseService.user_id;
+    if (this.currentUserID == null) {this.router.navigate(['/logout']); }
     this.firebaseService.fetchPollsAndSaveToStore();
     this.store.select('polls').subscribe(data => { this.polls = data.polls; console.log('polls in p-list = ', this.polls);
     });
@@ -74,6 +78,14 @@ export class PollsListComponent implements OnInit {
     this.isModalDisplayed = false;
   }
 
+  onPublishClicked(poll_id, status) {
+    const arrayWithOnePoll = this.polls.filter(poll => (poll.id === poll_id));
+    const onePoll: NewPoll = arrayWithOnePoll[0];
+    if (status === 1) {onePoll.isPublished = true; }
+    if (status === 0) {onePoll.isPublished = false; }
+    this.firebaseService.updatePollInDB(onePoll, onePoll.id);
+  }
+
   onClonePollClicked(uid) {
     const idOfNewPoll = UUID.UUID();
     const arrayWithOnePoll = this.polls.filter(poll => (poll.id === uid));
@@ -84,6 +96,7 @@ export class PollsListComponent implements OnInit {
     // from https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
     pollToClone = JSON.parse(JSON.stringify(onePoll));
     pollToClone.id = idOfNewPoll;
+    pollToClone.createdBy = this.firebaseService.user_id;
     pollToClone.createdTimeStamp = moment().valueOf();
     if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) {pollToClone.expiresTimeStamp = pollToClone.createdTimeStamp; }
     if (!pollToClone.name.includes(' ( cloned - edit as you need )')) {

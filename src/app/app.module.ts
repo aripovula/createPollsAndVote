@@ -24,6 +24,7 @@ import { GetPollNameForQuestionPipe } from './pipes/get-poll-name-for-question.p
 import { LoginComponent } from './app-module-folders/login/login.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { LogoutComponent } from './app-module-folders/logout/logout.component';
+import { MaskUsernamePipe } from './pipes/mask-username.pipe';
 
 
 @NgModule({
@@ -31,11 +32,12 @@ import { LogoutComponent } from './app-module-folders/logout/logout.component';
     AppComponent,
     NotFoundComponent,
     PollsListComponent,
-    QuestionsFilterPipe,
     QuestionsListComponent,
+    QuestionsFilterPipe,
     CountQuestionsPipe,
     ReversePollsOrderPipe,
     GetPollNameForQuestionPipe,
+    MaskUsernamePipe,
     LoginComponent,
     LogoutComponent,
 

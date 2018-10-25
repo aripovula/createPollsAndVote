@@ -24,7 +24,7 @@ export class NewPollComponent implements OnInit {
   changeDate = true;
   // id, name, questionsQnty, publicAccess, nameDiscloseOption, createdBy,
   // createdTimeStamp, expiresAt, comment, publicAccessType, publicAccessors
-  model = new NewPoll(null, null, null, 'public', 'anonymous', null, moment().valueOf(), 0, '', 'withusernames', null);
+  model = new NewPoll(null, null, null, 'public', 'anonymous', null, null, moment().valueOf(), 0, '', 'withusernames', null, false);
 
   constructor(
     private router: Router,
@@ -70,6 +70,8 @@ export class NewPollComponent implements OnInit {
     if (this.poll_id == null) {
       uid = UUID.UUID();
       this.model.id = uid;
+      this.model.createdBy = this.firebaseService.user_id;
+      this.model.createdByUsername = this.firebaseService.user_name;
       this.model.expiresTimeStamp = moment(this.expiresDateTime).valueOf() * 1;
       console.log('model.expires = ', this.model.expiresTimeStamp);
       this.firebaseService.saveNewPollToDB(this.model, uid);

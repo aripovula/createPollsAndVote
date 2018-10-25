@@ -86,7 +86,7 @@
       <div style="margin-left: 135px;">
         <label>
           <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
-            value="withaccesscode"> users with following access code(s)  ( comma separated )
+            value="withaccesscode"> users with following access code(s)  ( at least 8 characters, comma separated )
         </label>
       </div>
       <span class="verIndent"></span>
@@ -105,14 +105,8 @@
     </div>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="discreet" [(ngModel)]="model.nameDiscloseOption"
-          #nameDiscloseOption="ngModel"> voter's name is discreet - shown
-      </label>
-    </div>
-    <div style="margin-left: 110px;">
-      <label>
-        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="optional" [(ngModel)]="model.nameDiscloseOption"
-          #nameDiscloseOption="ngModel"> voter chooses whether his / her name should be disclosed
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="disclosed" [(ngModel)]="model.nameDiscloseOption"
+          #nameDiscloseOption="ngModel"> voter's name is disclosed / shown
       </label>
     </div>
 

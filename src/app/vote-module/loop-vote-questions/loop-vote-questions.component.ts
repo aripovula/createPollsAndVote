@@ -62,6 +62,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
         pollID: this.poll_id,
         voterID: this.firebaseService.user_id,
         voterName: this.firebaseService.user_name,
+        voteType: null,
         questions: []
       }
     };
@@ -96,7 +97,12 @@ export class LoopVoteQuestionsComponent implements OnInit {
   }
 
   getPollName(polls) {
-    for (const poll of polls) { if (poll.id === this.poll_id) { this.poll_name = poll.name; } }
+    for (const poll of polls) {
+      if (poll.id === this.poll_id) {
+        this.poll_name = poll.name;
+        this.votedQuestionModel.aVote.voteType = poll.nameDiscloseOption;
+      }
+    }
     this.goToNextQuestion();
   }
 

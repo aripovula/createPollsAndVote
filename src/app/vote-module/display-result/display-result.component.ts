@@ -38,12 +38,17 @@ export class DisplayResultComponent implements OnInit {
   barChartType = 'bar';
   barChartLegend = false;
   barChartData: any[];
-  chartColors: any[] = [{ backgroundColor: ['#FF7360', '#6FC8CE', '#FAFFF2', '#FFFCC4', '#B9E8E0'] }];
+  chartColors: any[] = [{
+    backgroundColor: ['#FF7360', '#6FC8CE', '#FAFFF2', '#FFFCC4', '#B9E8E0', '#FF7360',
+      '#6FC8CE', '#FAFFF2', '#FFFCC4', '#B9E8E0', '#FF7360', '#6FC8CE', '#FAFFF2', '#FFFCC4', '#B9E8E0', '#FF7360',
+      '#6FC8CE', '#FAFFF2', '#FFFCC4', '#B9E8E0']
+  }];
 
   pieChartLabels: Array<Array<number>>;
   pieChartData: number[];
   pieChartType = 'pie';
   question_ids = [];
+  namesDisclosed;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -58,8 +63,15 @@ export class DisplayResultComponent implements OnInit {
         this.votes_on_poll = data;
 
         // prepare two-diamentional array and label values - label values equal question number
-        const anyVote = this.votes_on_poll[0];
-        const x_Length = anyVote.aVote.questions.length;
+        let x_Length = 0;
+        let anyVote;
+        let aVote;
+        let min = 0;
+        for (let vote = 0; vote < this.votes_on_poll.length; vote++) {
+          aVote = this.votes_on_poll[vote];
+          min = aVote.aVote.questions.length;
+          if (min >= x_Length) { x_Length = min; anyVote = aVote; }
+        }
         this.votes_count = new Array(x_Length);
         this.barChartLabels = new Array(x_Length);
         this.pieChartLabels = new Array(x_Length);
@@ -92,7 +104,7 @@ export class DisplayResultComponent implements OnInit {
                 for (let z = 0; z < nextVote.aVote.questions[x].CLs.length; z++) {
                   if (nextVote.aVote.questions[x].CLs[z].isQSelected) {
                     this.votes_count[x][z] = this.votes_count[x][z] + 1;
-                    const zz =  z + 1; forTableOnly = forTableOnly + zz + '; ';
+                    const zz = z + 1; forTableOnly = forTableOnly + zz + '; ';
                   }
                 }
                 this.forVotesByVoterCount(nextVote, x, vote, forTableOnly);

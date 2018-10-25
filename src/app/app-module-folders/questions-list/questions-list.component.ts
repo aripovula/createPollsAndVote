@@ -32,6 +32,8 @@ export class QuestionsListComponent implements OnInit {
   questionToCopyMove: NewQuestion;
   radioSelected = [];
   showAllQuestions = false;
+  currentUserID: string;
+  canEdit = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +43,9 @@ export class QuestionsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.firebaseService.checkLoginStatus();
+    this.currentUserID = this.firebaseService.user_id;
+
     this.poll_id = this.route.snapshot.paramMap.get('poll_id');
 
     // const xhr = new XMLHttpRequest();
@@ -79,6 +84,7 @@ export class QuestionsListComponent implements OnInit {
     console.log('one_poll =', one_poll);
     if (one_poll != null && one_poll[0] != null) {
       this.poll_name = one_poll[0].name;
+      this.canEdit = one_poll[0].createdBy === this.currentUserID;
       console.log('poll_name = ', this.poll_name);
     }
   }

@@ -7,12 +7,15 @@
       </label>
     </h3>
     <div *ngIf="!showAllQuestions">
-      <h3 *ngIf="poll_name" style="color: green">{{poll_name}}</h3>
+      <h3 *ngIf="poll_name" style="color: green">Poll name: {{poll_name}}</h3>
       <h3 *ngIf="!poll_name" style="color: green">poll name is not defined</h3>
 
-      <a routerLink="/addquestion/{{questions | countQuestions: poll_id}}/{{poll_id}}/{{questions | countQuestions: poll_id}}" class="noDecor">add new question</a>
-      <span class="horIndent"></span>
-      <span class="horIndent"></span>
+      <span *ngIf="canEdit">
+        <a routerLink="/addquestion/{{questions | countQuestions: poll_id}}/{{poll_id}}/{{questions | countQuestions: poll_id}}"
+          class="noDecor">add new question</a>
+        <span class="horIndent"></span>
+        <span class="horIndent"></span>
+      </span>
       <a routerLink="/home" class="noDecor">go back to Polls list</a>
       <br/>
       <br/>
@@ -22,15 +25,24 @@
           <span style="color:green;font-size:20px;">{{questions | countQuestions: poll_id}}</span> question(s)</p>
         <ol>
           <li *ngFor="let question of questions | questionsFilter: poll_id; let ind=index;">
-            <a routerLink="/editquestion/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
-            <br/> &nbsp;
-            <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
-            <span class="horIndent"></span>
-            <a (click)="onDeleteQuestionClicked(question.id)" class="noDecor">delete</a>
-            <span class="horIndent"></span>
-            <a (click)="onCopyQuestionClicked(question.id)" class="noDecor">copy</a>
-            <span class="horIndent"></span>
-            <a (click)="onMoveQuestionClicked(question.id)" class="noDecor">move</a>
+            <span *ngIf="!canEdit">
+              <span style="font-size: 14px; color:green"> &nbsp; {{question.q_text}} &nbsp;</span>
+              <span style="font-size: 14px; color: gray;">
+                <br/> &nbsp; ( only author of the poll can edit this question )
+              </span>
+            </span>
+            <span *ngIf="canEdit">
+              <a routerLink="/editquestion/{{question.id}}" class="addnlightbg"> &nbsp; {{question.q_text}}</a>
+              <br/> &nbsp;
+
+              <a routerLink="/editquestion/{{question.id}}" class="noDecor">edit</a>
+              <span class="horIndent"></span>
+              <a (click)="onDeleteQuestionClicked(question.id)" class="noDecor">delete</a>
+              <span class="horIndent"></span>
+              <a (click)="onCopyQuestionClicked(question.id)" class="noDecor">copy</a>
+              <span class="horIndent"></span>
+              <a (click)="onMoveQuestionClicked(question.id)" class="noDecor">move</a>
+            </span>
             <span class="verIndent"></span>
           </li>
         </ol>
@@ -83,10 +95,11 @@
     <br/>
     <br/>
     <div *ngIf="questions.length == 0" style="font-size: 14px; color:lightslategray">
-      <br/><br/>( no questions are found )
+      <br/>
+      <br/>( no questions are found )
     </div>
     <div *ngFor="let question of questions; let ind=index;">
-      <a routerLink="/editquestion/{{question.id}}" class="addnlightbg">- {{question.q_text}}</a>
+      <span style="font-size: 14px; color: green;">- {{question.q_text}}</span>
       <div>
         <span style="font-size: 14px; color:lightslategray"> &nbsp; poll name:&nbsp; </span>
         <a (click)="cancelShowAllQuestionsAndGoToAPoll(question.questionOfPollWithId)" class="noDecor">&nbsp;{{polls | getPollNameForQuestion: question.questionOfPollWithId}}</a>

@@ -217,6 +217,8 @@ export class FirebaseService {
 
   checkLoginStatus() {
     const currentUser = firebase.auth().currentUser;
+    this.user_id = currentUser.uid;
+    this.user_name = currentUser.email;
     console.log('firebase.auth().currentUser = ', currentUser);
     return currentUser;
   }
