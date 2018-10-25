@@ -8,7 +8,7 @@ export const SET_TOKEN = 'SET_TOKEN';
 
 export class SetUser implements Action {
     readonly type = SET_USER;
-    constructor (public payload: string) {}
+    constructor (public payload: {uid: string, username: string}) {}
 }
 
 export class RemoveUser implements Action {

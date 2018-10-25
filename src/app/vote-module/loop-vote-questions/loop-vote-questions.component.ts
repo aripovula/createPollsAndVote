@@ -60,6 +60,8 @@ export class LoopVoteQuestionsComponent implements OnInit {
     this.votedQuestionModel = {
       aVote: {
         pollID: this.poll_id,
+        voterID: this.firebaseService.user_id,
+        voterName: this.firebaseService.user_name,
         questions: []
       }
     };

@@ -19,9 +19,25 @@ export class LoginComponent implements OnInit {
     accessCode: new FormControl('AQ12Y84'),
   });
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loginForm.valueChanges.subscribe(() => {
+      if (this.loginForm.value.user === 'Alex') {
+        this.loginForm.setValue({ username: 'alex@example.com', password: 'alexalex1', user: 'Alex' }, {emitEvent: false});
+      }
+      if (this.loginForm.value.user === 'Ann') {
+        this.loginForm.setValue({ username: 'ann@example.com', password: 'annann12', user: 'Ann' }, {emitEvent: false});
+      }
+      if (this.loginForm.value.user === 'John') {
+        this.loginForm.setValue({ username: 'john@example.com', password: 'johnjohn1', user: 'John' }, {emitEvent: false});
+      }
+      if (this.loginForm.value.user === 'new') {
+        this.loginForm.setValue({ username: '', password: '', user: 'new' }, {emitEvent: false});
+      }
+      console.warn(this.loginForm.value);
+    });
+  }
 
   onSubmit() {
     // TODO: Use EventEmitter with form value

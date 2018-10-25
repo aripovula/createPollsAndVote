@@ -28,6 +28,7 @@ export class FirebaseService {
   questions: Array<NewQuestion>;
   isSpinnerShown = false;
   user_id: string;
+  user_name: string;
 
   constructor(
     private store: Store<AppState>,
@@ -42,6 +43,7 @@ export class FirebaseService {
     const polls = new Array();
     this.showLoadingSpinner();
     const that = this;
+    if (this.user_id == null) { this.getUserIDandName(); }
     return new Promise((resolve, reject) => {
       firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
         snapshot.forEach((item) => {
@@ -93,6 +95,7 @@ export class FirebaseService {
   fetchQuestionsAndSaveToStore() {
     const questions = new Array();
     const that = this;
+    if (this.user_id == null) { this.getUserIDandName(); }
     return new Promise((resolve, reject) => {
       firebase.database().ref('/questions/').orderByChild('sequenceNumber').once('value')
         .then((snapshot) => {
@@ -155,6 +158,7 @@ export class FirebaseService {
     const votedQuestions = [];
     const allVotes: Array<VotesOnPoll> = [];
     const that = this;
+    if (this.user_id == null) { this.getUserIDandName(); }
     return new Promise((resolve, reject) => {
       firebase.database().ref('voted_questions/' + poll_id).once('value')
         .then((snapshot) => {
@@ -190,10 +194,21 @@ export class FirebaseService {
   }
 
   saveVotedQuestionToDB(question, poll_id) {
+    if (this.user_id == null) { this.getUserIDandName(); }
+    console.log('question = ', question);
+    console.log('poll_id = ', poll_id);
+    console.log('user_id = ', this.user_id);
     firebase.database().ref('voted_questions/' + poll_id + '/' + this.user_id).set(question)
       .then(() => {
         // this.store.dispatch(new QuestionsActions.AddQuestion(question));
       });
+  }
+
+  getUserIDandName() {
+    this.store.select('auth').subscribe(data => {
+      this.user_id = data.userId;
+      this.user_name = data.userName;
+    });
   }
 
   //  ****
@@ -212,7 +227,8 @@ export class FirebaseService {
       .then(response => {
         console.log('Sign up success', response);
         this.user_id = response.user.uid;
-        that.store.dispatch(new AuthActions.SetUser(response.user.uid));
+        this.user_name = response.user.email;
+        that.store.dispatch(new AuthActions.SetUser({uid: response.user.uid, username: response.user.email}));
         this.router.navigate(['/home']);
       })
       .catch(
@@ -228,7 +244,8 @@ export class FirebaseService {
       .then(response => {
         console.log('Log in success', response);
         this.user_id = response.user.uid;
-        that.store.dispatch(new AuthActions.SetUser(response.user.uid));
+        this.user_name = response.user.email;
+        that.store.dispatch(new AuthActions.SetUser({uid: response.user.uid, username: response.user.email}));
         this.router.navigate(['/home']);
       })
       .catch(

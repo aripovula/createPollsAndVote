@@ -19,6 +19,9 @@ export class DisplayResultComponent implements OnInit {
   poll_id;
   votes_on_poll: Array<VotesOnPoll>;
   votes_count: any;
+  votesByVoters: any;
+  votesAndVoters = [];
+
   barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -54,7 +57,7 @@ export class DisplayResultComponent implements OnInit {
       .then((data: Array<VotesOnPoll>) => {
         this.votes_on_poll = data;
 
-        // prepare two-diamentional array
+        // prepare two-diamentional array and label values - label values equal question number
         const anyVote = this.votes_on_poll[0];
         const x_Length = anyVote.aVote.questions.length;
         this.votes_count = new Array(x_Length);
@@ -82,26 +85,58 @@ export class DisplayResultComponent implements OnInit {
             if (nextVote.aVote.questions[x].type === 0) {
               this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] =
                 this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] + 1;
+              this.forVotesByVoterCount(nextVote, x, vote, null);
             } else {
               if (nextVote.aVote.questions[x].CLs != null) {
+                let forTableOnly = '';
                 for (let z = 0; z < nextVote.aVote.questions[x].CLs.length; z++) {
                   if (nextVote.aVote.questions[x].CLs[z].isQSelected) {
                     this.votes_count[x][z] = this.votes_count[x][z] + 1;
+                    const zz =  z + 1; forTableOnly = forTableOnly + zz + '; ';
                   }
                 }
+                this.forVotesByVoterCount(nextVote, x, vote, forTableOnly);
               }
             }
           }
         }
         console.log('final count = ', this.votes_count);
         console.log('count[0] = ', this.votes_count[0]);
+        console.log('votesAndVoters = ', this.votesAndVoters);
+
+        // assign barChart values based on poll result count
         for (let x = 0; x < this.votes_on_poll[0].aVote.questions.length; x++) {
           this.barChartData[x] = [
-            { data: this.votes_count[x], label: ''}
+            { data: this.votes_count[x], label: '' }
           ];
         }
         // this.pieChartData = [this.votes_count[0]];
-
+        this.summarizeVotesByVoter();
       });
+  }
+
+  forVotesByVoterCount(nextVote, x, vote, CLs) {
+    this.votesAndVoters.push({
+      votersID: nextVote.aVote.voterID,
+      votersName: nextVote.aVote.voterName,
+      questionID: nextVote.aVote.questions[x].questionID,
+      questionNr: x,
+      voterNr: vote,
+      votesR: nextVote.aVote.questions[x].Radio !== false ? parseInt(nextVote.aVote.questions[x].Radio, 10) + 1 : '',
+      votesCLs: CLs != null ? CLs.toString() : ''
+    });
+  }
+
+  summarizeVotesByVoter() {
+    this.votesByVoters = new Array(this.votes_count.length);
+    for (let i = 0; i < this.votes_count.length; i++) {
+      this.votesByVoters[i] = new Array(this.votes_count[i].length);
+    }
+    for (const voteAndVoter of this.votesAndVoters) {
+      this.votesByVoters[voteAndVoter.questionNr][voteAndVoter.voterNr] = {
+        voter: voteAndVoter.votersName, votes: voteAndVoter.votesR + voteAndVoter.votesCLs
+      };
+    }
+    console.log('this.votesByVoters = ', this.votesByVoters);
   }
 }

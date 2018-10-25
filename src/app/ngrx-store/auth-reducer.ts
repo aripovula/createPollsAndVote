@@ -4,12 +4,14 @@ import * as AuthActions from './auth-action';
 
 export interface AuthState {
   userId: string;
+  userName: string;
   token: string;
   isLoggedIn: boolean;
 }
 
 const initialState: AuthState = {
   userId: null,
+  userName: null,
   token: null,
   isLoggedIn: false
 };
@@ -17,10 +19,11 @@ const initialState: AuthState = {
 export function authReducer(state = initialState, action: AuthActions.AuthActions) {
   switch (action.type) {
     case AuthActions.SET_USER:
-      console.log('in AuthActions.ADD_USER');
+      console.log('in AuthActions.SET_USER');
       return {
         ...state,
-        userId: action.payload,
+        userId: action.payload.uid,
+        userName: action.payload.username,
         isLoggedIn: true
       };
 
@@ -30,6 +33,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
         ...state,
         isLoggedIn: false,
         userId: null,
+        userName: null,
         token: null
       };
 

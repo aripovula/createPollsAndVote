@@ -12,7 +12,9 @@
     <span class="horIndent"></span>
     <span *ngIf="isLoggedIn">
       <a class="header__title" routerLink="/logout" routerLinkActive="active-link">Logout</a>
+      <span style="font-size: 12px; color: lightgray;"> &nbsp;( {{username}} is logged in )</span>
     </span>
+  
   </nav>
 </div>
 
