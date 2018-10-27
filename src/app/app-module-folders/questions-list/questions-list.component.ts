@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 
+import { VotesOnPoll } from './../../vote-module/vote-models/votes-on-poll-model';
 import { FirebaseService } from './../../services/firebase.service';
 import { NewPoll } from './../../new_poll-module/models/new_poll-model';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
@@ -34,6 +35,8 @@ export class QuestionsListComponent implements OnInit {
   showAllQuestions = false;
   currentUserID: string;
   canEdit = false;
+  isCanNotModalDisplayed = false;
+  votesQntyOnPoll = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -89,21 +92,45 @@ export class QuestionsListComponent implements OnInit {
     }
   }
 
+  onEditQuestionClicked(uid) {
+    this.firebaseService.fetchVotedQuestions(this.poll_id)
+      .then((data: Array<VotesOnPoll>) => {
+        this.votesQntyOnPoll = data.length;
+        if (this.votesQntyOnPoll > 0) {
+          this.isCanNotModalDisplayed = true;
+        } else {
+          this.router.navigate(['/editquestion', uid]);
+        }
+      });
+  }
+
   onDeleteQuestionClicked(uid) {
-    this.questionIdToDelete = uid;
-    const one_question = this.questions.filter(question => (question.id === uid));
-    this.questionNameToDelete = one_question[0].q_text;
-    this.isDeleteModalDisplayed = true;
+    this.firebaseService.fetchVotedQuestions(this.poll_id)
+      .then((data: Array<VotesOnPoll>) => {
+        this.votesQntyOnPoll = data.length;
+        if (this.votesQntyOnPoll > 0) {
+          this.isCanNotModalDisplayed = true;
+        } else {
+          this.questionIdToDelete = uid;
+          const one_question = this.questions.filter(question => (question.id === uid));
+          this.questionNameToDelete = one_question[0].q_text;
+          this.isDeleteModalDisplayed = true;
+        }
+      });
   }
 
   onDeleteConfirm() {
     this.isDeleteModalDisplayed = false;
     this.firebaseService.deleteQuestionFromDBandDeleteFromStore(this.questionIdToDelete)
-    .then(() => this.firebaseService.hideLoadingSpinner());
+      .then(() => this.firebaseService.hideLoadingSpinner());
   }
 
   onDeleteCancel() {
     this.isDeleteModalDisplayed = false;
+  }
+
+  onCanNotModalClose() {
+    this.isCanNotModalDisplayed = false;
   }
 
   cancelShowAllQuestionsAndGoToAPoll(pollID) {
@@ -139,7 +166,7 @@ export class QuestionsListComponent implements OnInit {
     console.log(this.radioSelected);
     for (let x = 0; x < this.polls.length; x++) {
       if (this.radioSelected[x] === x.toString()) {
-        console.log('adding copy move poll = ', this.polls[x].name );
+        console.log('adding copy move poll = ', this.polls[x].name);
         let uid;
         if (this.copyOrMove === 'copy ') {
           uid = UUID.UUID();

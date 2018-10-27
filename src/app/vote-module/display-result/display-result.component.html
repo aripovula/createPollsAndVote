@@ -3,17 +3,17 @@
     Poll summary
   </h3>
   <div *ngIf="!votes_count">
-      <br/>
-      <p>No one voted on this poll to date !</p>
-      <br/>
-      <a routerLink="/home" class="noDecor">go back to Polls list</a>
+    <br/>
+    <p>No one voted on this poll to date !</p>
+    <br/>
+    <a routerLink="/home" class="noDecor">go back to Polls list</a>
   </div>
 
   <div *ngIf="votes_count">
-      <div *ngIf="!namesDisclosed">
-          <p>Votes by voters is not disclosed - it is an anonymous vote</p>
-      </div>
-    
+    <div *ngIf="!namesDisclosed">
+      <p>Votes by voters is not disclosed - it is an anonymous vote</p>
+    </div>
+
     <div *ngFor="let vote_count of votes_count; let ind=index;">
 
       <app-question4result [question_id]="question_ids[ind]"></app-question4result>
@@ -52,4 +52,26 @@
         <hr/>
       </div>
     </div>
+
+    <!-- already voted modal -->
+    <div *ngIf="isAlreadyVoted">
+      <form>
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <span class="close" (click)="onModalClose()">&times;</span>
+              <p>Reminder</p>
+            </div>
+            <div class="modal-body">
+              <p>You already have responded to all questions of this poll</p>
+              <br/>
+              <button type="button" class="button button1" (click)="onModalClose()">ok</button>
+              <br/>
+              <br/>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
   </div>

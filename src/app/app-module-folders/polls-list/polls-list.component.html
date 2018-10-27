@@ -6,12 +6,12 @@
     <ul *ngIf="polls.length > 0">
       <div *ngFor="let poll of polls | reversePollsOrder | isNotExpired; let ind=index;">
         <div *ngIf="poll.isPublished == true || poll.createdBy == currentUserID">
-          <span *ngIf="poll.isPublished" style="color: #57d500;">&#x25cf;&nbsp;</span>
-          <span *ngIf="!poll.isPublished" style="color: #ff2e00;">&#x25cf;&nbsp;</span>
+          <span *ngIf="poll.isPublished" style="color: #57d500;">&#x25cf;&nbsp;&nbsp;</span>
+          <span *ngIf="!poll.isPublished" style="color: #ff2e00;">&#x25cf;&nbsp;&nbsp;</span>
           <a routerLink="/vote/{{poll.id}}" class="addnlightbg">{{poll.name}}</a>
           <span *ngIf="!poll.isPublished" style="color: lightslategray; font-size: 12px;"> &nbsp; ( not published )</span>
           <br/>
-          <a routerLink="/viewquestions/{{poll.id}}" class="noDecor"> &nbsp; &nbsp; view questions</a>
+          <a routerLink="/viewquestions/{{poll.id}}" class="noDecor"> &nbsp; &nbsp; &nbsp; view questions</a>
           <span style="color: lightslategray; font-size: 14px;"> ( {{questions | countQuestions: poll.id}} )</span>
           <span class="horIndent"></span>
           <a (click)="onClonePollClicked(poll.id)" class="noDecor">clone</a>
@@ -21,7 +21,7 @@
           <span style="color: lightslategray; font-size: 14px;">expires: {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm a'}}</span>
           <span *ngIf="poll.createdBy == currentUserID">
             <span class="horIndent"></span>
-            <a routerLink="/editpoll/{{poll.id}}" class="noDecor">edit</a>
+            <a (click)="onEditPollClicked(poll.id)" class="noDecor">edit</a>
             <span class="horIndent"></span>
             <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>
             <span class="horIndent"></span>
@@ -72,7 +72,27 @@
     <span *ngIf="(polls | expiredRecently).length > 0" style="color: lightslategray; font-size: 14px;">* clone also copies all associated questions</span>
   </div>
 
-  <div *ngIf="isModalDisplayed">
+  <div *ngIf="isCanNotEditModalDisplayed">
+      <form>
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <span class="close" (click)="onEditModalClose()">&times;</span>
+                <p>Information</p>
+              </div>
+              <div class="modal-body">
+                <p>This poll has {{votesQntyOnPoll}} vote(s).</p>
+                <p>Polls with at least one vote can NOT be edited ( can only be deleted ) !</p>
+                <button type="button" class="button button1" (click)="onEditModalClose()">ok</button>
+                <br/>
+                <br/>
+              </div>
+            </div>
+          </div>
+        </form>    
+  </div>
+
+  <div *ngIf="isDeleteModalDisplayed">
     <form>
       <div id="myModal" class="modal">
         <div class="modal-content">
@@ -81,8 +101,10 @@
             <p>Please confirm</p>
           </div>
           <div class="modal-body">
-            <p>Are you sure you want to delete this poll and all associated questions ?</p>
-            <p>- '{{pollNameToDelete}}'</p>
+            <p>Are you sure you want to delete this poll and all associated questions ?
+            <br/>
+            It has {{votesQntyOnPoll}} vote(s).</p>
+            <p>&#x25cf;&nbsp; '{{pollNameToDelete}}'</p>
             <br/>
             <p>
               <span style='color: red;'>

@@ -49,6 +49,7 @@ export class DisplayResultComponent implements OnInit {
   pieChartType = 'pie';
   question_ids = [];
   namesDisclosed;
+  isAlreadyVoted;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -58,6 +59,7 @@ export class DisplayResultComponent implements OnInit {
 
   ngOnInit() {
     this.poll_id = this.route.snapshot.paramMap.get('poll_id');
+    this.isAlreadyVoted = this.route.snapshot.paramMap.get('isAlreadyVoted') === '1';
     this.firebaseService.fetchVotedQuestions(this.poll_id)
       .then((data: Array<VotesOnPoll>) => {
         this.votes_on_poll = data;
@@ -156,5 +158,9 @@ export class DisplayResultComponent implements OnInit {
       };
     }
     console.log('this.votesByVoters = ', this.votesByVoters);
+  }
+
+  onModalClose() {
+    this.isAlreadyVoted = false;
   }
 }

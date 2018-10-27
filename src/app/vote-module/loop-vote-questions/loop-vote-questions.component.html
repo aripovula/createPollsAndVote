@@ -9,22 +9,23 @@
 
   <!-- already voted modal -->
   <div *ngIf="isAlreadyVoted">
-      <form>
-        <div id="myModal" class="modal">
-          <div class="modal-content">
-            <div class="modal-header">
-              <span class="close" (click)="onModalClose()">&times;</span>
-              <p>Info</p>
-            </div>
-            <div class="modal-body">
-              <p>You already have responded to {{q_number}} question(s) ( total - {{q_qnty}} questions )</p>
-              <br/>
-              <button type="button" class="button button1" (click)="onModalClose()">Ok</button>
-              <br/>
-              <br/>
-            </div>
+    <form>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" (click)="onModalClose()">&times;</span>
+            <p>Reminder</p>
+          </div>
+          <div class="modal-body">
+            <p>You already have responded to {{q_number}} question(s) out of {{q_qnty}}. </p>
+            <p>You can continue starting from question {{q_number + 1}}.</p>
+            <br/>
+            <button type="button" class="button button1" (click)="onModalClose()">ok</button>
+            <br/>
+            <br/>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
 </div>

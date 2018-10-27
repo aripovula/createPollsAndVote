@@ -5,6 +5,7 @@ import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 
+import { VotesOnPoll } from './../../vote-module/vote-models/votes-on-poll-model';
 import { NewPoll } from '../../new_poll-module/models/new_poll-model';
 import { NewQuestion } from './../../new_poll-module/models/new_question-model';
 import { FirebaseService } from './../../services/firebase.service';
@@ -23,10 +24,12 @@ import * as PollsActions from '../../ngrx-store/polls-action';
 export class PollsListComponent implements OnInit {
   polls: Array<NewPoll>;
   questions: Array<NewQuestion>;
-  isModalDisplayed = false;
+  isCanNotEditModalDisplayed = false;
+  isDeleteModalDisplayed = false;
   pollIdToDelete: string;
   pollNameToDelete: string;
   currentUserID: string;
+  votesQntyOnPoll = null;
 
   constructor(
     private store: Store<AppState>,
@@ -37,25 +40,50 @@ export class PollsListComponent implements OnInit {
   ngOnInit() {
     this.firebaseService.checkLoginStatus();
     this.currentUserID = this.firebaseService.user_id;
-    if (this.currentUserID == null) {this.router.navigate(['/logout']); }
+    if (this.currentUserID == null) { this.router.navigate(['/logout']); }
     this.firebaseService.fetchPollsAndSaveToStore();
-    this.store.select('polls').subscribe(data => { this.polls = data.polls; console.log('polls in p-list = ', this.polls);
+    this.store.select('polls').subscribe(data => {
+      this.polls = data.polls; console.log('polls in p-list = ', this.polls);
     });
     this.store.select('questions').subscribe(data => {
       this.questions = data.questions;
       if (this.questions == null) { this.firebaseService.fetchQuestionsAndSaveToStore(); }
-     });
+    });
+  }
+
+  onEditPollClicked(uid) {
+    this.firebaseService.fetchVotedQuestions(uid)
+      .then((data: Array<VotesOnPoll>) => {
+        this.votesQntyOnPoll = data.length;
+        console.log('votesQntyOnPoll = ', this.votesQntyOnPoll);
+        if (this.votesQntyOnPoll > 0) {
+          this.isCanNotEditModalDisplayed = true;
+          console.log('this.canNotEdit = ', this.isCanNotEditModalDisplayed, this.votesQntyOnPoll);
+        } else {
+          this.isCanNotEditModalDisplayed = false;
+          this.router.navigate(['/editpoll', uid]);
+        }
+      });
+  }
+
+  onEditModalClose() {
+    this.isCanNotEditModalDisplayed = false;
   }
 
   onDeletePollClicked(uid) {
-    this.pollIdToDelete = uid;
-    const one_poll = this.polls.filter(poll => (poll.id === uid));
-    this.pollNameToDelete = one_poll[0].name;
-    this.isModalDisplayed = true;
+    this.firebaseService.fetchVotedQuestions(uid)
+      .then((data: Array<VotesOnPoll>) => {
+        this.votesQntyOnPoll = data.length;
+
+        this.pollIdToDelete = uid;
+        const one_poll = this.polls.filter(poll => (poll.id === uid));
+        this.pollNameToDelete = one_poll[0].name;
+        this.isDeleteModalDisplayed = true;
+      });
   }
 
   onDeleteConfirm() {
-    this.isModalDisplayed = false;
+    this.isDeleteModalDisplayed = false;
 
     return this.firebaseService.delete_Poll_And_Related_Questions_From_DB_and_Store(this.pollIdToDelete)
       .then(() => {
@@ -75,14 +103,14 @@ export class PollsListComponent implements OnInit {
   }
 
   onDeleteCancel() {
-    this.isModalDisplayed = false;
+    this.isDeleteModalDisplayed = false;
   }
 
   onPublishClicked(poll_id, status) {
     const arrayWithOnePoll = this.polls.filter(poll => (poll.id === poll_id));
     const onePoll: NewPoll = arrayWithOnePoll[0];
-    if (status === 1) {onePoll.isPublished = true; }
-    if (status === 0) {onePoll.isPublished = false; }
+    if (status === 1) { onePoll.isPublished = true; }
+    if (status === 0) { onePoll.isPublished = false; }
     this.firebaseService.updatePollInDB(onePoll, onePoll.id);
   }
 
@@ -97,9 +125,10 @@ export class PollsListComponent implements OnInit {
     pollToClone = JSON.parse(JSON.stringify(onePoll));
     pollToClone.id = idOfNewPoll;
     pollToClone.createdBy = this.firebaseService.user_id;
+    pollToClone.createdByUsername = this.firebaseService.user_name;
     pollToClone.isPublished = false;
     pollToClone.createdTimeStamp = moment().valueOf();
-    if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) {pollToClone.expiresTimeStamp = moment().add(1, 'days').valueOf(); }
+    if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) { pollToClone.expiresTimeStamp = moment().add(1, 'days').valueOf(); }
     if (!pollToClone.name.includes(' ( cloned - edit as you need )')) {
       pollToClone.name = pollToClone.name + ' ( cloned - edit as you need )';
     }

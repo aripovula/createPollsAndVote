@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+// import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { SelectedCLs } from './../vote-models/selected-cls-model';
@@ -30,7 +30,7 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
 
   constructor(
     private voteService: VoteService,
-    private router: Router,
+    // private router: Router,
     private _sanitizer: DomSanitizer) {
     this.subscription = voteService.voteQuestionLoopStarted$.subscribe(
       nextQuestion => {

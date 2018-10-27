@@ -16,10 +16,10 @@ import * as PollsActions from '../../ngrx-store/polls-action';
 // DONE: you already voted - here are the results, if voted halfway - show current stage
 // DONE: do not show expired polls
 // DONE: identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
+// DONE: added by is shown incorrectly
 // if at least one vote of OTHER user exists on the poll do not allow to change poll
 // visibility of poll by username or domain name
 // visibility of poll by access code
-// added by is shown incorrectly
 // sign in with a new username
 // checklistsSelectedComplyWithMultiOptionsConditions double check error when changing multi option counter
 // double check error when options counter reaches zero
@@ -149,8 +149,9 @@ export class LoopVoteQuestionsComponent implements OnInit {
           const alreadyVotedQuestionsByUser = (data != null && data[0] != null) ? data[0].aVote.questions.length : 0;
           if (alreadyVotedQuestionsByUser > 0) {
             this.isAlreadyVoted = true;
+            console.log('this.isAlreadyVoted = ', this.isAlreadyVoted);
             if (alreadyVotedQuestionsByUser >= this.q_qnty) {
-              this.router.navigate(['/result', this.poll_id]);
+              this.router.navigate(['/result', this.poll_id, 1]);
               console.log('all questions voted, sent to results');
             } else {
               // add already voted questions info back to current model
