@@ -97,8 +97,9 @@ export class PollsListComponent implements OnInit {
     pollToClone = JSON.parse(JSON.stringify(onePoll));
     pollToClone.id = idOfNewPoll;
     pollToClone.createdBy = this.firebaseService.user_id;
+    pollToClone.isPublished = false;
     pollToClone.createdTimeStamp = moment().valueOf();
-    if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) {pollToClone.expiresTimeStamp = pollToClone.createdTimeStamp; }
+    if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) {pollToClone.expiresTimeStamp = moment().add(1, 'days').valueOf(); }
     if (!pollToClone.name.includes(' ( cloned - edit as you need )')) {
       pollToClone.name = pollToClone.name + ' ( cloned - edit as you need )';
     }

@@ -43,7 +43,7 @@ export class FirebaseService {
     const polls = new Array();
     this.showLoadingSpinner();
     const that = this;
-    if (this.user_id == null) { this.getUserIDandName(); }
+    if (this.user_id == null) { this.checkLoginStatus(); }
     return new Promise((resolve, reject) => {
       firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
         snapshot.forEach((item) => {
@@ -95,7 +95,7 @@ export class FirebaseService {
   fetchQuestionsAndSaveToStore() {
     const questions = new Array();
     const that = this;
-    if (this.user_id == null) { this.getUserIDandName(); }
+    if (this.user_id == null) { this.checkLoginStatus(); }
     return new Promise((resolve, reject) => {
       firebase.database().ref('/questions/').orderByChild('sequenceNumber').once('value')
         .then((snapshot) => {
@@ -158,7 +158,7 @@ export class FirebaseService {
     const votedQuestions = [];
     const allVotes: Array<VotesOnPoll> = [];
     const that = this;
-    if (this.user_id == null) { this.getUserIDandName(); }
+    if (this.user_id == null) { this.checkLoginStatus(); }
     return new Promise((resolve, reject) => {
       firebase.database().ref('voted_questions/' + poll_id).once('value')
         .then((snapshot) => {
@@ -168,33 +168,36 @@ export class FirebaseService {
           });
           console.log('questions fireb q-list = ', votedQuestions);
           console.log('questions len fireb q-list = ', votedQuestions.length);
-          return votedQuestions;
-        })
-        .then((data) => {
-          // https://stackoverflow.com/questions/126100/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip
-
-          // const data2 = data[0];
-          // const votesQnty = Object.keys(data2).length;
-          // console.log('data in 2nd next =', data);
-          // console.log('votesQnty in 2nd next =', votesQnty);
-          // for (let x = 0; x < votesQnty; x++) {
-          //   // https://stackoverflow.com/questions/983267/how-to-access-the-first-property-of-an-object-in-javascript
-          //   const VoteItem = data2[Object.keys(data2)[x]];
-          //   console.log('ano item = ', VoteItem);
-
-          //   allVotes.push(VoteItem);
-          // }
-          // console.log('allVotes fireb q-list = ', allVotes);
-          // console.log('allVotes len fireb q-list = ', allVotes.length);
-
           that.hideLoadingSpinner();
-          resolve(data);
+          resolve(votedQuestions);
         });
     });
   }
 
+  fetchVotedQuestionsByPollIDandUserID(poll_id) {
+    this.showLoadingSpinner();
+    const votedQuestions = [];
+    const allVotes: Array<VotesOnPoll> = [];
+    const that = this;
+    if (this.user_id == null) { this.checkLoginStatus(); }
+    return new Promise((resolve, reject) => {
+      firebase.database().ref('voted_questions/' + poll_id + '/' + this.user_id).once('value')
+        .then((snapshot) => {
+          // snapshot.forEach((item) => {
+            console.log('snapshot.val() = ', snapshot.val());
+            votedQuestions.push(snapshot.val());
+          // });
+          console.log('questions fireb q-list = ', votedQuestions);
+          console.log('questions len fireb q-list = ', votedQuestions.length);
+          that.hideLoadingSpinner();
+          resolve(votedQuestions);
+        });
+    });
+  }
+
+
   saveVotedQuestionToDB(question, poll_id) {
-    if (this.user_id == null) { this.getUserIDandName(); }
+    if (this.user_id == null) { this.checkLoginStatus(); }
     console.log('question = ', question);
     console.log('poll_id = ', poll_id);
     console.log('user_id = ', this.user_id);
@@ -202,13 +205,6 @@ export class FirebaseService {
       .then(() => {
         // this.store.dispatch(new QuestionsActions.AddQuestion(question));
       });
-  }
-
-  getUserIDandName() {
-    this.store.select('auth').subscribe(data => {
-      this.user_id = data.userId;
-      this.user_name = data.userName;
-    });
   }
 
   //  ****

@@ -1,3 +1,4 @@
+import { VotesOnPoll } from './../vote-models/votes-on-poll-model';
 import { NewPoll } from './../../new_poll-module/models/new_poll-model';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -12,10 +13,15 @@ import { AppState } from '../../ngrx-store/app-reducers';
 import * as pollsState from '../../ngrx-store/polls-reducer';
 import * as PollsActions from '../../ngrx-store/polls-action';
 
-// you already voted - here are the results
-// do not show expired polls
-// identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
+// you already voted - here are the results, if voted halfway - show current stage
+// DONE: do not show expired polls
+// DONE: identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
 // if at least one vote of OTHER user exists on the poll do not allow to change poll
+// visibility of poll by username or domain name
+// visibility of poll by access code
+// sign in with a new username
+// checklistsSelectedComplyWithMultiOptionsConditions double check error when changing multi option counter
+// double check error when options counter reaches zero
 
 @Component({
   selector: 'app-loop-vote-questions',
@@ -62,7 +68,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
         pollID: this.poll_id,
         voterID: this.firebaseService.user_id,
         voterName: this.firebaseService.user_name,
-        voteType: null,
+        voteNameDisclosureType: null,
         questions: []
       }
     };
@@ -100,7 +106,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
     for (const poll of polls) {
       if (poll.id === this.poll_id) {
         this.poll_name = poll.name;
-        this.votedQuestionModel.aVote.voteType = poll.nameDiscloseOption;
+        this.votedQuestionModel.aVote.voteNameDisclosureType = poll.nameDiscloseOption;
       }
     }
     this.goToNextQuestion();
@@ -135,10 +141,43 @@ export class LoopVoteQuestionsComponent implements OnInit {
   }
 
   announceStart() {
+    if (this.q_number === 0) {
+      return this.firebaseService.fetchVotedQuestionsByPollIDandUserID(this.poll_id)
+        .then((data: Array<VotesOnPoll>) => {
+          const alreadyVotedQuestionsByUser = (data != null && data[0] != null) ? data[0].aVote.questions.length : 0;
+          if (alreadyVotedQuestionsByUser > 0) {
+            if (alreadyVotedQuestionsByUser >= this.q_qnty) {
+              this.router.navigate(['/result', this.poll_id]);
+              console.log('all questions voted, sent to results');
+            } else {
+              // add already voted questions info back to current model
+              for (const votedModel of data[0].aVote.questions) {
+                console.log('votedModel of data= ', votedModel);
+                if (votedModel.CLs == null) { votedModel.CLs = []; }
+                this.votedQuestionModel.aVote.questions.push({
+                  questionID: votedModel.questionID,
+                  questionsQnty: votedModel.questionsQnty,
+                  type: votedModel.type,
+                  CLs: votedModel.CLs,
+                  Radio: votedModel.Radio
+                });
+              }
+              // change current questions number to first unresponded one
+              this.q_number = alreadyVotedQuestionsByUser;
+              console.log('this.q_number changed to ', this.q_number);
+              this.announceStart2();            }
+          } else {
+            this.announceStart2();          }
+        });
+    } else {
+      this.announceStart2();
+    }
+  }
+
+  announceStart2() {
     console.log('q_number = ', this.q_number);
     const nextQuestion = this.questionsOfPoll[this.q_number];
     console.log('nextQuestion = ', nextQuestion);
     this.voteService.announceVoteQuestionStart(nextQuestion);
   }
-
 }

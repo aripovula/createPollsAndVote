@@ -2,15 +2,24 @@
   <h3>
     Poll summary
   </h3>
+  <div *ngIf="!votes_count">
+      <br/>
+      <p>No one voted on this poll to date !</p>
+      <br/>
+      <a routerLink="/home" class="noDecor">go back to Polls list</a>
+  </div>
 
   <div *ngIf="votes_count">
-
+      <div *ngIf="!namesDisclosed">
+          <p>Votes by voters is not disclosed - it is an anonymous vote</p>
+      </div>
+    
     <div *ngFor="let vote_count of votes_count; let ind=index;">
 
       <app-question4result [question_id]="question_ids[ind]"></app-question4result>
 
       <div>
-        <div *ngIf="namesDisclosed">
+        <div *ngIf="namesDisclosed" style="margin-left: 60px;">
           <p>Summary of votes by voters:</p>
           <table class="zui-table">
             <div *ngFor="let voteByVoter of votesByVoters[ind]; let ind2=index;">

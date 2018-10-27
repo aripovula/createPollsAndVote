@@ -25,6 +25,9 @@ import { LoginComponent } from './app-module-folders/login/login.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { LogoutComponent } from './app-module-folders/logout/logout.component';
 import { MaskUsernamePipe } from './pipes/mask-username.pipe';
+import { IsNotExpiredPipe } from './pipes/is-not-expired.pipe';
+import { ExpiredRecentlyPipe } from './pipes/expired-recently.pipe';
+import { IsPublishedPipe } from './pipes/is-published.pipe';
 
 
 @NgModule({
@@ -40,6 +43,9 @@ import { MaskUsernamePipe } from './pipes/mask-username.pipe';
     MaskUsernamePipe,
     LoginComponent,
     LogoutComponent,
+    IsNotExpiredPipe,
+    ExpiredRecentlyPipe,
+    IsPublishedPipe,
 
   ],
   imports: [

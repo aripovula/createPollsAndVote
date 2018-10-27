@@ -61,69 +61,75 @@ export class DisplayResultComponent implements OnInit {
     this.firebaseService.fetchVotedQuestions(this.poll_id)
       .then((data: Array<VotesOnPoll>) => {
         this.votes_on_poll = data;
+        console.log('this.votes_on_poll = ', this.votes_on_poll);
 
-        // prepare two-diamentional array and label values - label values equal question number
-        let x_Length = 0;
-        let anyVote;
-        let aVote;
-        let min = 0;
-        for (let vote = 0; vote < this.votes_on_poll.length; vote++) {
-          aVote = this.votes_on_poll[vote];
-          min = aVote.aVote.questions.length;
-          if (min >= x_Length) { x_Length = min; anyVote = aVote; }
-        }
-        this.votes_count = new Array(x_Length);
-        this.barChartLabels = new Array(x_Length);
-        this.pieChartLabels = new Array(x_Length);
-        for (let x = 0; x < x_Length; x++) {
-          const y_Length = anyVote.aVote.questions[x].questionsQnty;
-          this.votes_count[x] = new Array(y_Length);
-          this.barChartLabels[x] = new Array(y_Length);
-          this.pieChartLabels[x] = new Array(y_Length);
-          this.question_ids[x] = anyVote.aVote.questions[x].questionID;
-          for (let y = 0; y < y_Length; y++) {
-            this.votes_count[x][y] = 0;
-            this.barChartLabels[x][y] = y + 1;
-            this.pieChartLabels[x][y] = y + 1;
+        if (this.votes_on_poll != null && this.votes_on_poll.length > 0) {
+          this.namesDisclosed = this.votes_on_poll[0].aVote.voteNameDisclosureType === 'disclosed';
+
+
+          // prepare two-diamentional array and label values - label values equal question number
+          let x_Length = 0;
+          let anyVote;
+          let aVote;
+          let min = 0;
+          for (let vote = 0; vote < this.votes_on_poll.length; vote++) {
+            aVote = this.votes_on_poll[vote];
+            min = aVote.aVote.questions.length;
+            if (min >= x_Length) { x_Length = min; anyVote = aVote; }
           }
-        }
-        this.barChartData = new Array(x_Length);
+          this.votes_count = new Array(x_Length);
+          this.barChartLabels = new Array(x_Length);
+          this.pieChartLabels = new Array(x_Length);
+          for (let x = 0; x < x_Length; x++) {
+            const y_Length = anyVote.aVote.questions[x].questionsQnty;
+            this.votes_count[x] = new Array(y_Length);
+            this.barChartLabels[x] = new Array(y_Length);
+            this.pieChartLabels[x] = new Array(y_Length);
+            this.question_ids[x] = anyVote.aVote.questions[x].questionID;
+            for (let y = 0; y < y_Length; y++) {
+              this.votes_count[x][y] = 0;
+              this.barChartLabels[x][y] = y + 1;
+              this.pieChartLabels[x][y] = y + 1;
+            }
+          }
+          this.barChartData = new Array(x_Length);
 
-        // summarize votes
-        for (let vote = 0; vote < this.votes_on_poll.length; vote++) {
-          const nextVote = this.votes_on_poll[vote];
-          const xLength = nextVote.aVote.questions.length;
-          for (let x = 0; x < xLength; x++) {
-            if (nextVote.aVote.questions[x].type === 0) {
-              this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] =
-                this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] + 1;
-              this.forVotesByVoterCount(nextVote, x, vote, null);
-            } else {
-              if (nextVote.aVote.questions[x].CLs != null) {
-                let forTableOnly = '';
-                for (let z = 0; z < nextVote.aVote.questions[x].CLs.length; z++) {
-                  if (nextVote.aVote.questions[x].CLs[z].isQSelected) {
-                    this.votes_count[x][z] = this.votes_count[x][z] + 1;
-                    const zz = z + 1; forTableOnly = forTableOnly + zz + '; ';
+          // summarize votes
+          for (let vote = 0; vote < this.votes_on_poll.length; vote++) {
+            const nextVote = this.votes_on_poll[vote];
+            const xLength = nextVote.aVote.questions.length;
+            for (let x = 0; x < xLength; x++) {
+              if (nextVote.aVote.questions[x].type === 0) {
+                this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] =
+                  this.votes_count[x][parseInt(nextVote.aVote.questions[x].Radio, 10)] + 1;
+                if (this.namesDisclosed) { this.forVotesByVoterCount(nextVote, x, vote, null); }
+              } else {
+                if (nextVote.aVote.questions[x].CLs != null) {
+                  let forTableOnly = '';
+                  for (let z = 0; z < nextVote.aVote.questions[x].CLs.length; z++) {
+                    if (nextVote.aVote.questions[x].CLs[z].isQSelected) {
+                      this.votes_count[x][z] = this.votes_count[x][z] + 1;
+                      const zz = z + 1; forTableOnly = forTableOnly + zz + '; ';
+                    }
                   }
+                  if (this.namesDisclosed) { this.forVotesByVoterCount(nextVote, x, vote, forTableOnly); }
                 }
-                this.forVotesByVoterCount(nextVote, x, vote, forTableOnly);
               }
             }
           }
-        }
-        console.log('final count = ', this.votes_count);
-        console.log('count[0] = ', this.votes_count[0]);
-        console.log('votesAndVoters = ', this.votesAndVoters);
+          console.log('final count = ', this.votes_count);
+          console.log('count[0] = ', this.votes_count[0]);
+          console.log('votesAndVoters = ', this.votesAndVoters);
 
-        // assign barChart values based on poll result count
-        for (let x = 0; x < this.votes_on_poll[0].aVote.questions.length; x++) {
-          this.barChartData[x] = [
-            { data: this.votes_count[x], label: '' }
-          ];
+          // assign barChart values based on poll result count
+          for (let x = 0; x < this.votes_on_poll[0].aVote.questions.length; x++) {
+            this.barChartData[x] = [
+              { data: this.votes_count[x], label: '' }
+            ];
+          }
+          // this.pieChartData = [this.votes_count[0]];
+          if (this.namesDisclosed) { this.summarizeVotesByVoter(); }
         }
-        // this.pieChartData = [this.votes_count[0]];
-        this.summarizeVotesByVoter();
       });
   }
 
