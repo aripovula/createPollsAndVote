@@ -13,12 +13,13 @@ import { AppState } from '../../ngrx-store/app-reducers';
 import * as pollsState from '../../ngrx-store/polls-reducer';
 import * as PollsActions from '../../ngrx-store/polls-action';
 
-// you already voted - here are the results, if voted halfway - show current stage
+// DONE: you already voted - here are the results, if voted halfway - show current stage
 // DONE: do not show expired polls
 // DONE: identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
 // if at least one vote of OTHER user exists on the poll do not allow to change poll
 // visibility of poll by username or domain name
 // visibility of poll by access code
+// added by is shown incorrectly
 // sign in with a new username
 // checklistsSelectedComplyWithMultiOptionsConditions double check error when changing multi option counter
 // double check error when options counter reaches zero
@@ -38,6 +39,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
   questions: Array<NewQuestion>;
   questionsOfPoll: Array<NewQuestion>;
   votedQuestionModel;
+  isAlreadyVoted = false;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -146,6 +148,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
         .then((data: Array<VotesOnPoll>) => {
           const alreadyVotedQuestionsByUser = (data != null && data[0] != null) ? data[0].aVote.questions.length : 0;
           if (alreadyVotedQuestionsByUser > 0) {
+            this.isAlreadyVoted = true;
             if (alreadyVotedQuestionsByUser >= this.q_qnty) {
               this.router.navigate(['/result', this.poll_id]);
               console.log('all questions voted, sent to results');
@@ -179,5 +182,9 @@ export class LoopVoteQuestionsComponent implements OnInit {
     const nextQuestion = this.questionsOfPoll[this.q_number];
     console.log('nextQuestion = ', nextQuestion);
     this.voteService.announceVoteQuestionStart(nextQuestion);
+  }
+
+  onModalClose() {
+    this.isAlreadyVoted = false;
   }
 }
