@@ -22,8 +22,8 @@ export class NewPollComponent implements OnInit {
   poll_id = null;
   expiresDateTime = '';
   changeDate = true;
-  // id, name, questionsQnty, publicAccess, nameDiscloseOption, createdBy,
-  // createdTimeStamp, expiresAt, comment, publicAccessType, publicAccessors
+  // id, name, questionsQnty, accessType, nameDiscloseOption, createdBy,
+  // createdTimeStamp, expiresAt, comment, accessTypeType, accessTypeors
   model = new NewPoll(null, null, null, 'public', 'anonymous', null, null, moment().valueOf(), 0, '', 'withusernames', null, false);
 
   constructor(

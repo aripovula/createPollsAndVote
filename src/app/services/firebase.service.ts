@@ -3,6 +3,7 @@ import { AVote } from './../vote-module/vote-models/a-vote-model';
 import { Injectable } from '@angular/core';
 // import { Http } from '@angular/http';
 import * as firebase from 'firebase';
+import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 import { Store } from '@ngrx/store';
@@ -43,16 +44,34 @@ export class FirebaseService {
     const polls = new Array();
     this.showLoadingSpinner();
     const that = this;
+    const _24hoursAgo = moment().subtract(1, 'days').valueOf() * 1;
     if (this.user_id == null) { this.checkLoginStatus(); }
     return new Promise((resolve, reject) => {
-      firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value').then((snapshot) => {
-        snapshot.forEach((item) => {
-          polls.push(item.val());
+      firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value')
+        .then((snapshot) => {
+          snapshot.forEach((item) => {
+            const expires = moment(item.val().expiresTimeStamp).valueOf() * 1;
+            // ignore polls older than 24 hours from now to save memory
+            if (_24hoursAgo < expires) {
+              if (item.val().accessType === 'public') {
+                polls.push(item.val());
+              } else {
+                if (item.val().privateAccessorsList != null) {
+                  if (item.val().privateAccessType === 'withusernames' &&
+                    item.val().privateAccessorsList.search(this.user_name) > -1) {
+                    polls.push(item.val());
+                  } else if (item.val().privateAccessType === 'withdomain' &&
+                  this.user_name.search(item.val().privateAccessorsList) > -1) {
+                    polls.push(item.val());
+                  }
+                }
+              }
+            }
+          });
+          that.store.dispatch(new PollsActions.SetPolls(polls));
+          that.hideLoadingSpinner();
+          resolve(polls);
         });
-        that.store.dispatch(new PollsActions.SetPolls(polls));
-        that.hideLoadingSpinner();
-        resolve(polls);
-      });
     });
   }
 
@@ -184,8 +203,8 @@ export class FirebaseService {
       firebase.database().ref('voted_questions/' + poll_id + '/' + this.user_id).once('value')
         .then((snapshot) => {
           // snapshot.forEach((item) => {
-            console.log('snapshot.val() = ', snapshot.val());
-            votedQuestions.push(snapshot.val());
+          console.log('snapshot.val() = ', snapshot.val());
+          votedQuestions.push(snapshot.val());
           // });
           console.log('questions fireb q-list = ', votedQuestions);
           console.log('questions len fireb q-list = ', votedQuestions.length);
@@ -226,7 +245,7 @@ export class FirebaseService {
         console.log('Sign up success', response);
         this.user_id = response.user.uid;
         this.user_name = response.user.email;
-        that.store.dispatch(new AuthActions.SetUser({uid: response.user.uid, username: response.user.email}));
+        that.store.dispatch(new AuthActions.SetUser({ uid: response.user.uid, username: response.user.email }));
         this.router.navigate(['/home']);
       })
       .catch(
@@ -243,23 +262,23 @@ export class FirebaseService {
         console.log('Log in success', response);
         this.user_id = response.user.uid;
         this.user_name = response.user.email;
-        that.store.dispatch(new AuthActions.SetUser({uid: response.user.uid, username: response.user.email}));
+        that.store.dispatch(new AuthActions.SetUser({ uid: response.user.uid, username: response.user.email }));
         this.router.navigate(['/home']);
       })
       .catch(
         error => {
           console.log(error);
-        this.signUpAUser(email, password);
-      }
+          this.signUpAUser(email, password);
+        }
       );
   }
 
   signOut() {
     const that = this;
     firebase.auth().signOut()
-    .then(() => {
-      that.store.dispatch(new AuthActions.RemoveUser());
-    });
+      .then(() => {
+        that.store.dispatch(new AuthActions.RemoveUser());
+      });
   }
 
   getToken() {

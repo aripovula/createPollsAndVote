@@ -41,13 +41,15 @@ export class PollsListComponent implements OnInit {
     this.firebaseService.checkLoginStatus();
     this.currentUserID = this.firebaseService.user_id;
     if (this.currentUserID == null) { this.router.navigate(['/logout']); }
-    this.firebaseService.fetchPollsAndSaveToStore();
-    this.store.select('polls').subscribe(data => {
-      this.polls = data.polls; console.log('polls in p-list = ', this.polls);
-    });
-    this.store.select('questions').subscribe(data => {
-      this.questions = data.questions;
-      if (this.questions == null) { this.firebaseService.fetchQuestionsAndSaveToStore(); }
+
+    this.firebaseService.fetchPollsAndSaveToStore().then(() => {
+      this.store.select('polls').subscribe(data => {
+        this.polls = data.polls; console.log('polls in p-list = ', this.polls);
+      });
+      this.store.select('questions').subscribe(data => {
+        this.questions = data.questions;
+        if (this.questions == null) { this.firebaseService.fetchQuestionsAndSaveToStore(); }
+      });
     });
   }
 

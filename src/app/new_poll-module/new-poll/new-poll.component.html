@@ -61,16 +61,16 @@
     <br/>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="publicAccess" name="publicAccess" value="public" [(ngModel)]="model.publicAccess" #publicAccess="ngModel"> anyone can vote and see results
+        <input type="radio" id="accessType" name="accessType" value="public" [(ngModel)]="model.accessType" #accessType="ngModel"> anyone can vote and see results
       </label>
     </div>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="publicAccess" name="publicAccess" value="private" [(ngModel)]="model.publicAccess"> only selected can vote and see results
+        <input type="radio" id="accessType" name="accessType" value="private" [(ngModel)]="model.accessType"> only selected can vote and see results
       </label>
     </div>
 
-    <div *ngIf="model.publicAccess == 'private'">
+    <div *ngIf="model.accessType == 'private'">
       <div style="margin-left: 135px;">
         <label>
           <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
@@ -91,8 +91,14 @@
       </div>
       <span class="verIndent"></span>
       <div style="margin-left: 135px;">
-        <input type="text" id="privateAccessorsList" name="privateAccessorsList" style="width:400px;border-radius: 0px;" min="1"
-          required [(ngModel)]="model.privateAccessorsList" #privateAccessors="ngModel">
+          <!-- <div *ngIf="model.accessType == 'private'"> -->
+        <input type="text" id="privateAccessorsList" required name="privateAccessorsList" 
+          style="width:400px;border-radius: 0px;" min="1"  placeholder="domain - @example.com, access codes - ex2mp1e1234, access1234"
+           [(ngModel)]="model.privateAccessorsList" #privateAccessors="ngModel">
+           <div [hidden]="privateAccessors.valid || privateAccessors.pristine" class="warning">
+              <label></label>
+              List of users with access or domain name or access codes must be provided for limited access polls
+            </div>    
       </div>
     </div>
 

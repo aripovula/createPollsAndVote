@@ -3,7 +3,7 @@ export class NewPoll {
         public id: string,
         public name: string,
         public questionsQnty: number,
-        public publicAccess: string,
+        public accessType: string,
         public nameDiscloseOption: string,
         public createdBy: string,
         public createdByUsername: string,

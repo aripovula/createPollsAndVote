@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
         this.loginForm.setValue({ username: 'ann@example.com', password: 'annann12', user: 'Ann' }, {emitEvent: false});
       }
       if (this.loginForm.value.user === 'John') {
-        this.loginForm.setValue({ username: 'john@example.com', password: 'johnjohn1', user: 'John' }, {emitEvent: false});
+        this.loginForm.setValue({ username: 'john@doe.com', password: 'johnjohn1', user: 'John' }, {emitEvent: false});
       }
       if (this.loginForm.value.user === 'new') {
         this.loginForm.setValue({ username: '', password: '', user: 'new' }, {emitEvent: false});
