@@ -1,55 +1,51 @@
 <div>
   <div style="margin-left: 100px; margin-right: 100px; margin-top: 60px; background-color: rgb(220, 248, 220);">
-      <h3 style="padding:15px;">Login with username:</h3>
+    <h3 style="padding:15px;">Login with username:</h3>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-element">
-        <label>Username:</label>
+        <label>e-mail:</label>
         <input type="text" formControlName="username">
+        <div class="warning margin110" *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched">
+          please add a user name in e-mail format.
+        </div>
       </div>
       <br/>
       <div class="form-element">
-        <label>Password:</label>
+        <label>password:</label>
         <input type="password" formControlName="password">
+        <div class="warning  margin110" *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched">
+          Password should be at least 6 characters long
+        </div>
+      </div>
+      <br/>
+      <div class="form-element">
+        <label>poll code:</label>
+        <input type="text" formControlName="accessCode">
+        <label style="font-size: 14px; width: 400px; text-align: left;">
+          <input type="checkbox" formControlName="useAccessCode"> start poll with this code immediately upon login
+        </label>
       </div>
       <br/>
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='Alex' formControlName="user"> sign in as Alex</label>
+          <input type="radio" name='user' value='Alex' formControlName="user" (ngModelChange)="onUserChange()"> sign in as Alex</label>
       </div>
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='Ann' formControlName="user"> sign in as Ann</label>
+          <input type="radio" name='user' value='Ann' formControlName="user" (ngModelChange)="onUserChange()"> sign in as Ann</label>
       </div>
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='John' formControlName="user"> sign in as John</label>
+          <input type="radio" name='user' value='John' formControlName="user" (ngModelChange)="onUserChange()"> sign in as John</label>
       </div>
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='new' formControlName="user"> sign in as a new user (type your username above)</label>
+          <input type="radio" name='user' value='new' formControlName="user" (ngModelChange)="onUserChange()"> sign in as a new user (type your e-mail above. Changing standard password is optional)</label>
       </div>
-
       <br/>
       <div class="form-element">
         <label></label>
         <button class="button button1" type="submit" [disabled]="!loginForm.valid">Submit</button>
-      </div>
-      <br/>
-    </form>
-  </div>
-
-  <div style="margin-left: 100px; margin-right: 100px; background-color: rgb(220, 248, 220);">
-    <h3 style="padding:15px;">Login with access code:</h3>
-    <form [formGroup]="accessCodeForm" (ngSubmit)="onSubmitWithCode()">
-      <div class="form-element">
-        <label>Access code:</label>
-        <input type="text" formControlName="accessCode">
-        <span style="font-size: 12px; color: gray;"> &nbsp;( this code is given as example. Other access codes are confidential )</span>
-      </div>
-      <br/>
-      <div class="form-element">
-        <label></label>
-        <button class="button button1" type="submit" [disabled]="!accessCodeForm.valid">Submit</button>
       </div>
       <br/>
     </form>

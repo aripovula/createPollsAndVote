@@ -72,6 +72,13 @@ export class PollsListComponent implements OnInit {
     this.isCanNotEditModalDisplayed = false;
   }
 
+  onExtendPollClicked(uid) {
+    const arrayWithOnePoll = this.polls.filter(poll => (poll.id === uid));
+    const onePoll: NewPoll = arrayWithOnePoll[0];
+    onePoll.expiresTimeStamp = moment().add(1, 'days').valueOf();
+    this.firebaseService.updatePollInDB(onePoll, onePoll.id);
+  }
+
   onDeletePollClicked(uid) {
     this.firebaseService.fetchVotedQuestions(uid)
       .then((data: Array<VotesOnPoll>) => {

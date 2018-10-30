@@ -80,24 +80,17 @@
       <div style="margin-left: 135px;">
         <label>
           <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
-            value="withdomain"> users with below domain name(s)
-        </label>
-      </div>
-      <div style="margin-left: 135px;">
-        <label>
-          <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
-            value="withaccesscode"> users with following access code(s)  ( at least 8 characters, comma separated )
+            value="withdomain"> users with below domain name(s) - example - '@example.com'
         </label>
       </div>
       <span class="verIndent"></span>
       <div style="margin-left: 135px;">
-          <!-- <div *ngIf="model.accessType == 'private'"> -->
         <input type="text" id="privateAccessorsList" required name="privateAccessorsList" 
-          style="width:400px;border-radius: 0px;" min="1"  placeholder="domain - @example.com, access codes - ex2mp1e1234, access1234"
+          style="width:400px;border-radius: 0px;" min="1"
            [(ngModel)]="model.privateAccessorsList" #privateAccessors="ngModel">
            <div [hidden]="privateAccessors.valid || privateAccessors.pristine" class="warning">
               <label></label>
-              List of users with access or domain name or access codes must be provided for limited access polls
+              List of users with access or domain name must be provided for limited access polls
             </div>    
       </div>
     </div>

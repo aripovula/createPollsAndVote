@@ -5,15 +5,15 @@ import * as AuthActions from './auth-action';
 export interface AuthState {
   userId: string;
   userName: string;
-  token: string;
   isLoggedIn: boolean;
+  loginPoll: string;
 }
 
 const initialState: AuthState = {
   userId: null,
   userName: null,
-  token: null,
-  isLoggedIn: false
+  isLoggedIn: false,
+  loginPoll: null
 };
 
 export function authReducer(state = initialState, action: AuthActions.AuthActions) {
@@ -24,7 +24,8 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
         ...state,
         userId: action.payload.uid,
         userName: action.payload.username,
-        isLoggedIn: true
+        isLoggedIn: true,
+        loginPoll: action.payload.loginPoll
       };
 
     case AuthActions.REMOVE_USER:
@@ -34,22 +35,22 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
         isLoggedIn: false,
         userId: null,
         userName: null,
-        token: null
+        loginPoll: null
       };
 
-    case AuthActions.SET_TOKEN:
-      console.log('in AuthActions.SET_TOKEN', action.payload);
-      return {
-        ...state,
-        token: action.payload
-      };
+    // case AuthActions.SET_LOGIN_POLL:
+    //   console.log('in AuthActions.SET_LOGIN_POLL', action.payload);
+    //   return {
+    //     ...state,
+    //     loginPoll: action.payload
+    //   };
 
-    case AuthActions.SET_USER_ID:
-      console.log('in AuthActions. state =', state);
-      return {
-        ...state,
-        userId: action.payload
-      };
+    //   case AuthActions.REMOVE_LOGIN_POLL:
+    //   console.log('in AuthActions.REMOVE_LOGIN_POLL');
+    //   return {
+    //     ...state,
+    //     loginPoll: null
+    //   };
 
     default:
       return state;

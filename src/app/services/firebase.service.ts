@@ -238,14 +238,14 @@ export class FirebaseService {
     return currentUser;
   }
 
-  signUpAUser(email: string, password: string) {
+  signUpAUser(email: string, password: string, loginPoll: string) {
     const that = this;
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(response => {
         console.log('Sign up success', response);
         this.user_id = response.user.uid;
         this.user_name = response.user.email;
-        that.store.dispatch(new AuthActions.SetUser({ uid: response.user.uid, username: response.user.email }));
+        that.store.dispatch(new AuthActions.SetUser({ uid: response.user.uid, username: response.user.email, loginPoll }));
         this.router.navigate(['/home']);
       })
       .catch(
@@ -255,20 +255,20 @@ export class FirebaseService {
       );
   }
 
-  signInAUser(email: string, password: string) {
+  signInAUser(email: string, password: string, loginPoll: string) {
     const that = this;
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(response => {
         console.log('Log in success', response);
         this.user_id = response.user.uid;
         this.user_name = response.user.email;
-        that.store.dispatch(new AuthActions.SetUser({ uid: response.user.uid, username: response.user.email }));
+        that.store.dispatch(new AuthActions.SetUser({ uid: response.user.uid, username: response.user.email, loginPoll }));
         this.router.navigate(['/home']);
       })
       .catch(
         error => {
           console.log(error);
-          this.signUpAUser(email, password);
+          this.signUpAUser(email, password, loginPoll);
         }
       );
   }

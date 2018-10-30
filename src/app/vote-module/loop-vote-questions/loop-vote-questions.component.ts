@@ -18,12 +18,11 @@ import * as PollsActions from '../../ngrx-store/polls-action';
 // DONE: identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
 // DONE: added by is shown incorrectly
 // if at least one vote of OTHER user exists on the poll do not allow to change poll
-// visibility of poll by username or domain name
-// visibility of poll by access code
-// sign in with a new username
+// DONE: visibility of poll by username or domain name
+// DONE: sign in with a new username
 // checklistsSelectedComplyWithMultiOptionsConditions double check error when changing multi option counter
 // double check error when options counter reaches zero
-// double check validations
+// DONE: double check validations
 
 @Component({
   selector: 'app-loop-vote-questions',

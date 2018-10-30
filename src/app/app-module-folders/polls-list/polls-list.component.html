@@ -58,6 +58,8 @@
         <span style="color: lightslategray; font-size: 14px;">expired: {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm a'}}</span>
         <span *ngIf="poll.createdBy == currentUserID">
           <span class="horIndent"></span>
+          <a (click)="onExtendPollClicked(poll.id)" class="noDecor">re-publish for 24 more hours</a>
+          <span class="horIndent"></span>
           <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>
         </span>
         <span *ngIf="!(poll.createdBy == currentUserID)">
