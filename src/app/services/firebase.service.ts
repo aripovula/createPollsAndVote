@@ -60,9 +60,17 @@ export class FirebaseService {
                   if (item.val().privateAccessType === 'withusernames' &&
                     item.val().privateAccessorsList.search(this.user_name) > -1) {
                     polls.push(item.val());
-                  } else if (item.val().privateAccessType === 'withdomain' &&
-                  this.user_name.search(item.val().privateAccessorsList) > -1) {
-                    polls.push(item.val());
+                  } else if (item.val().privateAccessType === 'withdomain') {
+                    let isFound = false;
+                    const domainsArray = item.val().privateAccessorsList.split(',');
+                    for (const aDomain of domainsArray) {
+                      if (this.user_name.search(aDomain.trim()) > -1) {
+                        isFound = true;
+                      }
+                    }
+                    if (isFound) {
+                      polls.push(item.val());
+                    }
                   }
                 }
               }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ImageUploadModule } from 'angular2-image-upload';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { NewQuestionComponent } from './new-question/new-question.component';
 import { PreviewQuestionComponent } from './preview-question/preview-question.component';
@@ -20,7 +21,8 @@ import { NewpollRoutingModule } from './newpoll-routing.module';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ImageUploadModule.forRoot(),
-    NewpollRoutingModule
+    NewpollRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [
     NewPollComponent,

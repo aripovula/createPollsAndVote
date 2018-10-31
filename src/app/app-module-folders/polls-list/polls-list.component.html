@@ -70,8 +70,10 @@
       </li>
     </ul>
     <br/>
-    <span *ngIf="(polls | isNotExpired).length > 0" style="color: lightslategray; font-size: 14px;">* clone also copies all associated questions</span>
-    <span *ngIf="(polls | expiredRecently).length > 0" style="color: lightslategray; font-size: 14px;">* clone also copies all associated questions</span>
+    <span style="color: lightslategray; font-size: 14px;">* if you don't see a poll it is either not published, not accessible to this user name or domain or expired</span>
+    <br/>
+    <span *ngIf="(polls | isNotExpired).length > 0 || (polls | expiredRecently).length > 0" style="color: lightslategray; font-size: 14px;">** clone also copies all associated questions</span>
+    <!-- <span *ngIf="(polls | expiredRecently).length > 0" style="color: lightslategray; font-size: 14px;">* clone also copies all associated questions</span> -->
   </div>
 
   <div *ngIf="isCanNotEditModalDisplayed">

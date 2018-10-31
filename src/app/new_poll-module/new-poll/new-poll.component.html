@@ -5,13 +5,13 @@
     <span *ngIf="poll_id">Edit poll:</span>
   </h4>
 
-  <form (ngSubmit)="onSubmit()" #pollForm="ngForm">
+  <form [formGroup]="pollForm" (ngSubmit)="onSubmit()">
     <div class="form-element">
       <label for="name">poll name</label>
-      <input type="text" id="name" autocomplete="off" size="40" required [(ngModel)]="model.name" name="name" #name="ngModel">
-      <div [hidden]="name.valid || name.pristine" class="warning">
+      <input type="text" autocomplete="off" size="40" formControlName="name">
+      <div [hidden]="pollForm.get('name').valid || pollForm.get('name').untouched" class="warning">
         <label></label>
-        Name is required
+        Name is required. Min. length is 3 symbols.
       </div>
     </div>
 
@@ -23,11 +23,10 @@
         <span class="noDecor" (click)="onChangeDateClicked()">change</span>
       </span>
       <span *ngIf="changeDate">
-        <input type="text" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" size="40" id="expiresDateTime" [(ngModel)]="expiresDateTime"
-          required name="expiresDateTime" #expiresDateTime2="ngModel">
+        <input type="text" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" 
+        size="40" name="expiresDateTime" formControlName="expiresDateTime">
         <owl-date-time #dt></owl-date-time>
-        {{expiresDateTime.valid}}
-        <div [hidden]="expiresDateTime2.valid || expiresDateTime2.pristine" class="warning">
+        <div [hidden]="pollForm.get('expiresDateTime').valid || pollForm.get('expiresDateTime').untouched" class="warning">
           <label></label>
           Expiration date and time are required
         </div>
@@ -36,19 +35,19 @@
 
     <div class="form-element">
       <label for="comments">comments</label>
-      <input type="text" id="comment" autocomplete="off" size="40" placeholder=" ( OPTIONAL )" [(ngModel)]="model.comment" name="comment"
-        #comment="ngModel">
+      <input type="text" id="comment" autocomplete="off" size="40" placeholder=" ( OPTIONAL )"
+      name="comment" formControlName="comment">
     </div>
 
     <div class="form-element">
-      <label># of questions:</label>
+      <label style="font-size: 14px;"># of questions:</label>
       <span *ngIf="!poll_id">
-      <input type="number" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty" name="questionsQnty"
-        #questionsQnty="ngModel">
-        <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
-            <label></label>
-            Number of questions is required
-          </div>    
+        <input type="number" name="questionsQnty" min="1" id="questionsQnty" 
+        name="questionsQnty" formControlName="questionsQnty">
+        <div [hidden]="pollForm.get('questionsQnty').valid || pollForm.get('questionsQnty').untouched" class="warning">
+          <label></label>
+          Number of questions is required
+        </div>
       </span>
 
       <span *ngIf="poll_id">
@@ -61,58 +60,80 @@
     <br/>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="accessType" name="accessType" value="public" [(ngModel)]="model.accessType" #accessType="ngModel"> anyone can vote and see results
+        <input type="radio" id="accessType" name="accessType" value="public" (ngModelChange)="onAccessTypeChange()"
+        formControlName="accessType"> anyone can vote and see results
       </label>
     </div>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="accessType" name="accessType" value="private" [(ngModel)]="model.accessType"> only selected can vote and see results
+        <input type="radio" id="accessType" name="accessType" value="private" (ngModelChange)="onAccessTypeChange()"
+        formControlName="accessType"> only selected can vote and see results
       </label>
     </div>
 
     <div *ngIf="model.accessType == 'private'">
       <div style="margin-left: 135px;">
         <label>
-          <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
-            value="withusernames"> users wth these usernames ( comma separated )
+          <input type="radio" id="privateAccessType" name="privateAccessType" (ngModelChange)="onPrivateTypeChange()"
+          formControlName="privateAccessType" value="withusernames"> users wth these usernames ( comma and space separated )
         </label>
       </div>
       <div style="margin-left: 135px;">
         <label>
-          <input type="radio" id="privateAccessType" name="privateAccessType" [(ngModel)]="model.privateAccessType" 
-            value="withdomain"> users with below domain name(s) - example - '@example.com'
+          <input type="radio" id="privateAccessType" name="privateAccessType" (ngModelChange)="onPrivateTypeChange()"
+          formControlName="privateAccessType" value="withdomain"> users with below domain name(s) - example - '@example.com  ( comma and space separated )'
         </label>
       </div>
       <span class="verIndent"></span>
-      <div style="margin-left: 135px;">
-        <input type="text" id="privateAccessorsList" required name="privateAccessorsList" 
-          style="width:400px;border-radius: 0px;" min="1"
-           [(ngModel)]="model.privateAccessorsList" #privateAccessors="ngModel">
-           <div [hidden]="privateAccessors.valid || privateAccessors.pristine" class="warning">
-              <label></label>
-              List of users with access or domain name must be provided for limited access polls
-            </div>    
+
+      <div style="margin-left: 135px;" *ngIf="model.privateAccessType == 'withusernames'">
+        <input type="text" id="privateAccessorsList" name="privateAccessorsList" 
+        style="width:400px;border-radius: 0px;" (ngModelChange)="onAccessorListChange()"
+          min="1" formControlName="privateAccessorsList">
+          <div [hidden]="pollForm.get('privateAccessorsList').valid || pollForm.get('privateAccessorsList').untouched" class="warning">
+          <label></label>
+          List of users with access must be provided for limited access polls
+        </div>
+        <div [hidden]="!isNoSelfAccessInUserList" class="warning">
+          <label></label>
+          You (the current user) will NOT have access to this poll based on current list of users
+        </div>
       </div>
+      <div style="margin-left: 135px;" *ngIf="model.privateAccessType == 'withdomain'">
+        <input type="text" id="domains" name="domains" 
+        style="width:400px;border-radius: 0px;" (ngModelChange)="onDomainListChange()"
+          min="1" formControlName="domains">
+          <div [hidden]="pollForm.get('domains').valid || pollForm.get('domains').untouched" class="warning">
+          <label></label>
+          List of users with access or domain name must be provided for limited access polls
+        </div>
+        <div [hidden]="!isNoSelfAccessInDomainList" class="warning">
+          <label></label>
+          You (the current user) will NOT have access to this poll based on current list of domains
+        </div>
+
+      </div>
+
     </div>
 
     <br/>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="anonymous" [(ngModel)]="model.nameDiscloseOption"
-          #nameDiscloseOption="ngModel"> voter's name is anonymous - not shown
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="anonymous"
+        formControlName="nameDiscloseOption"> voter's name is anonymous - not shown
       </label>
     </div>
     <div style="margin-left: 110px;">
       <label>
-        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="disclosed" [(ngModel)]="model.nameDiscloseOption"
-          #nameDiscloseOption="ngModel"> voter's name is disclosed / shown
+        <input type="radio" id="nameDiscloseOption" name="nameDiscloseOption" value="disclosed" 
+        formControlName="nameDiscloseOption"> voter's name is disclosed / shown
       </label>
     </div>
 
     <br/>
     <div class="form-element">
       <label></label>
-      <button type="submit" class="button button1" [disabled]="!pollForm.form.valid">Next ></button>
+      <button type="submit" class="button button1" [disabled]="!pollForm.valid">Next ></button>
     </div>
 
   </form>
