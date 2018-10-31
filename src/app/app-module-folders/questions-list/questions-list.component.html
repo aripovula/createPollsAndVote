@@ -7,8 +7,11 @@
       </label>
     </h3>
     <div *ngIf="!showAllQuestions">
-      <h3 *ngIf="poll_name" style="color: green">Poll name: {{poll_name}}</h3>
+      <h3 *ngIf="poll_name" style="color: green">Poll name: {{poll_name}}
+      </h3>
       <h3 *ngIf="!poll_name" style="color: green">poll name is not defined</h3>
+      <span *ngIf="canEdit" style="font-size: 14px;">( created by {{poll_author}} ) <br/><br/></span>
+      <span *ngIf="!canEdit" style="font-size: 14px;">( created by {{poll_author}} - you can not edit this question )<br/><br/></span>
 
       <span *ngIf="canEdit">
         <a routerLink="/addquestion/{{questions | countQuestions: poll_id}}/{{poll_id}}/{{questions | countQuestions: poll_id}}"
@@ -108,23 +111,23 @@
   </div>
 
   <div *ngIf="isCanNotModalDisplayed">
-      <form>
-          <div id="myModal" class="modal">
-            <div class="modal-content">
-              <div class="modal-header">
-                <span class="close" (click)="onCanNotModalClose()">&times;</span>
-                <p>Information</p>
-              </div>
-              <div class="modal-body">
-                <p>The poll to which this question is related has {{votesQntyOnPoll}} vote(s).</p>
-                <p>Hence this question can NOT be edited, deleted or moved ! &nbsp; (can be copied)</p>
-                <button type="button" class="button button1" (click)="onCanNotModalClose()">ok</button>
-                <br/>
-                <br/>
-              </div>
-            </div>
+    <form>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" (click)="onCanNotModalClose()">&times;</span>
+            <p>Information</p>
           </div>
-        </form>    
+          <div class="modal-body">
+            <p>The poll to which this question is related has {{votesQntyOnPoll}} vote(s).</p>
+            <p>Hence this question can NOT be edited, deleted or moved ! &nbsp; (can be copied)</p>
+            <button type="button" class="button button1" (click)="onCanNotModalClose()">ok</button>
+            <br/>
+            <br/>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 
 </div>

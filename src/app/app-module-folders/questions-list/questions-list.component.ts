@@ -22,6 +22,7 @@ import * as QuestionsActions from '../../ngrx-store/questions-action';
 export class QuestionsListComponent implements OnInit {
   poll_id;
   poll_name;
+  poll_author;
   polls: Array<NewPoll>;
   questions: Array<NewQuestion>;
   questionIdToDelete: string;
@@ -87,6 +88,7 @@ export class QuestionsListComponent implements OnInit {
     console.log('one_poll =', one_poll);
     if (one_poll != null && one_poll[0] != null) {
       this.poll_name = one_poll[0].name;
+      this.poll_author = one_poll[0].createdByUsername;
       this.canEdit = one_poll[0].createdBy === this.currentUserID;
       console.log('poll_name = ', this.poll_name);
     }

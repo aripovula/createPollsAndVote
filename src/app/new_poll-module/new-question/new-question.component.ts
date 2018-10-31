@@ -121,18 +121,18 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   getQuestionWithPassedId(data: Array<NewQuestion>) {
     const data2 = data.filter(({ id }) => id === this.question_id);
     this.model = data2[0];
-      for (const option of this.model.q_options) {
-        this.inputHidden[option.id] = true;
-        if (option.type === 'imageurl') {this.onImageURLChanged(option.id); }
-        if (option.type === 'videourl') {this.onVideoURLChanged(option.id); }
-        if (option.type === 'weburl') {this.onWebURLChanged(option.id); }
+    for (const option of this.model.q_options) {
+      this.inputHidden[option.id] = true;
+      if (option.type === 'imageurl') { this.onImageURLChanged(option.id); }
+      if (option.type === 'videourl') { this.onVideoURLChanged(option.id); }
+      if (option.type === 'weburl') { this.onWebURLChanged(option.id); }
+    }
+    if (this.model.multipleChoice === 'true') {
+      this.addedChecklists = [];
+      for (let step = 0; step < this.model.q_options.length; step++) {
+        this.addedChecklists.push({ id: 0, isSelected: false });
       }
-      if (this.model.multipleChoice === 'true') {
-        this.addedChecklists = [];
-        for (let step = 0; step < this.model.q_options.length; step++) {
-          this.addedChecklists.push({ id: 0, isSelected: false });
-        }
-      }
+    }
 
   }
 
@@ -167,20 +167,24 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
 
   // function above receives e from html file. Function below uses above function only for last one
   removeLastOption() {
-    const e = { id: this.model.q_options[this.model.q_options.length - 1].id };
-    this.removeOption(e);
+    if (this.model.q_options != null && this.model.q_options[this.model.q_options.length - 1] != null) {
+      const e = { id: this.model.q_options[this.model.q_options.length - 1].id };
+      console.log('in removeLastOption e = ', e);
+      this.removeOption(e);
+    }
   }
 
   addOption() {
     const oid = this.assignID();
     this.model.q_options.push(new NewOption(oid, 'text', '', '', '', '', '', null, null));
     this.addedChecklists.push({ id: oid, isSelected: false });
+    console.log('{ id: oid, isSelected: false } = ', { id: oid, isSelected: false });
     this.updateQnty();
   }
 
   assignID() {
     if (this.model.q_options.length > 0) { return this.model.q_options[this.model.q_options.length - 1].id + 1; }
-    return;
+    return 0;
   }
 
   updateQnty() {
@@ -197,12 +201,16 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
 
   onMultiOptionQntyChange(e) {
     this.model.multipleChoiceOptionQnty = e;
-    this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
+    if (this.previewComponent != null) {
+      this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
+    }
   }
 
   addMultiOption() {
     this.model.multipleChoiceOptionQnty++;
-    this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
+    if (this.previewComponent != null) {
+      this.previewComponent.checklistsSelectedComplyWithMultiOptionsConditions();
+    }
   }
 
   onMultipleOptionChange(e) {

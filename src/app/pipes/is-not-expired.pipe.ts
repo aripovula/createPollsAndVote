@@ -12,7 +12,7 @@ export class IsNotExpiredPipe implements PipeTransform {
     for (let step = 0; step < array.length; step++) {
       const now = moment().valueOf() * 1;
       const expires = moment(array[step].expiresTimeStamp).valueOf() * 1;
-      console.log(' now, expires, not experired = ', now, expires, expires > now);
+      // console.log(' now, expires, not experired = ', now, expires, expires > now);
 
       if (expires > now) { newArray.push(array[step]); }
     }

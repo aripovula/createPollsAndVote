@@ -17,7 +17,7 @@ import * as PollsActions from '../../ngrx-store/polls-action';
 // DONE: do not show expired polls
 // DONE: identify my polls and offer to edit or un-publish - no edit/delete/un-publish for others
 // DONE: added by is shown incorrectly
-// if at least one vote of OTHER user exists on the poll do not allow to change poll
+// DONE: if at least one vote of a user exists on the poll do not allow to change poll
 // DONE: visibility of poll by username or domain name
 // DONE: sign in with a new username
 // checklistsSelectedComplyWithMultiOptionsConditions double check error when changing multi option counter
