@@ -27,6 +27,11 @@ export class NewPollComponent implements OnInit {
   changeDate = true;
   isNoSelfAccessInUserList = false;
   isNoSelfAccessInDomainList = false;
+  notValidEmailFound = false;
+  notValidEmail;
+  notValidDomainFound = false;
+  notValidDomain;
+  isValidCustom = true;
   pollForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     expiresDateTime: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -89,11 +94,18 @@ export class NewPollComponent implements OnInit {
 
   onAccessTypeChange() {
     this.model.accessType = this.pollForm.value.accessType;
+    this.model.privateAccessType = this.pollForm.value.privateAccessType;
     if (this.model.accessType === 'private') {
       if (this.pollForm.value.privateAccessType === 'withusernames') {
+        console.log('INNN withusernames');
+        this.onAccessorListChange();
         this.pollForm.get('privateAccessorsList').setValidators([Validators.required]);
+        this.pollForm.get('domains').clearValidators();
       } else if (this.pollForm.value.privateAccessType === 'withdomain') {
+        console.log('INNN withdomain');
+        this.onDomainListChange();
         this.pollForm.get('domains').setValidators([Validators.required]);
+        this.pollForm.get('privateAccessorsList').clearValidators();
       }
     } else if (this.model.accessType === 'public') {
       this.pollForm.get('privateAccessorsList').clearValidators();
@@ -107,30 +119,77 @@ export class NewPollComponent implements OnInit {
     this.model.privateAccessType = this.pollForm.value.privateAccessType;
   }
 
+  validateEmail(email) {
+    if (!email) { return false; }
+    // tslint:disable-next-line:max-line-length
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  validateDomain(domain) {
+    if (!domain) { return false; }
+    const re = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/gi;
+    return re.test(domain);
+  }
+
   onAccessorListChange() {
-    // TODO: check each value is e-mail
+    this.pollForm.get('privateAccessorsList').setValidators([Validators.required]);
+    this.pollForm.get('domains').clearValidators();
+    this.pollForm.get('privateAccessorsList').updateValueAndValidity();
+    this.pollForm.get('domains').updateValueAndValidity();
+
+    this.isValidCustom = true;
+    this.notValidEmailFound = false;
+    this.notValidEmail = '';
     this.model.privateAccessorsList = this.pollForm.value.privateAccessorsList;
-    if (this.model.privateAccessorsList.search(this.firebaseService.user_name) > -1) {
-      this.isNoSelfAccessInUserList = false;
-    } else {
-      this.isNoSelfAccessInUserList = true;
+    if (this.model.privateAccessorsList.length > 0) {
+      const usersArray = this.pollForm.value.privateAccessorsList.split(',');
+      for (const aUser of usersArray) {
+        if (!this.validateEmail(aUser.trim())) {
+          this.isValidCustom = false;
+          this.notValidEmailFound = true;
+          this.notValidEmail = aUser;
+          break;
+        }
+      }
+      this.model.privateAccessorsList = this.pollForm.value.privateAccessorsList;
+      if (this.model.privateAccessorsList.search(this.firebaseService.user_name) > -1) {
+        this.isNoSelfAccessInUserList = false;
+      } else {
+        this.isNoSelfAccessInUserList = true;
+      }
     }
   }
 
   onDomainListChange() {
     // TODO: add domain validation using Regex
+    this.pollForm.get('domains').setValidators([Validators.required]);
+    this.pollForm.get('privateAccessorsList').clearValidators();
+    this.pollForm.get('privateAccessorsList').updateValueAndValidity();
+    this.pollForm.get('domains').updateValueAndValidity();
+
+    this.isValidCustom = true;
     let isFound = false;
+    this.notValidDomainFound = false;
+    this.notValidDomain = '';
     this.model.privateAccessorsList = this.pollForm.value.domains;
-    const domainsArray = this.pollForm.value.domains.split(',');
-    for (const aDomain of domainsArray) {
-      if (this.firebaseService.user_name.search(aDomain.trim()) > -1) {
-        isFound = true;
+    if (this.model.privateAccessorsList.length > 0) {
+      const domainsArray = this.pollForm.value.domains.split(',');
+      for (const aDomain of domainsArray) {
+        if (!this.validateDomain(aDomain.trim())) {
+          this.isValidCustom = false;
+          this.notValidDomainFound = true;
+          this.notValidDomain = aDomain;
+        }
+        if (this.firebaseService.user_name.search(aDomain.trim()) > -1) {
+          isFound = true;
+        }
       }
-    }
-    if (isFound) {
-      this.isNoSelfAccessInDomainList = false;
-    } else {
-      this.isNoSelfAccessInDomainList = true;
+      if (isFound) {
+        this.isNoSelfAccessInDomainList = false;
+      } else {
+        this.isNoSelfAccessInDomainList = true;
+      }
     }
   }
 

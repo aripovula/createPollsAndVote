@@ -81,7 +81,7 @@
       <div style="margin-left: 135px;">
         <label>
           <input type="radio" id="privateAccessType" name="privateAccessType" (ngModelChange)="onPrivateTypeChange()"
-          formControlName="privateAccessType" value="withdomain"> users with below domain name(s) - example - '@example.com  ( comma and space separated )'
+          formControlName="privateAccessType" value="withdomain"> users with below domain name(s) - e.g. 'example.com  ( comma and space separated )'
         </label>
       </div>
       <span class="verIndent"></span>
@@ -98,9 +98,13 @@
           <label></label>
           You (the current user) will NOT have access to this poll based on current list of users
         </div>
+        <div [hidden]="!notValidEmailFound" class="warning">
+          <label></label>
+          At least one e-mail address ( {{notValidEmail}} ) is not in e-mail format
+        </div>
       </div>
       <div style="margin-left: 135px;" *ngIf="model.privateAccessType == 'withdomain'">
-        <input type="text" id="domains" name="domains" 
+        @ <input type="text" id="domains" name="domains" 
         style="width:400px;border-radius: 0px;" (ngModelChange)="onDomainListChange()"
           min="1" formControlName="domains">
           <div [hidden]="pollForm.get('domains').valid || pollForm.get('domains').untouched" class="warning">
@@ -110,6 +114,10 @@
         <div [hidden]="!isNoSelfAccessInDomainList" class="warning">
           <label></label>
           You (the current user) will NOT have access to this poll based on current list of domains
+        </div>
+        <div [hidden]="!notValidDomainFound" class="warning">
+          <label></label>
+          At least one domain  ( {{notValidDomain}} ) is not in domain format
         </div>
 
       </div>
@@ -129,11 +137,11 @@
         formControlName="nameDiscloseOption"> voter's name is disclosed / shown
       </label>
     </div>
-
-    <br/>
+    {{model.privateAccessType}}
+    <br/>{{pollForm.valid}}
     <div class="form-element">
-      <label></label>
-      <button type="submit" class="button button1" [disabled]="!pollForm.valid">Next ></button>
+      <label></label>{{isValidCustom}}
+      <button type="submit" class="button button1" [disabled]="!pollForm.valid || !isValidCustom">Next ></button>
     </div>
 
   </form>
