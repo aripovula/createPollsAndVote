@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('LOGS ARE NOT REMOVED ON PURPOSE');
     console.log('envVars.apiKey = ' + envVars.apiKey);
     console.log('envVars.authDomain = ' + envVars.authDomain);
     firebase.initializeApp(envVars);
@@ -33,7 +34,6 @@ export class AppComponent implements OnInit {
       data => {
         this.isLoggedIn = data.isLoggedIn;
         this.loginPoll = data.loginPoll;
-        console.log('LOGIN POLL APP COMP = ', this.loginPoll);
       }
     );
     this.isAuthenticatedObserver();
@@ -43,10 +43,9 @@ export class AppComponent implements OnInit {
     const that = this;
     firebase.auth().onAuthStateChanged(function (user) {
       console.log('in onAuthStateChanged Observer, user = ', user);
-      console.log('LOGIN POLL APP COMP 2 = ', that.loginPoll);
       if (user) {
         that.store.dispatch(new AuthActions.SetUser({ uid: user.uid, username: user.email, loginPoll: that.loginPoll }));
-        console.log('LOGGED IN this.loginPoll = ', that.loginPoll);
+        console.log('LOGGED IN');
         // if user added poll code upon logging in go directly to that poll
         if (that.loginPoll != null) {
           that.router.navigate(['/vote', that.loginPoll]);

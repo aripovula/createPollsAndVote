@@ -25,7 +25,7 @@
   <span *ngIf="safeURLimage">
     <img [src]="safeURLimage" height={{sizes[imageSize]}}>
     <span class="horIndent"></span>
-    <a class="noDecor" [href]="safeURLimage" target="_blank">view at source</a>
+    <a class="noDecor" [href]="safeURLimage" target="_blank">view full size</a>
   </span>
   <span *ngIf="!safeURLimage"> Option {{ind+1}} image goes here
     <br/>

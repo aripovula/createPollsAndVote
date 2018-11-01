@@ -50,7 +50,7 @@ export class FirebaseService {
       firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value')
         .then((snapshot) => {
           snapshot.forEach((item) => {
-            // this.saveNewPollToDBToRestore(item.val(), item.val().id);
+            this.saveNewPollToDBToRestore(item.val(), item.val().id);
             const expires = moment(item.val().expiresTimeStamp).valueOf() * 1;
             // ignore polls older than 24 hours from now to save memory
             if (_24hoursAgo < expires) {
@@ -95,81 +95,6 @@ export class FirebaseService {
       });
   }
 
-  // RESTORE DEFAULTS PART
-  saveNewPollToDBToRestore(poll, uid) {
-    return firebase.database().ref('polls_to_restore/' + uid).set(poll);
-  }
-
-  saveNewQuestionToDBToRestore(question, uid) {
-    return firebase.database().ref('questions_to_restore/' + uid).set(question);
-  }
-
-
-  fetchDefaultPollsAndRestorePolls() {
-    this.showLoadingSpinner();
-    const that = this;
-    return new Promise((resolve, reject) => {
-      return firebase.database().ref('polls').remove()
-        .then(() => {
-          return firebase.database().ref('questions').remove();
-        })
-        .then(() => {
-          return firebase.database().ref('voted_questions').remove();
-        })
-        .then(() => {
-          return firebase.database().ref('/polls_to_restore/').once('value');
-        })
-        .then((snapshotP) => {
-          snapshotP.forEach((item) => {
-            const mPoll = item.val();
-            mPoll.expiresTimeStamp = moment().add(2, 'days').valueOf();
-            if (mPoll.name.search('expired, extend it') > 0) {
-              mPoll.expiresTimeStamp = moment().subtract(1, 'hours').valueOf();
-            }
-            this.saveNewPollToRestore(mPoll, mPoll.id);
-          });
-        })
-        .then(() => {
-          return firebase.database().ref('/questions_to_restore/').once('value');
-        })
-        .then((snapshot) => {
-          snapshot.forEach((item) => {
-            this.saveNewQuestionToRestore(item.val(), item.val().id);
-          });
-        })
-        .then(() => {
-          that.fetchPollsAndSaveToStore();
-        })
-        .then(() => {
-          that.fetchQuestionsAndSaveToStore();
-        })
-        .then(() => {
-          that.hideLoadingSpinner();
-          resolve();
-        });
-
-    });
-  }
-
-  saveNewPollToRestore(aPoll, uid) {
-    return new Promise((resolve2, reject2) => {
-      return firebase.database().ref('polls/' + uid).set(aPoll)
-      .then(() => {
-        resolve2();
-      });
-    });
-  }
-
-  saveNewQuestionToRestore(aQuestion, uid) {
-    return new Promise((resolve2, reject2) => {
-      return firebase.database().ref('questions/' + uid).set(aQuestion)
-      .then(() => {
-        resolve2();
-      });
-    });
-  }
-
-  // END OF RESTORE DEFAULTS PART
 
   updatePollInDB(poll, uid) {
     this.showLoadingSpinner();
@@ -206,7 +131,7 @@ export class FirebaseService {
       firebase.database().ref('/questions/').orderByChild('sequenceNumber').once('value')
         .then((snapshot) => {
           snapshot.forEach((item) => {
-            // this.saveNewQuestionToDBToRestore(item.val(), item.val().id);
+            this.saveNewQuestionToDBToRestore(item.val(), item.val().id);
             questions.push(item.val());
           });
           // console.log('questions fireb q-list = ', questions);
@@ -369,9 +294,81 @@ export class FirebaseService {
       });
   }
 
-  getToken() {
-    return firebase.auth().currentUser.getIdToken();
-  }
+    // RESTORE DEFAULTS PART
+    saveNewPollToDBToRestore(poll, uid) {
+      return firebase.database().ref('polls_to_restore/' + uid).set(poll);
+    }
+
+    saveNewQuestionToDBToRestore(question, uid) {
+      return firebase.database().ref('questions_to_restore/' + uid).set(question);
+    }
+
+
+    fetchDefaultPollsAndRestorePolls() {
+      this.showLoadingSpinner();
+      const that = this;
+      return new Promise((resolve, reject) => {
+        return firebase.database().ref('polls').remove()
+          .then(() => {
+            return firebase.database().ref('questions').remove();
+          })
+          .then(() => {
+            return firebase.database().ref('voted_questions').remove();
+          })
+          .then(() => {
+            return firebase.database().ref('/polls_to_restore/').once('value');
+          })
+          .then((snapshotP) => {
+            snapshotP.forEach((item) => {
+              const mPoll = item.val();
+              mPoll.expiresTimeStamp = moment().add(2, 'days').valueOf();
+              if (mPoll.name.search('expired, extend it') > 0) {
+                mPoll.expiresTimeStamp = moment().subtract(1, 'hours').valueOf();
+              }
+              this.saveNewPollToRestore(mPoll, mPoll.id);
+            });
+          })
+          .then(() => {
+            return firebase.database().ref('/questions_to_restore/').once('value');
+          })
+          .then((snapshot) => {
+            snapshot.forEach((item) => {
+              this.saveNewQuestionToRestore(item.val(), item.val().id);
+            });
+          })
+          .then(() => {
+            that.fetchPollsAndSaveToStore();
+          })
+          .then(() => {
+            that.fetchQuestionsAndSaveToStore();
+          })
+          .then(() => {
+            that.hideLoadingSpinner();
+            resolve();
+          });
+
+      });
+    }
+
+    saveNewPollToRestore(aPoll, uid) {
+      return new Promise((resolve2, reject2) => {
+        return firebase.database().ref('polls/' + uid).set(aPoll)
+        .then(() => {
+          resolve2();
+        });
+      });
+    }
+
+    saveNewQuestionToRestore(aQuestion, uid) {
+      return new Promise((resolve2, reject2) => {
+        return firebase.database().ref('questions/' + uid).set(aQuestion)
+        .then(() => {
+          resolve2();
+        });
+      });
+    }
+
+    // END OF RESTORE DEFAULTS PART
 
   // own function is used in all above functions to make easier to change 3rd party spinner.
   showLoadingSpinner() {
