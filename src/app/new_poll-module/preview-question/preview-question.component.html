@@ -20,6 +20,7 @@
           <span *ngIf="multipleChoice=='true'">
             <label>
               <span class="horIndent"></span>
+              {{addedChecklists.length}}
               <input class="child" type="checkbox" name="isSelected{{addedChecklists[ind].id}}" [(ngModel)]="addedChecklists[ind].isSelected"
                 (ngModelChange)="onSelectedChange($event)" #isSelected="ngModel">
               <span class="child" style="margin-left: 20px"> &nbsp; {{ind + 1}}.</span>

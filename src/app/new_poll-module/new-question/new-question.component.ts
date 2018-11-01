@@ -145,12 +145,12 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
       if (option.type === 'videourl') { this.onVideoURLChanged(option.id); }
       if (option.type === 'weburl') { this.onWebURLChanged(option.id); }
     }
-    if (this.model.multipleChoice === 'true') {
+    // if (this.model.multipleChoice === 'true') {
       this.addedChecklists = [];
       for (let step = 0; step < this.model.q_options.length; step++) {
         this.addedChecklists.push({ id: 0, isSelected: false });
       }
-    }
+    // }
 
   }
 
@@ -245,10 +245,12 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   }
 
   onSelectTypeChange() {
-    // console.log('in onSelectTypeChange');
+    console.log('in onSelectTypeChange len = ', this.model.q_options.length);
     this.shouldCLsValidBeSetToFalse = true;
     this.validMessageReset();
-    for (let step = 0; step < this.addedChecklists.length; step++) {
+
+    for (let step = 0; step < this.model.q_options.length; step++) {
+      this.addedChecklists[step].id = step;
       this.addedChecklists[step].isSelected = false;
     }
     // console.log('this.addedChecklists = ', this.addedChecklists);
