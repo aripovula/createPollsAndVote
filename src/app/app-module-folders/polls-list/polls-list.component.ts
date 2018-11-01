@@ -115,6 +115,11 @@ export class PollsListComponent implements OnInit {
     this.isDeleteModalDisplayed = false;
   }
 
+  onRestoreDefaultsClicked() {
+    console.log('in onRestoreDefaultsClicked');
+    this.firebaseService.fetchDefaultPollsAndRestorePolls();
+  }
+
   onPublishClicked(poll_id, status) {
     const arrayWithOnePoll = this.polls.filter(poll => (poll.id === poll_id));
     const onePoll: NewPoll = arrayWithOnePoll[0];

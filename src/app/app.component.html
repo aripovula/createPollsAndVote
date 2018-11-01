@@ -8,13 +8,12 @@
     <span class="horIndent"></span>
     <a class="header__title" routerLink="/newpoll" routerLinkActive="active-link">Create a new poll</a>
     <span class="horIndent"></span>
-    <!-- <a class="header__title" routerLink="/newpoll" routerLinkActive="active-link">Logout and log in as a different user - demo v. only</a> -->
-    <span class="horIndent"></span>
     <span *ngIf="isLoggedIn">
       <a class="header__title" routerLink="/logout" routerLinkActive="active-link">Logout</a>
       <span style="font-size: 12px; color: lightgray;"> &nbsp;( {{username}} is logged in )</span>
     </span>
-  
+    <span class="horIndent"></span><span class="horIndent"></span><span class="horIndent"></span>
+    <a class="header__title" style="cursor: pointer;" (click)="onSourceClicked()">source code in Github</a>
   </nav>
 </div>
 

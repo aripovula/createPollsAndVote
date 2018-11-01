@@ -1,5 +1,8 @@
 <div style="margin-left: 50px;">
-  <h2>Vote and see poll results</h2>
+  <h2>Vote and see poll results
+      <a (click)="onRestoreDefaultsClicked()" class="noDecor" style="margin-left: 200px;cursor: pointer;">
+        Restore defaults - cancels all changes</a>
+  </h2>
   <div *ngIf="polls">
     <p *ngIf="(polls | isNotExpired).length === 0">( No current polls are found )</p>
     <p *ngIf="(polls | isNotExpired).length > 0" style="color: gray">( to vote click the respective poll name )</p>

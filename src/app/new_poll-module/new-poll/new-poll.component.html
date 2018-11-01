@@ -1,4 +1,4 @@
-<div>
+<div style="margin-left: 100px;">
   <br/>
   <h4 style="margin-left: 110px;">
     <span *ngIf="!poll_id">New poll:</span>
@@ -137,10 +137,9 @@
         formControlName="nameDiscloseOption"> voter's name is disclosed / shown
       </label>
     </div>
-    {{model.privateAccessType}}
-    <br/>{{pollForm.valid}}
+    <br/>
     <div class="form-element">
-      <label></label>{{isValidCustom}}
+      <label></label>
       <button type="submit" class="button button1" [disabled]="!pollForm.valid || !isValidCustom">Next ></button>
     </div>
 

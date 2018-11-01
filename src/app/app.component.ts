@@ -66,4 +66,9 @@ export class AppComponent implements OnInit {
     });
   }
 
+  onSourceClicked() {
+    console.log('in onSourceClicked');
+    window.open('https://github.com/aripovula/createPollsAndVote', '_blank');
+  }
+
 }
