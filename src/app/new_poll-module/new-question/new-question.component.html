@@ -362,10 +362,17 @@
   </div>
 
   <div id="right">
-    <app-preview-question #preview [q_text]="model.q_text" [multipleChoice]="model.multipleChoice" [q_options]="model.q_options"
-      [addedChecklists]="addedChecklists" [multipleChoiceOption]="model.multipleChoiceOption" [multipleChoiceOptionQnty]="model.multipleChoiceOptionQnty"
-      [shouldCLsValidBeSetToFalse]="shouldCLsValidBeSetToFalse" [safeURLimage]="safeURLimage" [safeURL]="safeURL" [WebURL]="WebURL"
-      [imageSize]="model.imageSize" [dateTimeToDisplay1]="dateTimeToDisplay1" [dateTimeToDisplay2]="dateTimeToDisplay2" (buttonValid)="onButtonIsValid($event)">
+    <app-preview-question #preview [q_text]="model.q_text" 
+    [multipleChoice]="model.multipleChoice" [q_options]="model.q_options"
+      [addedChecklists]="addedChecklists" 
+      [multipleChoiceOption]="model.multipleChoiceOption" 
+      [multipleChoiceOptionQnty]="model.multipleChoiceOptionQnty"
+      [shouldCLsValidBeSetToFalse]="shouldCLsValidBeSetToFalse" 
+      [safeURLimage]="safeURLimage" [safeURL]="safeURL" 
+      [WebURL]="WebURL"
+      [imageSize]="model.imageSize" [dateTimeToDisplay1]="dateTimeToDisplay1" 
+      [dateTimeToDisplay2]="dateTimeToDisplay2" (buttonValid)="onButtonIsValid($event)"
+    >
     </app-preview-question>
   </div>
 

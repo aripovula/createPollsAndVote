@@ -31,13 +31,10 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   @Input() poll_id: string;
   @Input() q_number: number;
 
+  subscription: Subscription;
   private previewComponent: PreviewQuestionComponent;
-  model = new NewQuestion(null, 1, this.poll_id, 'false', 'oneormore', 2, null, 2, '1', [
-    new NewOption(0, 'text', '', '', '', '', '', null, null),
-    new NewOption(1, 'text', '', '', '', '', '', null, null)
-  ]);
-
-  // because selected checklists are discarded when uses navigates away it is not part of the model
+  sizes = [100, 150, 250];
+  sizesW = [178, 266, 444];
 
   objects = [{ type: 'text', name: 'text' }, { type: 'imagelocal', name: 'image - local file' },
   { type: 'imageurl', name: 'image URL' }, { type: 'videourl', name: 'YouTube video URL' },
@@ -46,27 +43,22 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   { type: 'date', name: 'specific date' }, { type: 'dates', name: 'date range' },
   { type: 'time', name: 'specific time' }, { type: 'times', name: 'time range' }];
 
-  addedChecklists = [{ id: 0, isSelected: false }, { id: 1, isSelected: false }];
-  sizes = [100, 150, 250];
-  sizesW = [178, 266, 444];
-
-  shouldCLsValidBeSetToFalse = false;
-
-  localImage = [];
-  uploaderHidden = [];
-  safeURL = [];
-  safeURLimage = [];
-  safeWebURL = [];
-  WebURL = [];
-  inputHidden = [];
-  dateTimeToDisplay1 = [];
-  dateTimeToDisplay2 = [];
-  validMessage = '';
-  validMessageRadio = '';
-  isQTextUnTouched = true;
+  model;
+  addedChecklists;
+  shouldCLsValidBeSetToFalse;
+  localImage;
+  uploaderHidden;
+  safeURL;
+  safeURLimage;
+  safeWebURL;
+  WebURL;
+  inputHidden;
+  dateTimeToDisplay1;
+  dateTimeToDisplay2;
+  validMessage;
+  validMessageRadio;
+  isQTextUnTouched;
   question_id;
-
-  subscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -76,6 +68,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
     private firebaseService: FirebaseService,
     private store: Store<AppState>
   ) {
+    this.getDefaults();
     console.log('StartEd poll_id = ', this.poll_id);
     this.subscription = newPollService.questionLoopStarted$.subscribe(
       nextQuestion => {
@@ -112,6 +105,31 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
     console.log('on init poll_id', this.poll_id);
     this.model.questionOfPollWithId = this.poll_id;
     this.model.sequenceNumber = this.q_number;
+  }
+
+  getDefaults() {
+    this.model = new NewQuestion(null, 1, this.poll_id, 'false', 'oneormore', 2, null, 2, '1', [
+      new NewOption(0, 'text', '', '', '', '', '', null, null),
+      new NewOption(1, 'text', '', '', '', '', '', null, null)
+    ]);
+
+    // because selected checklists are discarded when uses navigates away
+    // it is not part of the model
+    this.addedChecklists = [{ id: 0, isSelected: false }, { id: 1, isSelected: false }];
+    this.shouldCLsValidBeSetToFalse = false;
+
+    this.localImage = [];
+    this.uploaderHidden = [];
+    this.safeURL = [];
+    this.safeURLimage = [];
+    this.safeWebURL = [];
+    this.WebURL = [];
+    this.inputHidden = [];
+    this.dateTimeToDisplay1 = [];
+    this.dateTimeToDisplay2 = [];
+    this.validMessage = '';
+    this.validMessageRadio = '';
+    this.isQTextUnTouched = true;
   }
 
   byId(item1: any, item2: any) {
@@ -326,15 +344,18 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
     console.log('in confirm, poll_id = ', this.poll_id);
     console.log('in confirm, poll_id = ', this.model.questionOfPollWithId);
     let uid;
+
     if (this.question_id == null) {
       uid = UUID.UUID();
       this.model.id = uid;
       this.assignDateTime();
       this.firebaseService.saveNewQuestionToDB(this.model, uid);
+      this.getDefaults();
       this.newPollService.confirmAQuestionDone();
     } else {
       this.assignDateTime();
       this.firebaseService.updateQuestionsInDB(this.model, this.model.id);
+      this.getDefaults();
       this.router.navigate(['/home']);
     }
   }
