@@ -98,7 +98,9 @@ export class QuestionsListComponent implements OnInit {
     this.firebaseService.fetchVotedQuestions(this.poll_id)
       .then((data: Array<VotesOnPoll>) => {
         this.votesQntyOnPoll = data.length;
-        if (this.votesQntyOnPoll > 0) {
+        // if other users have voted prevent editing the question
+        if (this.votesQntyOnPoll > 1 || this.votesQntyOnPoll === 1 &&
+            data[0].aVote.voterID !== this.firebaseService.user_id) {
           this.isCanNotModalDisplayed = true;
         } else {
           this.router.navigate(['/editquestion', uid]);
