@@ -36,6 +36,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
   q_qnty;
   poll_id;
   poll_name;
+  poll_authorId;
   questions: Array<NewQuestion>;
   questionsOfPoll: Array<NewQuestion>;
   votedQuestionModel;
@@ -108,6 +109,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
     for (const poll of polls) {
       if (poll.id === this.poll_id) {
         this.poll_name = poll.name;
+        this.poll_authorId = poll.createdBy;
         this.votedQuestionModel.aVote.voteNameDisclosureType = poll.nameDiscloseOption;
       }
     }
@@ -147,7 +149,7 @@ export class LoopVoteQuestionsComponent implements OnInit {
       return this.firebaseService.fetchVotedQuestionsByPollIDandUserID(this.poll_id)
         .then((data: Array<VotesOnPoll>) => {
           const alreadyVotedQuestionsByUser = (data != null && data[0] != null) ? data[0].aVote.questions.length : 0;
-          if (alreadyVotedQuestionsByUser > 0) {
+          if (alreadyVotedQuestionsByUser > 0 && data[0].aVote.voterID !== this.poll_authorId) {
             this.isAlreadyVoted = true;
             console.log('this.isAlreadyVoted = ', this.isAlreadyVoted);
             if (alreadyVotedQuestionsByUser >= this.q_qnty) {
