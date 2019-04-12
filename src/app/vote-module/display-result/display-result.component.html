@@ -1,7 +1,7 @@
 <div style="margin-left: 50px;">
-  <h3>
+  <h2 style="color: red">
     Poll summary
-  </h3>
+  </h2>
   <div *ngIf="!votes_count">
     <br/>
     <p>No one voted on this poll to date !</p>
@@ -20,21 +20,28 @@
 
       <div>
         <div *ngIf="namesDisclosed" style="margin-left: 60px;">
-          <p>Summary of votes by voters:</p>
-          <table class="zui-table">
-            <div *ngFor="let voteByVoter of votesByVoters[ind]; let ind2=index;">
-              <span *ngIf="voteByVoter">
+          <p>Summary of votes by voters: &nbsp; &nbsp;
+            <a (click)="toggleVotersInfo()" class="noDecor">
+              <span *ngIf="votersHidden">hidden - show table</span>
+              <span *ngIf="!votersHidden">hide table</span>
+              </a>
+          </p>
+          <div *ngIf="!votersHidden">
+            <table class="zui-table">
+              <div *ngFor="let voteByVoter of votesByVoters[ind]; let ind2=index;">
+                <span *ngIf="voteByVoter">
 
-                <tr>
-                  <!-- <td>{{ind2 + 1}}</td> -->
-                  <td>{{voteByVoter.voter | maskUsername2 }} &nbsp; &nbsp; voted for option(s) </td>
-                  <td>{{voteByVoter.votes}}</td>
-                </tr>
+                  <tr>
+                    <!-- <td>{{ind2 + 1}}</td> -->
+                    <td>{{voteByVoter.voter | maskUsername2 }} &nbsp; &nbsp; voted for option(s) </td>
+                    <td>{{voteByVoter.votes}}</td>
+                  </tr>
 
 
-              </span>
-            </div>
-          </table>
+                </span>
+              </div>
+            </table>
+          </div>
         </div>
         <div id="container4chart">
           <div id="left4chart" style="display: block" *ngIf="barChartData">

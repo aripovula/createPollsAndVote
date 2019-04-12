@@ -50,7 +50,10 @@ export class FirebaseService {
       firebase.database().ref('/polls/').orderByChild('createdTimeStamp').once('value')
         .then((snapshot) => {
           snapshot.forEach((item) => {
-            this.saveNewPollToDBToRestore(item.val(), item.val().id);
+            console.log('item.val()-', item.val());
+            const isAdmin = ( item.val().createdByUsername.includes('alex@example.com') ||
+              item.val().createdByUsername.includes('ann@example.com')) ? true : false;
+            if ( isAdmin ) { this.saveNewPollToDBToRestore(item.val(), item.val().id); }
             const expires = moment(item.val().expiresTimeStamp).valueOf() * 1;
             // ignore polls older than 24 hours from now to save memory
             if (_24hoursAgo < expires) {

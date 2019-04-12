@@ -20,6 +20,7 @@ export class DisplayResultComponent implements OnInit {
   votes_on_poll: Array<VotesOnPoll>;
   votes_count: any;
   votesByVoters: any;
+  votersHidden = false;
   votesAndVoters = [];
 
   barChartOptions: any = {
@@ -158,6 +159,11 @@ export class DisplayResultComponent implements OnInit {
       };
     }
     console.log('this.votesByVoters = ', this.votesByVoters);
+  }
+
+  toggleVotersInfo() {
+    this.votersHidden = !this.votersHidden;
+    console.log('votersHidden-', this.votersHidden);
   }
 
   onModalClose() {

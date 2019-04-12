@@ -168,4 +168,10 @@ export class PollsListComponent implements OnInit {
       }
     }
   }
+
+  is2loadDefaults(polls) {
+    if (polls.length === 0) {
+      this.onRestoreDefaultsClicked();
+    }
+  }
 }

@@ -44,15 +44,18 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
   }
 
   prepareQuestion() {
-    for (const option of this.model.q_options) {
-      if (option.type === 'imageurl') { this.onImageURLChanged(option.id); }
-      if (option.type === 'videourl') { this.onVideoURLChanged(option.id); }
-      if (option.type === 'weburl') { this.onWebURLChanged(option.id); }
-    }
-    if (this.model.multipleChoice === 'true') {
-      this.addedVoteChecklists = [];
-      for (let step = 0; step < this.model.q_options.length; step++) {
-        this.addedVoteChecklists.push({ id: step, isQSelected: false });
+    if (this.model && this.model.q_options) { console.log('this.model.q_options-', this.model.q_options.length); }
+    if (this.model && this.model.q_options.length > 0) {
+      for (const option of this.model.q_options) {
+        if (option.type === 'imageurl') { this.onImageURLChanged(option.id); }
+        if (option.type === 'videourl') { this.onVideoURLChanged(option.id); }
+        if (option.type === 'weburl') { this.onWebURLChanged(option.id); }
+      }
+      if (this.model.multipleChoice === 'true') {
+        this.addedVoteChecklists = [];
+        for (let step = 0; step < this.model.q_options.length; step++) {
+          this.addedVoteChecklists.push({ id: step, isQSelected: false });
+        }
       }
     }
   }

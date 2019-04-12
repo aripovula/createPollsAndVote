@@ -6,6 +6,7 @@
   <div *ngIf="polls">
     <p *ngIf="(polls | isNotExpired).length === 0">( No current polls are found )</p>
     <p *ngIf="(polls | isNotExpired).length > 0" style="color: gray">( to vote click the respective poll name )</p>
+    <span *ngIf="is2loadDefaults(polls)"> </span>
     <ul *ngIf="polls.length > 0">
       <div *ngFor="let poll of polls | reversePollsOrder | isNotExpired; let ind=index;">
         <div *ngIf="poll.isPublished == true || poll.createdBy == currentUserID">
@@ -73,9 +74,11 @@
       </li>
     </ul>
     <br/>
-    <span style="color: lightslategray; font-size: 14px;">* if you don't see a poll it is either not published, not accessible to this user name or domain or expired</span>
+    <span style="color: lightslategray; font-size: 14px;">* if you want to see only admin managed polls ( don't want to see polls added by other users ) click 'Restore defaults - cancels all changes' above</span>
     <br/>
-    <span *ngIf="(polls | isNotExpired).length > 0 || (polls | expiredRecently).length > 0" style="color: lightslategray; font-size: 14px;">** clone also copies all associated questions</span>
+    <span style="color: lightslategray; font-size: 14px;">** if you don't see a poll it is either not published, not accessible to this user name or domain or expired</span>
+    <br/>
+    <span *ngIf="(polls | isNotExpired).length > 0 || (polls | expiredRecently).length > 0" style="color: lightslategray; font-size: 14px;">*** clone also copies all associated questions</span>
     <!-- <span *ngIf="(polls | expiredRecently).length > 0" style="color: lightslategray; font-size: 14px;">* clone also copies all associated questions</span> -->
   </div>
 

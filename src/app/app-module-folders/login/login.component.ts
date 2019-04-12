@@ -15,11 +15,14 @@ import * as AuthActions from '../../ngrx-store/auth-action';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  accessCode = '058d32a7-79b0-c5ee-1a9a-dbbf5841c8cb';
+  accessCode = '9cd74ccb-dedc-0cca-aa0c-0fc9cd8f7142';
+  AlexRN = Math.floor(Math.random() * Math.floor(10000000));
+  AnnRN = Math.floor(Math.random() * Math.floor(10000000));
+  JohnRN = Math.floor(Math.random() * Math.floor(10000000));
   loginForm = new FormGroup({
-    username: new FormControl('alex@example.com', [Validators.required, Validators.minLength(3), Validators.email]),
+    username: new FormControl(`alex${this.AlexRN}@example.com`, [Validators.required, Validators.minLength(3), Validators.email]),
     password: new FormControl('alexalex1', [Validators.required, Validators.minLength(6)]),
-    user: new FormControl('Alex'),
+    user: new FormControl(`Alex`),
     accessCode: new FormControl(this.accessCode),
     useAccessCode: new FormControl('')
   });
@@ -41,25 +44,25 @@ export class LoginComponent implements OnInit {
     console.log('this.loginForm.value.user = ', this.loginForm.value.user);
     if (this.prevUser !== this.loginForm.value.user) {
       this.prevUser = this.loginForm.value.user;
-      if (this.loginForm.value.user === 'Alex') {
+      if (this.loginForm.value.user.includes('Alex')) {
         this.loginForm.setValue({
-          username: 'alex@example.com', password: 'alexalex1',
+          username: 'alex' + this.AlexRN + '@example.com', password: 'alexalex1',
           user: 'Alex', accessCode: this.accessCode, useAccessCode: ''
         }, { emitEvent: false });
       }
-      if (this.loginForm.value.user === 'Ann') {
+      if (this.loginForm.value.user.includes('Ann')) {
         this.loginForm.setValue({
-          username: 'ann@example.com', password: 'annann12',
+          username: 'ann' + this.AnnRN + '@example.com', password: 'annann12',
           user: 'Ann', accessCode: this.accessCode, useAccessCode: ''
         }, { emitEvent: false });
       }
-      if (this.loginForm.value.user === 'John') {
+      if (this.loginForm.value.user.includes('John')) {
         this.loginForm.setValue({
-          username: 'john@doe.com', password: 'johnjohn1',
+          username: 'john' + this.JohnRN + '@doe.com', password: 'johnjohn1',
           user: 'John', accessCode: this.accessCode, useAccessCode: ''
         }, { emitEvent: false });
       }
-      if (this.loginForm.value.user === 'new') {
+      if (this.loginForm.value.user.includes('new')) {
         this.loginForm.setValue({
           username: '', password: 'Standard1',
           user: 'new', accessCode: this.accessCode, useAccessCode: ''
