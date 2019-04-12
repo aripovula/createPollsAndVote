@@ -335,8 +335,10 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
   assignDateTime() {
     for (const option of this.model.q_options) {
       if (!this.inputHidden[option.id]) {
-        this.model.q_options[option.id].startDateTime = moment(this.dateTimeToDisplay1[option.id]).valueOf() * 1;
-        this.model.q_options[option.id].endDateTime = moment(this.dateTimeToDisplay2[option.id]).valueOf() * 1;
+        if (this.model.q_options && this.model.q_options[option.id]) {
+          this.model.q_options[option.id].startDateTime = moment(this.dateTimeToDisplay1[option.id]).valueOf() * 1;
+          this.model.q_options[option.id].endDateTime = moment(this.dateTimeToDisplay2[option.id]).valueOf() * 1;
+        }
       }
     }
   }

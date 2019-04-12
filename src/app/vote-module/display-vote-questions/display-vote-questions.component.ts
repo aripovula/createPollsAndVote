@@ -44,7 +44,7 @@ export class DisplayVoteQuestionsComponent implements OnDestroy {
   }
 
   prepareQuestion() {
-    if (this.model && this.model.q_options) { console.log('this.model.q_options-', this.model.q_options.length); }
+    // if (this.model && this.model.q_options) { console.log('this.model.q_options-', this.model.q_options.length); }
     if (this.model && this.model.q_options.length > 0) {
       for (const option of this.model.q_options) {
         if (option.type === 'imageurl') { this.onImageURLChanged(option.id); }
