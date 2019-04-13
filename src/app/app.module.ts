@@ -3,11 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { StoreModule } from '@ngrx/store';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NewpollMModule } from './new_poll-module/newpoll-m.module';
 import { VoteMModule } from './vote-module/vote-m.module';

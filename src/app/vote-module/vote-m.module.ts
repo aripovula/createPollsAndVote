@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
-import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import { DisplayResultComponent } from './display-result/display-result.component';
 import { LoopVoteQuestionsComponent } from './loop-vote-questions/loop-vote-questions.component';
@@ -14,7 +16,9 @@ import { MaskUsername2Pipe } from '../pipes/mask-username2.pipe';
   imports: [
     CommonModule,
     ChartsModule,
-    FormsModule
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     DisplayResultComponent,

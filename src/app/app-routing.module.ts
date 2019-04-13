@@ -11,6 +11,8 @@ import { PollsListComponent } from './app-module-folders/polls-list/polls-list.c
 import { DisplayResultComponent } from './vote-module/display-result/display-result.component';
 import { LoopVoteQuestionsComponent } from './vote-module/loop-vote-questions/loop-vote-questions.component';
 import { LogoutComponent } from './app-module-folders/logout/logout.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 const appRoutes: Routes = [
@@ -29,7 +31,10 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [RouterModule]
 })

@@ -3,17 +3,17 @@
   <h4 style="color: white">YouPoll</h4>
 
   <nav>
-    <span class="horIndent"></span>
-    <a class="header__title" routerLink="/home" routerLinkActive="active-link">Home - Polls List</a>
-    <span class="horIndent"></span>
-    <a class="header__title" routerLink="/newpoll" routerLinkActive="active-link">Create a new poll</a>
-    <span class="horIndent"></span>
     <span *ngIf="isLoggedIn">
+      <span class="horIndent"></span>
+      <a class="header__title" routerLink="/home" routerLinkActive="active-link">Home - Polls List</a>
+      <span class="horIndent"></span>
+      <a class="header__title" routerLink="/newpoll" routerLinkActive="active-link">Create a new poll</a>
+      <span class="horIndent"></span>
       <a class="header__title" routerLink="/logout" routerLinkActive="active-link">Logout</a>
       <span style="font-size: 12px; color: lightgray;"> &nbsp;( {{username}} is logged in )</span>
+      <span class="horIndent"></span><span class="horIndent"></span><span class="horIndent"></span>
+      <a class="header__title" style="cursor: pointer;" (click)="onSourceClicked()">source code on Github</a>
     </span>
-    <span class="horIndent"></span><span class="horIndent"></span><span class="horIndent"></span>
-    <a class="header__title" style="cursor: pointer;" (click)="onSourceClicked()">source code on Github</a>
   </nav>
 </div>
 

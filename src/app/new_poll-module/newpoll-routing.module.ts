@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NewPollComponent } from './new-poll/new-poll.component';
 import { NewQuestionComponent } from './new-question/new-question.component';
@@ -16,7 +18,10 @@ const newpollRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forChild(newpollRoutes)
+    RouterModule.forChild(newpollRoutes),
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     RouterModule
