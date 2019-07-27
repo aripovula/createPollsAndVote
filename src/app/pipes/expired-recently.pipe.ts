@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
 @Pipe({
-  name: 'expiredRecently'
+  name: 'c'
 })
 export class ExpiredRecentlyPipe implements PipeTransform {
 

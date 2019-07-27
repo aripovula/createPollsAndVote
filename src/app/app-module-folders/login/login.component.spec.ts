@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
+
+import { StoreModule, Store, combineReducers } from '@ngrx/store';
+// import * as fromRoot from '../reducers';
+// import * as fromFeature from './reducers';
+// import * as DataActions from '../actions/data';
+
 // import { TestStore } from '@testing/utils';
 // import { provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
