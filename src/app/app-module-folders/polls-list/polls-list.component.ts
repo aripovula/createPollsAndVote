@@ -1,25 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
-import { Store } from '@ngrx/store';
-import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import * as firebase from "firebase";
+import { Store } from "@ngrx/store";
+import { UUID } from "angular2-uuid";
+import * as moment from "moment";
+import { Router } from "@angular/router";
 
-import { VotesOnPoll } from './../../vote-module/vote-models/votes-on-poll-model';
-import { NewPoll } from '../../new_poll-module/models/new_poll-model';
-import { NewQuestion } from './../../new_poll-module/models/new_question-model';
-import { FirebaseService } from './../../services/firebase.service';
-import { AppState } from '../../ngrx-store/app-reducers';
+import { VotesOnPoll } from "./../../vote-module/vote-models/votes-on-poll-model";
+import { NewPoll } from "../../new_poll-module/models/new_poll-model";
+import { NewQuestion } from "./../../new_poll-module/models/new_question-model";
+import { FirebaseService } from "./../../services/firebase.service";
+import { AppState } from "../../ngrx-store/app-reducers";
+
 // import * as authState from '../../ngrx-store/auth-reducer';
 // import * as AuthActions from './../../ngrx-store/auth-action';
-import * as pollsState from '../../ngrx-store/polls-reducer';
-import * as PollsActions from '../../ngrx-store/polls-action';
-
+import * as pollsState from "../../ngrx-store/polls-reducer";
+import * as PollsActions from "../../ngrx-store/polls-action";
 
 @Component({
-  selector: 'app-polls-list',
-  templateUrl: './polls-list.component.html',
-  styleUrls: ['./polls-list.component.css']
+  selector: "app-polls-list",
+  templateUrl: "./polls-list.component.html",
+  styleUrls: ["./polls-list.component.css"]
 })
 export class PollsListComponent implements OnInit {
   polls: Array<NewPoll>;
@@ -35,35 +35,45 @@ export class PollsListComponent implements OnInit {
     private store: Store<AppState>,
     private firebaseService: FirebaseService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.firebaseService.checkLoginStatus();
     this.currentUserID = this.firebaseService.user_id;
-    if (this.currentUserID == null) { this.router.navigate(['/logout']); }
+    if (this.currentUserID == null) {
+      this.router.navigate(["/logout"]);
+    }
 
     this.firebaseService.fetchPollsAndSaveToStore().then(() => {
-      this.store.select('polls').subscribe(data => {
-        this.polls = data.polls; console.log('polls in p-list = ', this.polls);
+      this.store.select("polls").subscribe(data => {
+        this.polls = data.polls;
+        console.log("polls in p-list = ", this.polls);
       });
-      this.store.select('questions').subscribe(data => {
+      this.store.select("questions").subscribe(data => {
         this.questions = data.questions;
-        if (this.questions == null) { this.firebaseService.fetchQuestionsAndSaveToStore(); }
+        if (this.questions == null) {
+          this.firebaseService.fetchQuestionsAndSaveToStore();
+        }
       });
     });
   }
 
   onEditPollClicked(uid) {
-    this.firebaseService.fetchVotedQuestions(uid)
+    this.firebaseService
+      .fetchVotedQuestions(uid)
       .then((data: Array<VotesOnPoll>) => {
         this.votesQntyOnPoll = data.length;
-        console.log('votesQntyOnPoll = ', this.votesQntyOnPoll);
+        console.log("votesQntyOnPoll = ", this.votesQntyOnPoll);
         if (this.votesQntyOnPoll > 0) {
           this.isCanNotEditModalDisplayed = true;
-          console.log('this.canNotEdit = ', this.isCanNotEditModalDisplayed, this.votesQntyOnPoll);
+          console.log(
+            "this.canNotEdit = ",
+            this.isCanNotEditModalDisplayed,
+            this.votesQntyOnPoll
+          );
         } else {
           this.isCanNotEditModalDisplayed = false;
-          this.router.navigate(['/editpoll', uid]);
+          this.router.navigate(["/editpoll", uid]);
         }
       });
   }
@@ -73,19 +83,22 @@ export class PollsListComponent implements OnInit {
   }
 
   onExtendPollClicked(uid) {
-    const arrayWithOnePoll = this.polls.filter(poll => (poll.id === uid));
+    const arrayWithOnePoll = this.polls.filter(poll => poll.id === uid);
     const onePoll: NewPoll = arrayWithOnePoll[0];
-    onePoll.expiresTimeStamp = moment().add(1, 'days').valueOf();
+    onePoll.expiresTimeStamp = moment()
+      .add(1, "days")
+      .valueOf();
     this.firebaseService.updatePollInDB(onePoll, onePoll.id);
   }
 
   onDeletePollClicked(uid) {
-    this.firebaseService.fetchVotedQuestions(uid)
+    this.firebaseService
+      .fetchVotedQuestions(uid)
       .then((data: Array<VotesOnPoll>) => {
         this.votesQntyOnPoll = data.length;
 
         this.pollIdToDelete = uid;
-        const one_poll = this.polls.filter(poll => (poll.id === uid));
+        const one_poll = this.polls.filter(poll => poll.id === uid);
         this.pollNameToDelete = one_poll[0].name;
         this.isDeleteModalDisplayed = true;
       });
@@ -94,21 +107,23 @@ export class PollsListComponent implements OnInit {
   onDeleteConfirm() {
     this.isDeleteModalDisplayed = false;
 
-    return this.firebaseService.delete_Poll_And_Related_Questions_From_DB_and_Store(this.pollIdToDelete)
+    return this.firebaseService
+      .delete_Poll_And_Related_Questions_From_DB_and_Store(this.pollIdToDelete)
       .then(() => {
-        console.log('this.questions in Delete = ', this.questions);
+        console.log("this.questions in Delete = ", this.questions);
         let count = 0;
         for (const question of this.questions) {
           count++;
           if (question.questionOfPollWithId === this.pollIdToDelete) {
-            this.firebaseService.deleteQuestionFromDBandDeleteFromStore(question.id);
+            this.firebaseService.deleteQuestionFromDBandDeleteFromStore(
+              question.id
+            );
           }
           console.log(count, this.questions.length);
         }
-        console.log('hiding spinner in delete');
+        console.log("hiding spinner in delete");
         this.firebaseService.hideLoadingSpinner();
-      })
-      ;
+      });
   }
 
   onDeleteCancel() {
@@ -116,21 +131,25 @@ export class PollsListComponent implements OnInit {
   }
 
   onRestoreDefaultsClicked() {
-    console.log('in onRestoreDefaultsClicked');
+    console.log("in onRestoreDefaultsClicked");
     this.firebaseService.fetchDefaultPollsAndRestorePolls();
   }
 
   onPublishClicked(poll_id, status) {
-    const arrayWithOnePoll = this.polls.filter(poll => (poll.id === poll_id));
+    const arrayWithOnePoll = this.polls.filter(poll => poll.id === poll_id);
     const onePoll: NewPoll = arrayWithOnePoll[0];
-    if (status === 1) { onePoll.isPublished = true; }
-    if (status === 0) { onePoll.isPublished = false; }
+    if (status === 1) {
+      onePoll.isPublished = true;
+    }
+    if (status === 0) {
+      onePoll.isPublished = false;
+    }
     this.firebaseService.updatePollInDB(onePoll, onePoll.id);
   }
 
   onClonePollClicked(uid) {
     const idOfNewPoll = UUID.UUID();
-    const arrayWithOnePoll = this.polls.filter(poll => (poll.id === uid));
+    const arrayWithOnePoll = this.polls.filter(poll => poll.id === uid);
     const onePoll: NewPoll = arrayWithOnePoll[0];
     let pollToClone: NewPoll;
 
@@ -142,9 +161,13 @@ export class PollsListComponent implements OnInit {
     pollToClone.createdByUsername = this.firebaseService.user_name;
     pollToClone.isPublished = false;
     pollToClone.createdTimeStamp = moment().valueOf();
-    if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) { pollToClone.expiresTimeStamp = moment().add(1, 'days').valueOf(); }
-    if (!pollToClone.name.includes(' ( cloned - edit as you need )')) {
-      pollToClone.name = pollToClone.name + ' ( cloned - edit as you need )';
+    if (pollToClone.expiresTimeStamp < pollToClone.createdTimeStamp) {
+      pollToClone.expiresTimeStamp = moment()
+        .add(1, "days")
+        .valueOf();
+    }
+    if (!pollToClone.name.includes(" ( cloned - edit as you need )")) {
+      pollToClone.name = pollToClone.name + " ( cloned - edit as you need )";
     }
     this.firebaseService.saveNewPollToDB(pollToClone, idOfNewPoll);
 
@@ -154,7 +177,10 @@ export class PollsListComponent implements OnInit {
         const questionToClone = JSON.parse(JSON.stringify(question));
         questionToClone.id = idOfNewQuestion;
         questionToClone.questionOfPollWithId = pollToClone.id;
-        this.firebaseService.saveNewQuestionToDB(questionToClone, idOfNewQuestion);
+        this.firebaseService.saveNewQuestionToDB(
+          questionToClone,
+          idOfNewQuestion
+        );
 
         // CHECKED IF cloned object is DEEP cloned -
         // questionToClone.q_text = questionToClone.q_text + ' - Copy';

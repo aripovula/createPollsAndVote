@@ -2,7 +2,9 @@
 
 @import url('https://fonts.googleapis.com/css?family=Assistant');
 @import "~ng-pick-datetime/assets/style/picker.min.css";
-body, html {
+
+body,
+html {
   font-family: 'Assistant';
 }
 
@@ -310,7 +312,8 @@ a.addn:active {
   text-decoration: none;
 }
 
-.addnlightbg, a.addnlightbg {
+.addnlightbg,
+a.addnlightbg {
   color: rgb(64, 203, 238);
   font-size: 16px;
 }
@@ -323,7 +326,8 @@ a.addnlightbg:visited {
   text-decoration: none;
 }
 
-.addnlightbg:hover, a.addnlightbg:hover {
+.addnlightbg:hover,
+a.addnlightbg:hover {
   color: green;
   transition-duration: 0.2s;
   font-size: 16px;
@@ -355,7 +359,7 @@ a.addnlightbg:active {
 
 .noDecor:hover {
   text-decoration: none;
-  color: rgb(48, 190, 238)!important;
+  color: rgb(48, 190, 238) !important;
   cursor: pointer;
 }
 
@@ -366,7 +370,7 @@ a.addnlightbg:active {
 
 .noDecor2:hover {
   text-decoration: none;
-  color: rgb(48, 190, 238)!important;
+  color: rgb(48, 190, 238) !important;
   cursor: pointer;
 }
 
@@ -386,7 +390,14 @@ input.ng-invalid.ng-touched{
   background-color: white;
 } */
 
-input[type=text], input[type=number], input[type=date], input[type=password], input[type=text].ng-untouched, input[type=number].ng-untouched, input[type=date].ng-untouched, input[type=password].ng-untouched {
+input[type=text],
+input[type=number],
+input[type=date],
+input[type=password],
+input[type=text].ng-untouched,
+input[type=number].ng-untouched,
+input[type=date].ng-untouched,
+input[type=password].ng-untouched {
   width: 250px;
   border-radius: 3px;
   background: #fff;
@@ -395,13 +406,16 @@ input[type=text], input[type=number], input[type=date], input[type=password], in
   padding: 6px;
 }
 
-.ng-valid[required], .ng-valid.required {
+.ng-valid[required],
+.ng-valid.required {
   border-left: 3px solid #42A948;
   /* green */
   width: 248px;
 }
 
-input:focus, input.ng-untouched:focus, input.ng-valid:focus {
+input:focus,
+input.ng-untouched:focus,
+input.ng-valid:focus {
   border: 1px solid #56b4ef;
   box-shadow: 0px 0px 3px 1px #c8def0;
 }
@@ -506,6 +520,7 @@ body {
     top: -300px;
     opacity: 0
   }
+
   to {
     top: 0;
     opacity: 1
@@ -517,6 +532,7 @@ body {
     top: -300px;
     opacity: 0
   }
+
   to {
     top: 0;
     opacity: 1
@@ -532,7 +548,8 @@ body {
   font-weight: bold;
 }
 
-.close:hover, .close:focus {
+.close:hover,
+.close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
@@ -558,6 +575,7 @@ body {
   .w3-modal-content {
     width: 500px
   }
+
   .w3-modal {
     padding-top: 50px
   }
@@ -567,17 +585,19 @@ body {
   .w3-modal-content {
     width: 900px
   }
+
   .w3-hide-large {
-    display: none!important
+    display: none !important
   }
+
   .w3-sidebar.w3-collapse {
-    display: block!important
+    display: block !important
   }
 }
 
 @media (min-width:992px) and (min-width:601px) {
   .w3-hide-medium {
-    display: none!important
+    display: none !important
   }
 }
 
@@ -585,9 +605,10 @@ body {
   .w3-sidebar.w3-collapse {
     display: none
   }
+
   .w3-main {
-    margin-left: 0!important;
-    margin-right: 0!important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     box-sizing: border-box;
   }
 }
