@@ -21,8 +21,9 @@ export class OptionItemComponent implements OnInit {
   @Input() dateTimeToDisplay2: string;
   @Output() voted = new EventEmitter<boolean>();
 
-  sizes = [ 100, 150, 250 ];
-  sizesW = [ 178, 266, 444 ];
+  sizes = window.innerWidth > 800 ? [100, 150, 250] : [100, 100, 100];
+  sizesW = window.innerWidth > 800 ? [178, 266, 444] : [178, 178, 178];
+
 
   constructor() { }
 

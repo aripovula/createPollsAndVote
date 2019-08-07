@@ -1,4 +1,4 @@
-<div style="margin-left: 100px;">
+<div class="bodyindent">
   <br/>
   <h4 style="margin-left: 110px;">
     <span *ngIf="!poll_id">New poll:</span>
@@ -88,7 +88,7 @@
 
       <div style="margin-left: 135px;" *ngIf="model.privateAccessType == 'withusernames'">
         <input type="text" id="privateAccessorsList" name="privateAccessorsList" 
-        style="width:400px;border-radius: 0px;" (ngModelChange)="onAccessorListChange()"
+        style="width:300px;border-radius: 0px;" (ngModelChange)="onAccessorListChange()"
           min="1" formControlName="privateAccessorsList">
           <div [hidden]="pollForm.get('privateAccessorsList').valid || pollForm.get('privateAccessorsList').untouched" class="warning">
           <label></label>
@@ -105,7 +105,7 @@
       </div>
       <div style="margin-left: 135px;" *ngIf="model.privateAccessType == 'withdomain'">
         @ <input type="text" id="domains" name="domains" 
-        style="width:400px;border-radius: 0px;" (ngModelChange)="onDomainListChange()"
+        style="width:300px;border-radius: 0px;" (ngModelChange)="onDomainListChange()"
           min="1" formControlName="domains">
           <div [hidden]="pollForm.get('domains').valid || pollForm.get('domains').untouched" class="warning">
           <label></label>
@@ -117,7 +117,7 @@
         </div>
         <div [hidden]="!notValidDomainFound" class="warning">
           <label></label>
-          At least one domain  ( {{notValidDomain}} ) is not in domain format
+          At least one domain is required. ( {{notValidDomain}} ) is not in domain format
         </div>
 
       </div>

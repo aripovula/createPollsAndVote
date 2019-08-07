@@ -17,8 +17,8 @@ export class VoteOptionItemComponent implements OnInit {
   @Input() WebURL: string;
   @Input() imageSize: number;
 
-  sizes = [100, 150, 250];
-  sizesW = [178, 266, 444];
+  sizes  = window.innerWidth > 800 ? [100, 150, 250] : [100, 100, 100];
+  sizesW = window.innerWidth > 800 ? [178, 266, 444] : [178, 178, 178];
 
   constructor() { }
 

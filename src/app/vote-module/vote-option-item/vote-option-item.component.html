@@ -10,13 +10,13 @@
 
 <span *ngIf="option.type=='imagelocal' " style="margin-left: 88px;">
   <span *ngIf="imageFile">
-    <img [src]="imageFile" height={{sizes[imageSize]}}>
+    <img [src]="imageFile" width={{sizesW[imageSize]}}>
   </span>
 </span>
 
 <span *ngIf="option.type=='imageurl' " style="margin-left: 88px;">
   <span *ngIf="safeURLimage">
-    <img [src]="safeURLimage" height={{sizes[imageSize]}}>
+    <img [src]="safeURLimage" width={{sizesW[imageSize]}}>
     <span class="horIndent"></span>
     <a class="noDecor" [href]="safeURLimage" target="_blank">view full size</a>
   </span>

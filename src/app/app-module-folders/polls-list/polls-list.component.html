@@ -1,6 +1,6 @@
-<div style="margin-left: 50px;">
+<div class="bodyindent">
   <h2>Vote and see poll results
-    <a (click)="onRestoreDefaultsClicked()" class="noDecor" style="margin-left: 200px;cursor: pointer;">
+    <a (click)="onRestoreDefaultsClicked()" class="noDecor besideOrNext">
       Restore defaults - cancels all changes</a>
   </h2>
   <div *ngIf="polls">
@@ -16,7 +16,7 @@
           <span *ngIf="!poll.isPublished" style="color: lightslategray; font-size: 12px;"> &nbsp; ( not published
             )</span>
           <br />
-          <a routerLink="/viewquestions/{{poll.id}}" class="noDecor"> &nbsp; &nbsp; &nbsp; view questions</a>
+          <a class="noDecor linkindent" routerLink="/viewquestions/{{poll.id}}">view questions</a>
           <span style="color: lightslategray; font-size: 14px;"> ( {{questions | countQuestions: poll.id}} )</span>
           <span class="horIndent"></span>
           <a (click)="onClonePollClicked(poll.id)" class="noDecor">clone</a>

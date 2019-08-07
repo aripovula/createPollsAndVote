@@ -8,6 +8,47 @@ html {
   font-family: 'Assistant';
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.loginStyle {
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-top: 60px;
+  background-color: rgb(220, 248, 220);
+}
+
+.loginBesideOrNext {
+  margin-top: 0px;
+  margin-left: 20px;
+  display: inline-block;
+  font-size: 14px;
+  text-align: left;
+  width: 400px;
+}
+
+.extraMenu,
+.menuTitle {
+  display: inline-block
+}
+
+.besideOrNext {
+  margin-top: 0px;
+  margin-left: 200px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.bodyindent {
+  margin-left: 50px;
+}
+
+.linkindent {
+  margin-left: 15px;
+}
+
 #container {
   width: 100%;
   overflow: hidden;
@@ -27,6 +68,7 @@ html {
 #right {
   width: 49.5%;
   border-left: 2px solid transparent;
+  display: inline-block;
 }
 
 .centered {
@@ -571,16 +613,31 @@ body {
   color: white;
 }
 
-@media (min-width:768px) {
-  .w3-modal-content {
-    width: 500px
+/* MEDIA */
+
+@media (max-width:768px) {
+
+  .loginStyle {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    background-color: rgb(220, 248, 220);
   }
 
-  .w3-modal {
-    padding-top: 50px
+  .menuTitle {
+    display: none !important;
+  }
+
+  .bodyindent {
+    margin-left: 5px;
+  }
+
+  .linkindent {
+    margin-left: 0px;
   }
 }
 
+/* 
 @media (min-width:993px) {
   .w3-modal-content {
     width: 900px
@@ -593,15 +650,15 @@ body {
   .w3-sidebar.w3-collapse {
     display: block !important
   }
-}
+} */
 
-@media (min-width:992px) and (min-width:601px) {
+/* @media (min-width:992px) and (min-width:601px) {
   .w3-hide-medium {
     display: none !important
   }
-}
+} */
 
-@media (min-width:992px) {
+/* @media (min-width:992px) {
   .w3-sidebar.w3-collapse {
     display: none
   }
@@ -611,4 +668,39 @@ body {
     margin-right: 0 !important;
     box-sizing: border-box;
   }
+} */
+
+@media (max-width:992px) {
+  .extraMenu {
+    display: none !important;
+  }
+
+  .besideOrNext {
+    display: block;
+    cursor: pointer;
+    margin-top: 40px;
+    margin-left: 0px;
+  }
+
+  .loginBesideOrNext {
+    margin-top: 20px;
+    margin-left: 110px;
+    width: 400px;
+    display: block;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  #left {
+    width: 99.5%;
+    border-right: 1px solid #ccc;
+  }
+
+  #right {
+    width: 0%;
+    border-left: 2px solid transparent;
+    display: none;
+  }
+
+
 }

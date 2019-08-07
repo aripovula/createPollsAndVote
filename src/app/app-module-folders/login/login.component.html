@@ -1,5 +1,5 @@
 <div>
-  <div style="margin-left: 100px; margin-right: 100px; margin-top: 60px; background-color: rgb(220, 248, 220);">
+  <div class="loginStyle">
     <h3 style="padding:15px;">Login with username:</h3>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-element">
@@ -9,7 +9,7 @@
           please type a valid e-mail
         </div>
       </div>
-      <br/>
+      <br />
       <div class="form-element">
         <label>password:</label>
         <input type="password" formControlName="password">
@@ -17,37 +17,46 @@
           Password should be at least 6 characters long
         </div>
       </div>
-      <br/>
+      <br />
       <div class="form-element">
         <label>poll code:</label>
         <input type="text" formControlName="accessCode">
-        <label style="font-size: 14px; width: 400px; text-align: left;">
-          <input type="checkbox" formControlName="useAccessCode"> start poll with this code immediately upon login
+      </div>
+      <br/>
+      <div style="margin-left: 110px;">
+        <label>
+          <input type="checkbox" formControlName="useAccessCode"> start poll with this poll code upon
+          login
         </label>
       </div>
-      <br/>
+
+      <br />
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='Alex' formControlName="user" (ngModelChange)="onUserChange()"> sign in as Alex</label>
+          <input type="radio" name='user' value='Alex' formControlName="user" (ngModelChange)="onUserChange()"> sign in
+          as Alex</label>
       </div>
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='Ann' formControlName="user" (ngModelChange)="onUserChange()"> sign in as Ann</label>
+          <input type="radio" name='user' value='Ann' formControlName="user" (ngModelChange)="onUserChange()"> sign in
+          as Ann</label>
       </div>
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='John' formControlName="user" (ngModelChange)="onUserChange()"> sign in as John</label>
+          <input type="radio" name='user' value='John' formControlName="user" (ngModelChange)="onUserChange()"> sign in
+          as John</label>
       </div>
       <div style="margin-left: 110px;">
         <label>
-          <input type="radio" name='user' value='new' formControlName="user" (ngModelChange)="onUserChange()"> sign in as a new user (type your e-mail above. Changing standard password is optional)</label>
+          <input type="radio" name='user' value='new' formControlName="user" (ngModelChange)="onUserChange()"> sign in
+          as a new user (type your e-mail above. Changing standard password is optional)</label>
       </div>
-      <br/>
+      <br />
       <div class="form-element">
         <label></label>
         <button class="button button1" type="submit" [disabled]="!loginForm.valid">Submit</button>
       </div>
-      <br/>
+      <br />
     </form>
   </div>
 </div>

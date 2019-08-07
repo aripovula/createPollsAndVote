@@ -1,6 +1,6 @@
 <div class="header header__content fixedElement">
-  <span class="horIndent"></span>
-  <h4 style="color: white">YouPoll</h4>
+  <span class="horIndent menuTitle"></span>
+  <h4 class="menuTitle" style="color: white">YouPoll</h4>
 
   <nav>
     <span *ngIf="isLoggedIn">
@@ -10,14 +10,14 @@
       <a class="header__title" routerLink="/newpoll" routerLinkActive="active-link">Create a new poll</a>
       <span class="horIndent"></span>
       <a class="header__title" routerLink="/logout" routerLinkActive="active-link">Logout</a>
-      <span style="font-size: 12px; color: lightgray;"> &nbsp;( {{username}} is logged in )</span>
+      <span class="extraMenu" style="font-size: 12px; color: lightgray;"> &nbsp;( {{username}} is logged in )</span>
       <span class="horIndent"></span><span class="horIndent"></span><span class="horIndent"></span>
-      <a class="header__title" style="cursor: pointer;" (click)="onSourceClicked()">source code on Github</a>
+      <a class="header__title extraMenu" style="cursor: pointer;" (click)="onSourceClicked()">source code on Github</a>
     </span>
   </nav>
 </div>
 
-<br/>
+<br />
 
 <router-outlet></router-outlet>
 <ng4-loading-spinner [timeout]="20000" [loadingText]="'Loading data. Please wait...'"> </ng4-loading-spinner>
