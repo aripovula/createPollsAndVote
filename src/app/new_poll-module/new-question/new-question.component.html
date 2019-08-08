@@ -80,7 +80,7 @@
           <label># of options:</label>
           <button type="button" class="button button1" (click)="removeLastOption()"> - </button>
           <input style="width:80px;border-radius: 0px;" type="text" name="questionsQnty" min="1" id="questionsQnty" required [(ngModel)]="model.questionsQnty"
-            name="questionsQnty" (ngModelChange)="onQntyChange($event)" #questionsQnty="ngModel">
+            name="questionsQnty" (ngModelChange)="onQntyChange()" #questionsQnty="ngModel">
           <button type="button" class="button button1" (click)="addOption()"> + </button>
           <div [hidden]="questionsQnty.valid || questionsQnty.pristine" class="warning">
             <label></label>

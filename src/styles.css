@@ -18,6 +18,7 @@ img {
   margin-right: 150px;
   margin-top: 60px;
   background-color: rgb(220, 248, 220);
+  padding-right:10px;
 }
 
 .loginBesideOrNext {
@@ -45,8 +46,17 @@ img {
   margin-left: 50px;
 }
 
+.titleindent {
+  margin-left: 50px;
+  font-size: 18px;
+}
+
 .linkindent {
   margin-left: 15px;
+}
+
+.testNewLine {
+  display: inline-block;
 }
 
 #container {
@@ -632,6 +642,11 @@ body {
     margin-left: 5px;
   }
 
+  .titleindent {
+    margin-left: 10px;
+    font-size: 16px;
+  }
+
   .linkindent {
     margin-left: 0px;
   }
@@ -678,7 +693,7 @@ body {
   .besideOrNext {
     display: block;
     cursor: pointer;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 0px;
   }
 
@@ -689,6 +704,10 @@ body {
     display: block;
     font-size: 14px;
     text-align: left;
+  }
+
+  .testNewLine {
+    display: block;
   }
 
   #left {

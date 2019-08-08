@@ -16,28 +16,33 @@
           <span *ngIf="!poll.isPublished" style="color: lightslategray; font-size: 12px;"> &nbsp; ( not published
             )</span>
           <br />
-          <a class="noDecor linkindent" routerLink="/viewquestions/{{poll.id}}">view questions</a>
+          <span class="horIndent"></span>
+          <a class="noDecor" routerLink="/viewquestions/{{poll.id}}">view questions</a>
           <span style="color: lightslategray; font-size: 14px;"> ( {{questions | countQuestions: poll.id}} )</span>
           <span class="horIndent"></span>
           <a (click)="onClonePollClicked(poll.id)" class="noDecor">clone</a>
-          <span class="horIndent"></span>
-          <span style="color: lightslategray; font-size: 14px;">added:
-            {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
-          <span class="horIndent"></span>
-          <span style="color: lightslategray; font-size: 14px;">expires:
-            {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm a'}}</span>
           <span *ngIf="poll.createdBy == currentUserID">
-            <span class="horIndent"></span>
-            <a (click)="onEditPollClicked(poll.id)" class="noDecor">edit</a>
-            <span class="horIndent"></span>
-            <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>
-            <span class="horIndent"></span>
-            <span *ngIf="!poll.isPublished">
-              <a (click)="onPublishClicked(poll.id, 1)" class="noDecor">publish your poll</a>
+            <span class="testNewLine">
+              <span class="horIndent"></span>
+              <a (click)="onEditPollClicked(poll.id)" class="noDecor">edit</a>
+              <span class="horIndent"></span>
+              <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>
+              <span class="horIndent"></span>
+              <span *ngIf="!poll.isPublished">
+                <a (click)="onPublishClicked(poll.id, 1)" class="noDecor">publish your poll</a>
+              </span>
+              <span *ngIf="poll.isPublished">
+                <a (click)="onPublishClicked(poll.id, 0)" class="noDecor">un-publish your poll</a>
+              </span>
             </span>
-            <span *ngIf="poll.isPublished">
-              <a (click)="onPublishClicked(poll.id, 0)" class="noDecor">un-publish your poll</a>
-            </span>
+          </span>
+          <span class="testNewLine">
+            <span class="horIndent"></span>
+            <span style="color: lightslategray; font-size: 14px;">added:
+              {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
+            <span class="horIndent"></span>
+            <span style="color: lightslategray; font-size: 14px;">expires:
+              {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm a'}}</span>
           </span>
           <span *ngIf="!(poll.createdBy == currentUserID)">
             <span class="horIndent"></span>
@@ -49,8 +54,9 @@
       </div>
     </ul>
     <br />
-    <h4 *ngIf="(polls | expiredRecently).length > 0">Expired Recently:
-      <span style="color: lightslategray; font-size: 14px;"> &nbsp; ( click poll name to see final votes count )</span>
+    <h4 *ngIf="(polls | expiredRecently).length > 0">Expired Recently:&nbsp;&nbsp;
+      <span class="besideOrNext" style="color: lightslategray; font-size: 14px;">( click poll name to
+        see final votes count )</span>
     </h4>
     <ul>
       <li *ngFor="let poll of polls | reversePollsOrder | expiredRecently; let ind=index;">
@@ -61,23 +67,28 @@
         <span class="horIndent"></span>
         <a (click)="onClonePollClicked(poll.id)" class="noDecor">clone</a>
         <span class="horIndent"></span>
-        <span style="color: lightslategray; font-size: 14px;">added:
-          {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
-        <span class="horIndent"></span>
-        <span style="color: lightslategray; font-size: 14px;">expired:
-          {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm a'}}</span>
         <span *ngIf="poll.createdBy == currentUserID">
-          <span class="horIndent"></span>
-          <a (click)="onExtendPollClicked(poll.id)" class="noDecor">re-publish for 24 more hours</a>
+          <a (click)="onExtendPollClicked(poll.id)" class="noDecor">re-publish for 24h+</a>
           <span class="horIndent"></span>
           <a (click)="onDeletePollClicked(poll.id)" class="noDecor">delete</a>
         </span>
-        <span *ngIf="!(poll.createdBy == currentUserID)">
+        <span class="horIndent"></span>
+        <span class="testNewLine">
+          <span style="color: lightslategray; font-size: 14px;">added:
+            {{poll.createdTimeStamp | date:'MMM dd, yy'}}</span>
           <span class="horIndent"></span>
+          <span style="color: lightslategray; font-size: 14px;">expired:
+            {{poll.expiresTimeStamp | date:'MMM dd, yy @ hh:mm a'}}</span>
+          <span class="horIndent"></span>
+        </span>
+        <span *ngIf="(poll.createdBy == currentUserID)">
+          <span style="color: lightslategray; font-size: 14px;">added by you</span>
+        </span>
+        <span *ngIf="!(poll.createdBy == currentUserID)">
           <span style="color: lightslategray; font-size: 14px;">added by &nbsp;
             {{poll.createdByUsername | maskUsername}}</span>
         </span>
-
+        <span class="verIndent"></span>
       </li>
     </ul>
     <br />
