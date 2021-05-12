@@ -24,7 +24,7 @@
     "@ngrx/store": "^6.1.2",
     "angular2-image-upload": "^1.0.0-rc.1",
     "angular2-uuid": "^1.1.1",
-    "chart.js": "^2.7.3",
+    "chart.js": "^2.9.4",
     "core-js": "^2.5.4",
     "firebase": "^5.5.3",
     "jasmine-marbles": "^0.4.1",
